@@ -81,7 +81,7 @@ analytics:
 # Site Author
 author:
   name             : "Kaiqi Yang(杨凯奇)"
-  avatar           : "profile.png"
+  #avatar           : "profile.png"
   bio              : "I am a mathematics PhD student at NYU Courant."
   location         : #"Location"
   employer         :
