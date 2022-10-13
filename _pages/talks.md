@@ -5,7 +5,6 @@ author_profile: true
 redirect_from:
   - /talks.html
 ---
-  * List item one 
   * Simons Collaboration on Arithmetic Geometry, Number Theory, and Computation Annual Meeting,
 
     Zoom online,January 13 - 14, 2022.
