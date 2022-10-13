@@ -10,5 +10,4 @@ Download paper:
 [Springer](https://link.springer.com/chapter/10.1007/978-3-030-31106-3_17).
 
 For more information:
-
 [Website](https://cims.nyu.edu/~tschinke/papers/yuri/18h1dp/magma/)
