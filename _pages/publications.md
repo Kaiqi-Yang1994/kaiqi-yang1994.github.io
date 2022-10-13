@@ -14,4 +14,4 @@ redirect_from:
     
     Combinatorial and Additive Number Theory III, ed. M. Nathanson, Springer, 227-233, (2020)
     
-    [Website]([https://cims.nyu.edu/~tschinke/publications.html](https://cims.nyu.edu/~tschinke/papers/yuri/18h1dp/magma/)
+    [Website](https://cims.nyu.edu/~tschinke/publications.html](https://cims.nyu.edu/~tschinke/papers/yuri/18h1dp/magma/)
