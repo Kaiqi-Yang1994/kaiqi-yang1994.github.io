@@ -10,5 +10,7 @@ redirect_from:
     
     Combinatorial and Additive Number Theory III, ed. M. Nathanson, Springer, 227-233, (2020)
     
-    [Website](https://cims.nyu.edu/~tschinke/publications.html)
-  * List item two
+    [Website]([https://cims.nyu.edu/~tschinke/publications.html](https://cims.nyu.edu/~tschinke/papers/yuri/18h1dp/magma/))
+  * [Combinatorial Burnside groups](https://kaiqi-yang1994.github.io/files/bcn.pdf)(With Yuri Tschinkel and Zhijia Zhang)
+
+    Research in Number Theory volume 8, Article number: 33 (2022)
