@@ -7,7 +7,7 @@ redirect_from:
 ---
 $\frac{1}{3}-a^2$
 
-$\mathcal{B}_n(G)$(https://kaiqi-yang1994.github.io/projects/CompBnG)
+[$\mathcal{B}_n(G)$](https://kaiqi-yang1994.github.io/projects/CompBnG)
 
 [Computation of $\mathcal{B}_n(G)$](https://kaiqi-yang1994.github.io/projects/CompBnG)
 
