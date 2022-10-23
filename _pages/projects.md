@@ -17,7 +17,6 @@ redirect_from:
 Potentially stably rational del Pezzo surface</a>
 
 <P>
-$B_n(G)$
 [2]<a href = "https://kaiqi-yang1994.github.io/projects/CompBnG">
-Computation of B_n(G)</a>
+Computation of $\mathcal{B}_n(G)$</a>
 
