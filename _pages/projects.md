@@ -9,14 +9,11 @@ redirect_from:
 <BODY>
 <body text="black"
 	LINK="blue"> 
-<P>
-
-<ul>
-
+<p>
 [1]<a href = "https://cims.nyu.edu/~tschinke/papers/yuri/18h1dp/magma/">
 Potentially stably rational del Pezzo surface</a>
-
-<P>
+</p>
+<p>
 [2]<a href = "https://kaiqi-yang1994.github.io/projects/CompBnG">
 Computation of $\mathcal{B}_n(G)$</a>
-
+</p>
