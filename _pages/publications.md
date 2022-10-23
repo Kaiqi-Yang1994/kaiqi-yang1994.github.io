@@ -6,6 +6,10 @@ redirect_from:
   - /publications.html
 ---
   
+   Markup : 1. A numbered list
+              1. A nested numbered list
+              2. Which is numbered
+          2. Which is numbered
   
 
   * &lsqb 1. &rsqb [Potentially stably rational del Pezzo surfaces over nonclosed fields](https://kaiqi-yang1994.github.io/files/h1dp/h1dp3.pdf) (With Yuri Tschinkel)
