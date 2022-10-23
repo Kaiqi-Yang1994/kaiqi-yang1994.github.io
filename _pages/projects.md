@@ -5,6 +5,7 @@ author_profile: true
 redirect_from: 
   - /projects.html
 ---
+$\frac{1}{3}-a^2$
 
 <BODY>
 <body text="black"
@@ -23,4 +24,4 @@ Computation of $\mathcal{B}_n(G)$</a>
 $[Computation of \mathcal{B}_n(G)](https://kaiqi-yang1994.github.io/projects/CompBnG)$
 
 	
-	$\frac{1}{3}-a^2$
+	
