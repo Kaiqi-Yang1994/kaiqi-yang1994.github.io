@@ -20,4 +20,4 @@ Computation of $\mathcal{B}_n(G)$</a>
 	
 [Computation of $\mathcal{B}_n(G)$](https://kaiqi-yang1994.github.io/projects/CompBnG)
 
-[Computation of $\mathcal{B}_n(G)$](https://kaiqi-yang1994.github.io/projects/CompBnG)
+[Computation of $$\mathcal{B}_n(G)$$](https://kaiqi-yang1994.github.io/projects/CompBnG)
