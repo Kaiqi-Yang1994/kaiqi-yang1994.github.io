@@ -8,7 +8,7 @@ redirect_from:
 
 <BODY>
 <body text="black"
-	LINK="blue"> 
+	LINK="blue">
 <p>
 [1]<a href = "https://cims.nyu.edu/~tschinke/papers/yuri/18h1dp/magma/">
 Potentially stably rational del Pezzo surface</a>
@@ -17,3 +17,5 @@ Potentially stably rational del Pezzo surface</a>
 [2]<a href = "https://kaiqi-yang1994.github.io/projects/CompBnG">
 Computation of $\mathcal{B}_n(G)$</a>
 </p>
+	
+[Computation of $\mathcal{B}_n(G)$](https://kaiqi-yang1994.github.io/projects/CompBnG)
