@@ -1,0 +1,284 @@
+CheckGenFullCharB:=function(Generators)
+Out:=<>;
+for i in [1..#Generators] do
+	gen:=Generators[i];
+	ng:=#gen[2];
+	M:=RSpace(IntegerRing(),ng);
+	BM:=Basis(M);
+	B:=[BM[i]*gen[2][i]:i in [1..ng]];
+	CharLattice:=quo<M|RSpaceWithBasis(B)>;
+	BW:=[];
+	for i in [1..#gen[1]] do
+		V:=M!0;
+		for j in [1..ng] do
+			V:=V+BM[j]*gen[1][i][j];
+		end for;
+		Include(~BW,V);
+	end for;
+	CharWeight:=sub<CharLattice|BW>;
+	if #quo<CharLattice|CharWeight> eq 1 then
+		Append(~Out,Generators[i]);
+	end if;
+end for;
+return Out;
+end function;
+
+CheckIndOrd:=function(IndTuple)
+if #IndTuple ge 2 then
+	for i in [1..#IndTuple-1] do
+		if IndTuple[i] gt IndTuple[i+1] then
+			return false;
+		end if;
+	end for;
+else
+	return true;
+end if;
+return true;
+end function;
+
+
+CreateCharIndB:=function(Char,n)
+Out:=<>;
+IndSet:=CartesianProduct(<[1..#Char]:j in [1..n]>);
+for j in IndSet do
+	if CheckIndOrd(j) then
+		Append(~Out,j);
+	end if;
+end for;
+return Out;
+end function;
+
+
+WeightDiffB:=function(gen,Ind1,Ind2)
+NewWeight:=<>;
+for i in [1..#gen[1]] do
+	if i eq Ind1 then
+		w:=<>;
+		for j in [1..#gen[1][Ind1]] do
+			Append(~w,(gen[1][Ind1][j]-gen[1][Ind2][j]) mod gen[2][j]);
+		end for;
+		Append(~NewWeight,w);
+	else
+		Append(~NewWeight,gen[1][i]);
+	end if;
+end for;
+return <NewWeight,gen[2]>;
+end function;
+
+CompareChar:=function(char1,char2)
+counter:=1;
+while counter le #char1 do
+	if char1[counter] lt char2[counter] then
+		return -1;
+	elif char1[counter] gt char2[counter] then
+		return 1;
+	else
+		counter:=counter+1;
+	end if;
+end while;
+return 0;
+end function;
+
+ChangeWeightOrderB:=function(gen,CompareChar)
+if #gen[1] ge 2 then
+	w:=[];
+	for i in [1..#gen[1]] do
+		Append(~w,gen[1][i]);
+	end for;
+	sw:=Sort(w,CompareChar);
+	SWeight:=<>;
+	for i in [1..#gen[1]] do
+		Append(~SWeight,sw[i]);
+	end for;
+	return <SWeight,gen[2]>;
+else
+	return gen;
+end if;
+end function;
+
+CheckIndB:=function(Generators,gen)
+for i in [1..#Generators] do
+	if gen[1] eq Generators[i][1] then
+		return i;
+	end if;
+end for;
+return 0;
+end function;
+
+
+BRelation:=function(Generators)
+Out:=<>;
+IndSet:=[];
+for j in [1..#Generators[1][1]-1] do
+	for l in [j+1,#Generators[1][1]] do
+		Include(~IndSet,[j,l]);
+	end for;
+end for;
+for i in [1..#Generators] do
+	gen:=Generators[i];
+	for k in [1..#IndSet] do
+		if Generators[i][1][IndSet[k][1]] eq Generators[i][1][IndSet[k][2]] then
+			Theta_1:=WeightDiffB(gen,IndSet[k][1],IndSet[k][2]);
+			Theta_1:=ChangeWeightOrderB(Theta_1,CompareChar);
+			Append(~Out,<i,CheckIndB(Generators,Theta_1)>);
+		else
+			Theta_1:=WeightDiffB(gen,IndSet[k][1],IndSet[k][2]);
+			Theta_2:=WeightDiffB(gen,IndSet[k][2],IndSet[k][1]);
+			Theta_1:=ChangeWeightOrderB(Theta_1,CompareChar);
+			Theta_2:=ChangeWeightOrderB(Theta_2,CompareChar);
+			Append(~Out,<i,CheckIndB(Generators,Theta_1),CheckIndB(Generators,Theta_2)>);
+		end if;
+	end for;		
+end for;
+return Out;
+end function;
+
+ConjugationRelationB:=function(Generators,G,K,T,Grp,Iso)
+Out:=[];
+Act:=Normalizer(T,G) meet Normalizer(T,K);
+for i in [1..#Generators] do
+	gen:=Generators[i];
+	for g in Act do
+		GenUnderConjugate:=<>;
+		for j in [1..Ngens(Grp)] do
+			Append(~GenUnderConjugate,Eltseq(Iso(Inverse(Iso)(Grp.j)^(g^(-1)))));
+		end for;
+		NewWeight:=<>;
+		for k in [1..#gen[1]] do
+			wei:=<>;
+			for l in [1..#gen[1][k]] do
+				S:=0;
+				for t in [1..#GenUnderConjugate] do
+					S:=S+gen[1][k][t]*GenUnderConjugate[t][l];
+				end for;
+				Append(~wei,S mod gen[2][l]);
+			end for;
+			Append(~NewWeight,wei);
+		end for;
+		Newgen:=<NewWeight,gen[2]>;
+		Newgen:=ChangeWeightOrderB(Newgen,CompareChar);
+		Ind:=CheckIndB(Generators,Newgen);
+		if i lt Ind then
+			Include(~Out,[i,Ind]);
+		elif i gt Ind then
+			Include(~Out,[Ind,i]);
+		end if;
+	end for;
+end for;
+return Out;
+end function;
+
+
+//G is an abelian, K is a subgroup of centralizer of G, T is the whole group.
+CompB:=function(G,K,T,n)
+Grp,Iso:=AbelianGroup(G);
+Generators:=<>;
+NG:=Ngens(AbelianGroup(G));
+Ord:=<Order(AbelianGroup(G).l): l in [1..NG]>;
+CharTemp:=CartesianProduct(<[0..Ord[i]-1]:i in [1..#Ord]>);
+Char:=<>;
+for i in CharTemp do
+	Append(~Char,i);
+end for;
+CharInd:=CreateCharIndB(Char,n);
+for j in CharInd do
+	Weight:=<>;
+	for i in [1..#j] do
+		Append(~Weight,Char[j[i]]);
+	end for;
+	Append(~Generators,<Weight,Ord>);
+end for;
+Generators:=CheckGenFullCharB(Generators);
+if #Generators ne 0 then
+	BRel:=BRelation(Generators);
+	CR:=ConjugationRelationB(Generators,G,K,T,Grp,Iso);
+	FullLattice:=RSpace(IntegerRing(),#Generators);
+	Base:=Basis(FullLattice);
+	RelationBase:=[];
+	for i in [1..#BRel] do
+		b:=Base[BRel[i][1]];	
+		if #BRel[i] eq 2 then
+			b:=b-Base[BRel[i][2]];
+		end if;
+		if #BRel[i] eq 3 then
+			b:=b-Base[BRel[i][2]]-Base[BRel[i][3]];
+		end if;
+		Append(~RelationBase,b);
+	end for;
+	for i in [1..#CR] do
+		b:=Base[CR[i][1]]-Base[CR[i][2]];
+		Append(~RelationBase,b);
+	end for;
+	B,QuoMap:=quo<FullLattice|sub<FullLattice|RelationBase>>;
+	return B,QuoMap,Generators,FullLattice,RelationBase;
+else
+	return 0,0,0,0,0;
+end if;
+end function;
+
+
+
+
+CheckInConjUnderNGK:=function(grp,ConjUnderNGK,K,G)
+for i in [1..#ConjUnderNGK] do
+	if IsConjugate(Normalizer(G,K),grp,ConjUnderNGK[i]) then
+		return true;
+	end if;
+end for;
+return false;
+end function;
+
+
+
+
+CompBC:=function(G,n)
+Out:=<>;
+List:=SubgroupLattice(G);
+SubCentralList:=[];
+for i in [2..#List] do
+	if IsAbelian(List[i]) then
+		Cen:=Centralizer(G,List[i]);
+		for Grp in AllSubgroups(Cen) do
+			for j in [2..#List] do
+				if IsConjugate(G,Grp,List[j]) then
+					Include(~SubCentralList,j);
+				end if;
+			end for;
+		end for;
+	end if;
+end for;
+SubCentralList:=Sort(SubCentralList);
+GKTList:=<>;
+for i in [1..#SubCentralList] do
+	AllSub:=AllSubgroups(List[SubCentralList[i]]);
+	ConjUnderNGK:=<>;
+	Append(~ConjUnderNGK,AllSub[1]);
+	Counter:=2;
+	while Counter le #AllSub do
+		if IsAbelian(AllSub[Counter]) then
+			if List[SubCentralList[i]] subset Centralizer(G,AllSub[Counter]) then
+				if CheckInConjUnderNGK(AllSub[Counter],ConjUnderNGK,List[SubCentralList[i]],G) then
+					Counter:=Counter+1;
+				else
+					Append(~ConjUnderNGK,AllSub[Counter]);
+					Counter:=Counter+1;
+				end if;
+			else
+			Counter:=Counter+1;
+			end if;
+		else
+			Counter:=Counter+1;
+		end if;
+	end while;
+	for k in [2..#ConjUnderNGK] do
+		Append(~GKTList,<ConjUnderNGK[k],List[SubCentralList[i]],G>);
+	end for;
+end for;
+for i in [1..#GKTList] do
+	i,#GKTList;
+	B,QuoMap,Generators,FullLattice:=CompB(GKTList[i][1],GKTList[i][2],GKTList[i][3],n);
+	Append(~Out,<B,QuoMap,Generators,FullLattice,GKTList[i]>);
+end for;
+print("Done");
+return Out;
+end function;
