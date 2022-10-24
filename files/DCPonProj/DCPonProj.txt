@@ -1,0 +1,2087 @@
+//Construct field that contains all linear characters
+CreateBaseFld:=function(G)
+Q:=Rationals();
+LG:=SubgroupLattice(G);
+for j in [2..#LG] do
+	LinearChar:=LinearCharacters(LG[j]);
+	for i in [1..#LinearChar] do
+		Q:=Compositum(Q,CoefficientField(LinearChar[i]));
+	end for;
+end for;
+return Q;
+end function;
+
+
+
+//Construct Scalar subgroup of G
+ScalarSubgroup:=function(G)
+MaxGenerator:=Identity(G);
+for g in G do
+	if IsScalar(g) then
+		if Order(g) gt Order(MaxGenerator) then
+			MaxGenerator:=g;
+		end if;
+	end if;
+end for;
+ScalarGrp:=sub<G|[MaxGenerator]>;
+return ScalarGrp;
+end function;
+
+
+//Find eigenvalues of a group element g
+FindEigen:=function(g,F,FScale)
+Out:=[];
+if IsDiagonal(g) then
+	for i in [1..Degree(g)] do
+		Include(~Out,FScale!Matrix(g)[i,i]);
+	end for;
+else
+	EltOrder:=Order(g);
+	Factor:=Factorization(EltOrder);
+	FacInd:=<>;
+	for j in [1..#Factor] do
+		Append(~FacInd,{@k:k in [1..Factor[j][1]^Factor[j][2]]@});
+	end for;
+	FacIndProd:=CartesianProduct(FacInd);
+	for IndProd in FacIndProd do
+		Eig:=1;
+		for j in [1..#IndProd] do
+			if RootOfUnity(Factor[j][1]^Factor[j][2])^IndProd[j] in FScale then
+				Eig:=Eig*RootOfUnity(Factor[j][1]^Factor[j][2])^IndProd[j];
+			end if;
+		end for;
+		if Rank(NullSpace(Matrix(g)-Eig*Matrix(IdentityMatrix(F,Degree(g))))) gt 0 then
+			Include(~Out,Eig);
+		end if;
+	end for;
+end if;
+return Out;
+end function;
+
+
+//Compute invariant space under G action
+InvariantSpace:=function(G,F,FScale)
+NGenerators:=Ngens(G);
+if NGenerators gt 0 then
+	AllEigenvalues:=<>;
+	for i in [1..NGenerators] do
+		TempEigenvalue:=FindEigen(G.i,F,FScale);
+		Append(~AllEigenvalues,TempEigenvalue);
+	end for;
+
+	Ind:=<>;
+	for i in [1..NGenerators] do
+		Append(~Ind,{@j:j in [1..#AllEigenvalues[i]]@});
+	end for;
+	Ind:=CartesianProduct(Ind);
+	InvSpa:=<>;
+	for i in Ind do
+		Spa:=&meet [NullSpace(Matrix(Transpose(G.j))-AllEigenvalues[j][i[j]]*Matrix(Identity(G))):j in [1..NGenerators]];
+		if Dimension(Spa) gt 0 then
+			Eigen:=<AllEigenvalues[j][i[j]]:j in [1..NGenerators]>;
+			Append(~InvSpa,<Spa,Eigen>);
+		end if;
+	end for;
+else
+	InvSpa:=<>;
+	g:=Identity(G);
+	Spa:=VectorSpaceWithBasis(Matrix(Identity(G)));
+	Eigen:=<SetToIndexedSet(Eigenvalues(g))[1][1]>;
+	Append(~InvSpa,<Spa,Eigen>);
+end if;
+return InvSpa;
+end function;
+
+
+//Check group is a subgroup of groups in list
+CheckSub:=function(GrpLat,S)
+for i in [1..#S] do
+	if GrpLat subset S[i] then
+		return true;
+	end if;
+end for;
+return false;
+end function;
+
+
+//Given a group G, use LinearCharacters(G) to get all linear characters
+//G is a Permutation Group
+//Construct the set (\Sigma,\epsilon)
+IndexPair:=function(PermG,F,FScale,PG2GHom)
+Out:=<>;
+C:=LinearCharacters(PermG);
+EigenSet:=<>;
+for i in [1..Ngens(PermG)] do
+	TempEigenvalue:=FindEigen(PG2GHom(PermG.i),F,FScale);
+	Append(~EigenSet,TempEigenvalue);
+end for;
+for i in [1..#C] do
+	Indicator:=1;
+	for j in [1..Ngens(PermG)] do
+		if C[i](PermG.j) notin EigenSet[j] then
+			Indicator:=0;
+			break j;
+		end if;
+	end for;
+	if Indicator eq 1 then
+		Append(~Out,<GroupName(PermG),PermG,C[i]>);
+	end if;
+end for;
+return Out;
+end function;
+
+
+//Given a pair (\Sigma,\epsilon), Find V_(\Sigma,\epsilon), P=<\Sigma,\epsilon>
+WeightLinearSpace:=function(P,PG2GHom)
+PermG:=P[2];
+Char:=P[3];
+NumGen:=NumberOfGenerators(PermG);
+V:=NullSpace(Transpose(Matrix(PG2GHom(PermG.1))-Char(PermG.1)*Matrix(PG2GHom(Identity(PermG)))));
+if NumGen ge 2 then
+	for i in [2..NumGen] do
+		V:=V meet NullSpace(Transpose(Matrix(PG2GHom(PermG.i))-Char(PermG.i)*Matrix(PG2GHom(Identity(PermG)))));
+	end for;
+end if;
+return V;
+end function;
+
+
+
+//Transfer character of group PermG under conjugation by g
+TransferChar:=function(Char,PermG,g)
+Out:=[];
+Temp:=[];
+for i in [1..#Char] do
+	Append(~Temp,<Char[i][1]^g,Char[i][2]>);
+end for;
+NewPerm:=PermutationGroup<Degree(PermG)|[Temp[i][1]:i in [1..#Temp]]>;
+TempFPG,TempFPHom:=FPGroup(NewPerm);
+for i in [1..Ngens(PermG)] do
+	Eltseq:=ElementToSequence(Inverse(TempFPHom)(PermG.i));
+	Eigen:=1;
+	for j in [1..#Eltseq] do
+		if Eltseq[j] gt 0 then
+			Eigen:=Eigen*Temp[Eltseq[j]][2];
+		else
+			Eigen:=Eigen*(Temp[-1*Eltseq[j]][2]^(-1));
+		end if;
+	end for;
+	Append(~Out,<PermG.i,Eigen>);
+end for;
+return Out;
+end function;
+
+
+//Identify 2 characters
+Identify2Chars:=function(PermG,Char1,Char2)
+NewPerm:=PermutationGroup<Degree(PermG)|[Char1[i][1]:i in [1..#Char1]]>;
+TempFPG,TempFPHom:=FPGroup(NewPerm);
+for i in [1..#Char2] do
+	Eltseq:=ElementToSequence(Inverse(TempFPHom)(Char2[i][1]));
+	Eigen:=1;
+	for j in [1..#Eltseq] do
+		if Eltseq[j] gt 0 then
+			Eigen:=Eigen*Char1[Eltseq[j]][2];
+		else
+			Eigen:=Eigen*(Char1[-1*Eltseq[j]][2]^(-1));
+		end if;
+	end for;
+	if Eigen ne Char2[i][2] then
+		return false;
+	end if;
+end for;
+return true;
+end function;
+
+
+//Given a chain \Lambda, compute N_G(\Lambda), NGLambda is a subgroup of PermG
+ComputeNGLambda:=function(Chain,H,GrpQuo)
+ChainLength:=Chain[1];
+Char:=Chain[2][1][4];
+N1:=Normalizer(H,Chain[2][1][6]);
+N1Gen:=[];
+for g in N1 do
+	if Identify2Chars(Chain[2][1][3],TransferChar(Char,Chain[2][1][3],Inverse(GrpQuo)(g)),Char) then
+		Append(~N1Gen,g);
+	end if;
+end for;
+N1List:=AllSubgroups(N1);
+NGLambda:=sub<N1|N1Gen>;
+for i in [1..#N1List] do
+	if NGLambda eq N1List[i] then
+		NGLambda:=N1List[i];
+		break i;
+	end if;
+end for;
+
+if ChainLength gt 1 then
+	for j in [2..ChainLength] do
+		NGLambda:=NGLambda meet Normalizer(H,Chain[2][j][6]);
+	end for;
+end if;
+NGLambda:=Inverse(GrpQuo)(NGLambda);
+return NGLambda;
+end function;
+
+
+//remove entry
+RmEntry:=procedure(~S,L)
+Out:=<>;
+if IsEmpty(L) eq false then
+	if Type(L[1]) eq RngIntElt then
+	//Think only have length 1 index
+		for i in [1..#S] do
+			Temp:=<>;
+			if i notin L then
+				Append(~Temp,S[i]);
+			end if;
+		end for;	
+	else
+		for i in [1..#S] do
+			Temp:=<>;
+			for j in [1..#S[i]] do
+				if [i,j] notin L then
+					Append(~Temp,S[i][j]);
+				end if;
+			end for;
+			Append(~Out,Temp);
+		end for;
+	end if;  
+	S:=Out;
+end if;
+end procedure;
+
+
+//Check Chain1 under action of g is equal to Chain2,g is in PermG
+IdentifyChainUnderAction:=function(Chain1,g,Chain2,PG2GHom)
+if Chain1[1] ne Chain2[1] then
+	return false;
+else
+	for i in [1..Chain1[1]] do
+		if Chain1[2][i][1] ne Chain2[2][i][1] then
+			return false;
+		end if;
+	end for;
+	for i in [1..Chain1[1]] do
+		if Chain1[2][i][3]^g ne Chain2[2][i][3] then
+			return false;
+		elif Chain1[2][i][5]^(Transpose(PG2GHom(g))^(-1)) ne Chain2[2][i][5] then
+			return false;
+		end if;
+	end for;
+end if;
+return true;
+end function;
+
+
+//Given a set S of chains find conjugacy class under group G action
+FindNextChainConjugacyClass:=function(S,PermG,H,GrpQuo,PG2GHom)
+Out:=<>;
+
+if S[1][1] eq 1 then
+	NotUsed:=[i:i in [1..#S]];
+	while IsEmpty(NotUsed) eq false do
+		Temp:=<>;
+		Chain:=S[NotUsed[1]];
+		Append(~Temp,Chain);
+		Exclude(~NotUsed,NotUsed[1]);
+		NGLambda:=GrpQuo(ComputeNGLambda(Chain,H,GrpQuo));
+		CosetRep:=DoubleCosetRepresentatives(H,NGLambda,sub<H|Identity(H)>);
+		#NotUsed,#CosetRep;
+		for g in CosetRep do
+			for j in NotUsed do
+				if IdentifyChainUnderAction(Chain,Inverse(GrpQuo)(g),S[j],PG2GHom) then
+					Append(~Temp,S[j]);
+					Exclude(~NotUsed,j);
+				end if;
+			end for;
+		end for;
+		Append(~Out,Temp);
+	end while;
+	"Finish classification of conjugation";
+else
+	NotUsed:=[i:i in [1..#S]];
+	while IsEmpty(NotUsed) eq false do
+		Temp:=<>;
+		Chain:=S[NotUsed[1]];
+		Append(~Temp,Chain);
+		Exclude(~NotUsed,NotUsed[1]);
+		subchain:=<>;
+		for i in [1..Chain[1]-1] do
+			Append(~subchain,Chain[2][i]);
+		end for;
+		SubChain:=<Chain[1]-1,subchain>;
+		//NGLambdaprime:=ComputeNGLambda(SubChain,G,H,GrpQuo);
+		NGLambdaprime:=H;
+		#NotUsed,#NGLambdaprime;
+		for j in NotUsed do
+			for g in NGLambdaprime do
+				if IdentifyChainUnderAction(Chain,Inverse(GrpQuo)(g),S[j],PG2GHom) then
+					Append(~Temp,S[j]);
+					Exclude(~NotUsed,j);
+					continue j;
+				end if;
+			end for;
+		end for;
+		Append(~Out,<Temp[1]>);
+	end while;
+	"Finish classification of conjugation";
+end if;
+		
+return Out;
+end function;
+
+RestrictionChar:=function(Char,SubGrp)
+Out:=[];
+NewPerm:=PermutationGroup<Degree(Parent(Char[1][1]))|[Char[i][1]:i in [1..#Char]]>;
+TempFPG,TempFPHom:=FPGroup(NewPerm);
+for i in [1..Ngens(SubGrp)] do
+	Eltseq:=ElementToSequence(Inverse(TempFPHom)(SubGrp.i));
+	Eigen:=1;
+	for j in [1..#Eltseq] do
+		if Eltseq[j] gt 0 then
+			Eigen:=Eigen*Char[Eltseq[j]][2];
+		else
+			Eigen:=Eigen*(Char[-1*Eltseq[j]][2]^(-1));
+		end if;
+	end for;
+	Append(~Out,<SubGrp.i,Eigen>);
+end for;
+return Out;
+end function;
+
+
+//Find next Length chain of a set of chains
+FindNextLengthChain:=function(S,H,LH,GrpQuo,ChainNode,PG2GHom)
+Out:=<>;
+for i in [1..#S] do
+	i,#S;
+	Chain:=S[i];
+	AllSub:=IntermediateSubgroups(Chain[2][Chain[1]][6],sub<Chain[2][Chain[1]][6]|Identity(Chain[2][Chain[1]][6])>);
+	if #AllSub gt 0 then
+		for j in [1..#AllSub] do
+			NewGrp:=Inverse(GrpQuo)(AllSub[j]);
+			for k in [1..#ChainNode] do
+				if #ChainNode[k] ne 0 then
+					if LH!AllSub[j] eq ChainNode[k][1][1] then
+						for l in [1..#ChainNode[k]] do
+							Bool,g:=IsConjugate(H,ChainNode[k][l][6],AllSub[j]);
+							NewChar:=RestrictionChar(Chain[2][Chain[1]][4],NewGrp);
+							if Identify2Chars(NewGrp,TransferChar(ChainNode[k][l][4],NewGrp,Inverse(GrpQuo)(g)),NewChar) then
+								//WeightSpace could be computed by conjugation.
+								WeightSpace:=ChainNode[k][l][5]^(Transpose(PG2GHom(Inverse(GrpQuo)(g)))^(-1));
+								if Dimension(WeightSpace) ne Dimension(Chain[2][Chain[1]][5]) then
+									NewNode:=<>;
+									Append(~NewNode,ChainNode[k][1][1]);
+									Append(~NewNode,GroupName(NewGrp));
+									Append(~NewNode,NewGrp);
+									Append(~NewNode,NewChar);
+									Append(~NewNode,WeightSpace);
+									Append(~NewNode,AllSub[j]);
+									NewChain:=Chain[2];
+									Append(~NewChain,NewNode);
+									Append(~Out,<Chain[1]+1,NewChain>);
+								end if;
+							end if;
+						end for;
+					end if;
+				end if;
+			end for;
+		end for;
+	end if;
+end for;
+return Out;
+end function;
+
+
+//Construct all possible chain. Chain starts from larger group to smaller group
+//G is convert into FPGroup and then PermutationGroup
+ConstructChain:=function(G,F,FScale)
+ScalarGrp:=ScalarSubgroup(G);
+if Ngens(ScalarGrp) eq 1 then
+	//The limit of the order of scalar group
+	for i in [1..#G] do
+		if ScalarGrp.1^i eq Identity(G) then
+			OrdScalar:=i;
+			break i;
+		end if;
+	end for;
+else
+	OrdScalar:=1;
+end if;
+if OrdScalar eq 1 then
+	ScalarChar:=LinearCharacters(ScalarGrp)[1];
+else
+	for i in [1..#LinearCharacters(ScalarGrp)] do
+		if Order(LinearCharacters(ScalarGrp)[i]) eq Order(ScalarGrp) then
+			ScalarChar:=LinearCharacters(ScalarGrp)[i];
+			break i;
+		end if;
+	end for;
+end if;
+
+
+//Convert group into FPGroup/PermutationGroup for group operation
+FPG,FPHom:=FPGroup(G);
+PermG,PermHom:=PermutationGroup(FPG);
+
+
+//Isomorphisms between FPG,PermG and G(Maybe unnecessary)
+FPG2GHom:=FPHom;
+G2FPGHom:=Inverse(FPHom);
+PG2FPGHom:=Inverse(PermHom);
+FPG2PGHom:=PermHom;
+
+//
+G2PGHom:=Inverse(FPHom)*PermHom;
+PG2GHom:=Inverse(G2PGHom);
+
+//GrpQuo is from PermG to H
+H,GrpQuo:=PermG/G2PGHom(ScalarGrp);
+LH:=SubgroupLattice(H);
+
+
+GrpInd:=[LH!#LH];
+MaxGrpInd:=[];
+while IsEmpty(GrpInd) eq false do
+	#GrpInd,GrpInd[1];
+	if #InvariantSpace(PG2GHom(Inverse(GrpQuo)(Group(GrpInd[1]))),F,FScale) eq 0 then
+		NextLevelInd:=Setseq(MaximalSubgroups(GrpInd[1]));
+		for i in [1..#NextLevelInd] do
+			Include(~GrpInd,NextLevelInd[i]);
+		end for;
+		Exclude(~GrpInd,GrpInd[1]);
+	else
+		if CheckSub(GrpInd[1],MaxGrpInd) eq false then
+			Append(~MaxGrpInd,GrpInd[1]);
+			Exclude(~GrpInd,GrpInd[1]);
+		else
+			Exclude(~GrpInd,GrpInd[1]);
+		end if;
+	end if;
+end while;
+
+
+"Find all Groups";
+AllGrp:=[];
+for i in [2..#LH] do
+	if (CheckSub(LH!i,MaxGrpInd) eq true) then
+		Append(~AllGrp,LH!i);
+	end if;
+end for;
+
+ChainNode:=<>;
+for i in [1..#AllGrp] do
+	i,#AllGrp;
+	Temp:=<>;
+	Grp:=Inverse(GrpQuo)(Group(AllGrp[i]));
+	Pair:=IndexPair(Grp,F,FScale,PG2GHom);
+	//All Pair has the form <GroupName,Permutation group,character>
+	for k in [1..#Pair] do
+		TempWeightSpace:=WeightLinearSpace(Pair[k],PG2GHom);
+		if Rank(TempWeightSpace) gt 0 then
+			Append(~Temp,<AllGrp[i],Pair[k][1],Pair[k][2],[<Pair[k][2].l,FScale!Pair[k][3](Pair[k][2].l)>:l in [1..Ngens(Pair[k][2])]],TempWeightSpace,Group(AllGrp[i])>);
+		end if;
+	end for;
+	Append(~ChainNode,Temp);
+end for;
+
+GrpInd:=MaxGrpInd;
+RmInd:=[];
+
+
+while IsEmpty(GrpInd) eq false do
+	MaxGrpPair:=<>;
+	for t in [1..#ChainNode] do
+		if ChainNode[t][1][1] in GrpInd then
+			for k in [1..#ChainNode[t]] do
+				if [t,k] notin RmInd then
+					Append(~MaxGrpPair,ChainNode[t][k]);
+				end if;
+			end for;
+		end if;
+	end for;
+	for GrpPair in MaxGrpPair do
+		for i in [1..#ChainNode] do
+			if ChainNode[i][1][1] subset GrpPair[1] then
+				if ChainNode[i][1][1] ne GrpPair[1] then
+					NormalGrp:=DoubleCosetRepresentatives(H,GrpQuo(ComputeNGLambda(<1,<ChainNode[i][1]>>,H,GrpQuo)),sub<H|Identity(H)>);
+					//NormalGrp:=DoubleCosetRepresentatives(H,Normalizer(H,ChainNode[i][1][6]),sub<H|Identity(H)>);
+					//NormalGrp:=H;
+					SpaceUnderAction:=[];
+					Counter:=1;
+					for g in NormalGrp do
+						#MaxGrpPair,Counter,#NormalGrp;
+						Include(~SpaceUnderAction,GrpPair[5]^(Transpose(PG2GHom(Inverse(GrpQuo)(g)))));
+						Counter:=Counter+1;
+					end for;
+					for j in [1..#ChainNode[i]] do
+						if Dimension(ChainNode[i][j][5]) eq Dimension(GrpPair[5]) then
+							if ChainNode[i][j][5] in SpaceUnderAction then
+								Include(~RmInd,[i,j]);
+							end if;
+						end if;
+					end for;
+				end if;
+			end if;
+		end for;
+	end for;
+	GrpIndTemp:=[];
+	for i in GrpInd do
+		if Setseq(MaximalSubgroups(i)) ne [LH!1] then
+			GrpIndTemp:=GrpIndTemp cat Setseq(MaximalSubgroups(i));
+		end if;
+	end for;
+	GrpInd:=GrpIndTemp;
+end while;
+RmEntry(~ChainNode,RmInd);
+"Finish computing ChainNode";
+
+ChainClass:=<>;
+CurrentLengthChain:=<>;
+NextLengthChain:=<>;
+
+for i in [1..#ChainNode] do
+	for j in [1..#ChainNode[i]] do
+		Append(~CurrentLengthChain,<1,<ChainNode[i,j]>>);
+	end for;
+end for;
+
+CurrentLengthChain:=FindNextChainConjugacyClass(CurrentLengthChain,PermG,H,GrpQuo,PG2GHom);
+for i in [1..#CurrentLengthChain] do
+	Append(~ChainClass,CurrentLengthChain[i][1]);
+end for;
+CurrentLengthChain:=ChainClass;
+
+NextLengthChain:=FindNextLengthChain(CurrentLengthChain,H,LH,GrpQuo,ChainNode,PG2GHom);
+
+while #NextLengthChain gt 0 do
+	CurrentLengthChain:=NextLengthChain;
+	CurrentLengthChain:=FindNextChainConjugacyClass(CurrentLengthChain,G,H,GrpQuo,PG2GHom);
+	Temp:=<>;
+	for i in [1..#CurrentLengthChain] do
+		Append(~ChainClass,CurrentLengthChain[i][1]);
+		Append(~Temp,CurrentLengthChain[i][1]);
+	end for;
+	CurrentLengthChain:=Temp;
+	NextLengthChain:=FindNextLengthChain(CurrentLengthChain,H,LH,GrpQuo,ChainNode,PG2GHom);
+end while;
+
+return PG2GHom,G2PGHom,FPG2GHom,G2FPGHom,PG2FPGHom,FPG2PGHom,PermG,FPG,H,LH,GrpQuo,AllGrp,ChainNode,ChainClass,ScalarGrp;
+end function;
+
+
+//Hermitian inner product
+HermitianInnProd:=function(v1,v2)
+Prod:=0;
+for i in [1..NumberOfColumns(v1)] do
+	Prod:=Prod+v1[i]*ComplexConjugate(v2[i]);
+end for;
+return Prod;
+end function;
+
+
+//Find complement basis of V1 in V2
+ComplementSpace:=function(V1,V2);
+R1:=Rank(V1);
+R2:=Rank(V2);
+Entry:=[];
+for i in [1..R1] do
+	TempEntry:=[];
+	for j in [1..R2] do
+		Append(~TempEntry,HermitianInnProd(V2.j,V1.i));
+	end for;
+	Append(~Entry,TempEntry);
+end for;
+M:=Matrix(R1,R2,Entry);
+K:=NullSpace(Transpose(M));
+B:=[];
+for t in [1..Dimension(K)] do
+	v:=(K.t)[1]*V2.1;
+	for k in [2..R2] do
+		v:=v+(K.t)[k]*V2.k;
+	end for;
+	Append(~B,v);
+end for;
+return VectorSpaceWithBasis(B);
+end function;
+
+
+//Given a chain, construct sequence V1,V2,...,Vt,V
+ConstructSpaceChain:=function(Chain,G)
+SpaceChain:=<>;
+for i in [1..Chain[1]] do
+	Append(~SpaceChain,Chain[2][i][5]);
+end for;
+Append(~SpaceChain,VectorSpaceWithBasis(Matrix(Identity(G))));
+return SpaceChain;
+end function;
+
+
+
+//Given a chain, construct sequence V1,V2/V1,...,V/Vt, <Complement space, Dimension of previous space, dimension of complement space>
+ConstructQuotientSpaceChain:=function(Chain,G)
+SpaceChain:=<>;
+for i in [1..Chain[1]] do
+	Append(~SpaceChain,Chain[2][i][5]);
+end for;
+Append(~SpaceChain,VectorSpaceWithBasis(Matrix(Identity(G))));
+QuotientChain:=<>;
+Append(~QuotientChain,<SpaceChain[1],1,Dimension(SpaceChain[1])>);
+for i in [1..#SpaceChain-1] do
+	CS:=ComplementSpace(SpaceChain[i],SpaceChain[i+1]);
+	Append(~QuotientChain,<CS,Dimension(SpaceChain[i])+1,Dimension(CS)>);
+end for;
+return QuotientChain;
+end function;
+
+
+//Restriction of Matrix on subspace, M is the New basis matrix, Start and Length are indexes of the block on diagonal
+RestrictMatrix:=function(g,QuotientSpaceChain,I)
+NewBasis:=[];
+for i in [1..#QuotientSpaceChain] do
+	for j in [1..QuotientSpaceChain[i][3]] do
+		Append(~NewBasis,ElementToSequence(QuotientSpaceChain[i][1].j));
+	end for;
+end for;
+BM:=Transpose(Matrix(NewBasis));
+
+Newg:=BM^(-1)*g*BM;
+Resg:=Submatrix(Newg,QuotientSpaceChain[I][2],QuotientSpaceChain[I][2],QuotientSpaceChain[I][3],QuotientSpaceChain[I][3]);
+return Resg;
+end function;
+
+
+//Restrict group G to vector space V within QuotientSpaceChain, I is the index of the space V in QuotientSpaceChain
+RestrictGroup:=function(G,QuotientSpaceChain,I)
+ResGrp:=[];
+F:=BaseRing(G);
+for i in [1..NumberOfGenerators(G)] do
+	Append(~ResGrp,RestrictMatrix(G.i,QuotientSpaceChain,I));
+end for;
+return MatrixGroup<Rank(ResGrp[1]),F|ResGrp>;
+end function;
+
+
+//Given a chain \Lambda and N_G(\Lambda), compute \Delta(\Lambda)
+//return a subgroup of PermG
+ComputeDelta:=function(Chain,G,H,GrpQuo,PG2GHom)
+//NGLambda is a subgroup of PermG
+NGLambda:=ComputeNGLambda(Chain,H,GrpQuo);
+QuotientSpaceChain:=ConstructQuotientSpaceChain(Chain,G);
+
+Delta:=[];
+Used:=[Identity(NGLambda)];
+
+
+for g in NGLambda do
+	Ind:=1;
+	for i in [1..#QuotientSpaceChain] do
+		if IsScalar(RestrictMatrix(PG2GHom(g),QuotientSpaceChain,i)) eq false then
+			Ind:=0;
+			break i;
+		end if;
+	end for;
+	if Ind eq 1 then
+		Append(~Delta,g);
+	end if;
+	Append(~Used,g);
+end for;
+
+//The representation of DeltaGrp should be cleaned later.
+
+DeltaGrp:=sub<NGLambda|Delta>;
+GrpList:=AllSubgroups(NGLambda);
+for i in [1..#GrpList] do
+	if DeltaGrp eq GrpList[i] then
+		return GrpList[i];
+	end if;
+end for;
+end function;
+
+
+//Compute the group of linear characters of G and isomorphism from linear character set to abelian group
+LinearCharGrp:=function(G)
+C:=LinearCharacters(G);
+if #C eq 1 then
+	AbGrp:=AbelianGroup([1]);
+	IsomSet:=[<C[1],Identity(G)>];
+	Isom:=map<C->AbGrp|IsomSet>;
+	return AbGrp,Isom;
+else
+	GeneratorSet:=[];
+	Used:=[];
+	for i in [2..#C] do
+		char:=C[i];
+		if char notin Used then
+			for j in [1..Order(char)] do
+				Powerchar:=char^j;
+				for Genchar in GeneratorSet do
+					if Powerchar eq Genchar then
+						GeneratorSet;
+						Exclude(~GeneratorSet,Genchar);
+					end if;
+				end for;
+				Include(~Used,Powerchar);
+				TempAdd:=[];
+				for Usedchar in Used do
+					Append(~TempAdd,Usedchar*Powerchar);
+				end for;
+				for Newchar in TempAdd do
+					Include(~Used,Newchar);
+				end for;
+			end for;
+			Include(~GeneratorSet,char);
+		end if;
+	end for;
+end if;
+RelationSet:=[];
+for k in [1..#GeneratorSet] do
+	Append(~RelationSet,Order(GeneratorSet[k]));
+end for;
+AbGrp:=AbelianGroup(RelationSet);
+IsomSet:=[];
+InverseIsomSet:=[];
+for g in AbGrp do
+	Seq:=Eltseq(g);
+	elt:=One(C);
+	for i in [1..#Seq] do
+		elt:=elt*GeneratorSet[i]^Seq[i];
+	end for;
+	Append(~IsomSet,<elt,g>);
+	Append(~InverseIsomSet,<g,elt>);
+end for;
+Isom:=map<C->AbGrp|IsomSet>;
+InverseIsom:=map<AbGrp->C|InverseIsomSet>;
+return AbGrp,C,Isom,InverseIsom;	
+end function;
+
+
+//Sort Beta
+SortBeta:=procedure(~Beta)
+Out:=<>;
+BetaEltOrd:=[];
+for i in [1..#Beta] do
+	EltOrd:=[];
+	for j in [1..#Beta[i]] do
+		for k in [0..Order(Beta[i][j][1])-1] do
+			if RootOfUnity(Order(Beta[i][j][1]))^k eq Beta[i][j][2] then
+				Append(~EltOrd,k);
+			end if;
+		end for;
+	end for;
+	Append(~BetaEltOrd,<EltOrd,i>);
+end for;
+BetaInd:=[BetaEltOrd[i][1]:i in [1..#BetaEltOrd]];
+ParallelSort(~BetaInd,~BetaEltOrd);
+for i in [1..#BetaEltOrd] do
+	Append(~Out,Beta[BetaEltOrd[i][2]]);
+end for;
+Beta:=Out;
+end procedure;
+
+
+CheckInTuple:=function(Tup,Elt)
+Indicator:=0;
+for i in [1..#Tup] do
+	if Tup[i] eq Elt then
+		Indicator:=1;
+		break i;
+	end if;
+end for;
+if Indicator eq 0 then
+	return false;
+else
+	return true;
+end if;
+end function;
+
+
+//Compute symbol of NGLambda acting on DLambda O(-1)
+ComputeSymbolNGLambda:=function(Chain,G,PermG,H,GrpQuo,PG2GHom,ScalarGrp,FScale,F)
+NGLambda:=ComputeNGLambda(Chain,H,GrpQuo);
+DeltaGrp:=ComputeDelta(Chain,G,H,GrpQuo,PG2GHom);
+SpaceChain:=ConstructSpaceChain(Chain,G);
+QuotientSpaceChain:=ConstructQuotientSpaceChain(Chain,G);
+"Finish computing NGLambda,DeltaGrp,ScalarGrp,SpaceChain,QuotientSpaceChain";
+
+ListOverDelta:=[];
+if IsAbelian(DeltaGrp) then
+	Include(~ListOverDelta,DeltaGrp);
+end if;
+ListOverDelta:=ListOverDelta cat IntermediateSubgroups(NGLambda,DeltaGrp);
+for Grp in ListOverDelta do
+	if IsAbelian(Grp) eq false then
+		Exclude(~ListOverDelta,Grp);
+	end if;
+	if (ScalarGrp subset PG2GHom(Grp)) eq false then
+		Exclude(~ListOverDelta,Grp);
+	end if;
+end for;
+if IsAbelian(NGLambda) then
+	Include(~ListOverDelta,NGLambda);
+end if;
+
+//This part may be redundant
+ConjugateClass:=<<DeltaGrp>>;
+Used:=[DeltaGrp];
+while #Used lt #ListOverDelta do
+	Rest:=Setseq(Seqset(ListOverDelta) diff Seqset(Used));
+	Grp:=Rest[1];
+	ConjugateGrp:=<>;
+	if #Rest gt 1 then
+		for i in [1..#Rest] do
+			if IsConjugate(NGLambda,Rest[i],Rest[1]) then
+				Append(~ConjugateGrp,Rest[i]);
+				Append(~Used,Rest[i]);
+			end if;
+		end for;
+	else
+		Append(~ConjugateGrp,Rest[1]);
+		Append(~Used,Rest[1]);
+	end if;
+	Append(~ConjugateClass,ConjugateGrp);
+end while;
+ConjugateClassRep:=<>;
+for i in [1..#ConjugateClass] do
+	Append(~ConjugateClassRep,ConjugateClass[i][1]);
+end for;
+//
+
+OutSymbols:=<>;
+
+//All group in ConjugateClassRep are abelian
+
+for i in [1..#ConjugateClassRep] do
+	i,#ConjugateClassRep;
+	InvSpaceGivenGrp:=<>;
+	GrpTemp:=ConjugateClassRep[i];
+	if Order(GrpTemp) ne 1 then
+		C:=CartesianProduct([FindEigen(PG2GHom(GrpTemp.j),F,FScale):j in [1..Ngens(GrpTemp)]]);
+	end if;
+	for j in [1..#QuotientSpaceChain] do
+		InvSpaceWithinQuotient:=<>;
+		if Order(GrpTemp) eq 1 then
+			NSpace:=Nullspace(Transpose(RestrictMatrix(Matrix(Identity(G))-Matrix(Identity(G)),QuotientSpaceChain,j)));
+			Append(~InvSpaceWithinQuotient,<j,GrpTemp,NSpace,[]>);
+		else
+			for Charseq in C do
+				j,#C;
+				NSpace:=Nullspace(Transpose(RestrictMatrix(Matrix(PG2GHom(GrpTemp.1))-Charseq[1]*Matrix(Identity(G)),QuotientSpaceChain,j)));
+				if NumberOfGenerators(GrpTemp) gt 1 then
+					for t in [2..Ngens(GrpTemp)] do
+						NSpace:=NSpace meet Nullspace(Transpose(RestrictMatrix(Matrix(PG2GHom(GrpTemp.t))-Charseq[t]*Matrix(Identity(G)),QuotientSpaceChain,j)));
+						if Dimension(NSpace) eq 0 then
+							continue Charseq;
+						end if;
+					end for;
+				end if;
+				if Dimension(NSpace) gt 0 then
+					Append(~InvSpaceWithinQuotient,<j,GrpTemp,NSpace,[<GrpTemp.k,Charseq[k]>:k in [1..Ngens(GrpTemp)]]>);
+				end if;
+			end for;
+		end if;
+		D:=0;
+		for k in [1..#InvSpaceWithinQuotient] do
+			D:=D+Dimension(InvSpaceWithinQuotient[k][3]);
+		end for;
+		if D ne Dimension(QuotientSpaceChain[j][1]) then
+			error "Extend the base field";
+		end if;
+		Append(~InvSpaceGivenGrp,InvSpaceWithinQuotient);
+	end for;
+	
+	ProdInd:=<>;
+	for j in [1..#InvSpaceGivenGrp] do
+		Append(~ProdInd,[k:k in [1..#InvSpaceGivenGrp[j]]]);
+	end for;
+	CartesianInd:=CartesianProduct(ProdInd);
+	AllProdOfInv:=<>;
+	for Ind in CartesianInd do
+		ProdTemp:=<>;
+		for j in [1..#InvSpaceGivenGrp] do
+			Append(~ProdTemp,InvSpaceGivenGrp[j,Ind[j]]);
+		end for;
+		Append(~AllProdOfInv,ProdTemp);
+	end for;
+	"AllProdInv",#AllProdOfInv;
+	
+	InvSpaceConjClass:=<>;
+	InvSpaceUsed:=<>;
+	NG:=Normalizer(NGLambda,GrpTemp);
+	NQ,NQuo:=NG/GrpTemp;
+	for ProdInv in AllProdOfInv do
+		if CheckInTuple(InvSpaceUsed,ProdInv) eq false then
+			Append(~InvSpaceUsed,ProdInv);
+			AllIndicator:=0;
+			ResNGList:=[RestrictGroup(PG2GHom(NG),QuotientSpaceChain,j):j in [1..#ProdInv]];
+			for NQuog in NQ do
+				if NQuog ne Identity(NQ) then
+					TempProdInv:=<>;
+					ScalarMatrixIndicator:=0;
+					g:=Inverse(NQuo)(NQuog);
+					for j in [1..#ProdInv] do
+						"Construct Restricted group element";
+						Resg:=ResNGList[j]!RestrictMatrix(PG2GHom(g),QuotientSpaceChain,j);
+						if (ProdInv[j][3] eq ProdInv[j][3]^(Transpose(Resg)^(-1))) then
+							if Dimension(ProdInv[j][3]) lt Dimension(QuotientSpaceChain[j][1]) then
+								NBResg:=[];
+								TS:=Nullspace(Matrix(Identity(ResNGList[j]))-Matrix(Identity(ResNGList[j])));
+								CompS:=ComplementSpace(ProdInv[j][3],TS);
+								for k in [1..Dimension(ProdInv[j][3])] do
+									Append(~NBResg,ElementToSequence(ProdInv[j][3].k));
+								end for;
+								for k in [1..Dimension(CompS)] do
+									Append(~NBResg,ElementToSequence(CompS.k));
+								end for;
+								MResg:=Transpose(Matrix(NBResg));
+								NewResg:=MResg^(-1)*Resg*MResg;
+								NewResgRes:=Submatrix(NewResg,1,1,Dimension(ProdInv[j][3]),Dimension(ProdInv[j][3]));
+							else
+								NewResgRes:=Resg;
+							end if;
+							if IsScalar(NewResgRes) eq true then
+								ScalarMatrixIndicator:=ScalarMatrixIndicator+1;
+							end if;
+						end if;
+						TempInv:=<ProdInv[j][1],ProdInv[j][2],ProdInv[j][3]^(Transpose(Resg)^(-1)),TransferChar(ProdInv[j][4],ProdInv[j][2],g)>;
+						Append(~TempProdInv,TempInv);
+					end for;
+					if ScalarMatrixIndicator eq #ProdInv then
+						AllIndicator:=1;
+					end if;
+					if CheckInTuple(InvSpaceUsed,TempProdInv) eq false then
+						Append(~InvSpaceUsed,TempProdInv);
+					end if;
+				end if;
+			end for;
+			if AllIndicator eq 0 then	
+				Append(~InvSpaceConjClass,ProdInv);
+			end if;
+		end if;
+	end for;
+
+	for j in [1..#InvSpaceConjClass] do	
+		j,#InvSpaceConjClass;
+		Symbol:=<>;
+		ProdInv:=InvSpaceConjClass[j];
+		Dim:=0;
+		Beta:=<>;
+		Gamma:=<>;
+		CG:=Centralizer(NGLambda,GrpTemp);
+		
+	
+		//Compute centralizer and its action
+		CQ,CQuo:=CG/GrpTemp;
+
+		StabilizerImage:=<>;
+		for k in [1..#ProdInv] do
+			TempInv:=<ProdInv[k][1],ProdInv[k][2],ProdInv[k][3],ProdInv[k][4]>;
+			Append(~StabilizerImage,TempInv);
+		end for;
+
+		CentralizerSubgrpGen:=[];
+		for k in [1..Ngens(GrpTemp)] do
+			Include(~CentralizerSubgrpGen,GrpTemp.k);
+		end for;
+		ChangeUniverse(~CentralizerSubgrpGen,PermG);
+		ResCGList:=[RestrictGroup(PG2GHom(CG),QuotientSpaceChain,k):k in [1..#ProdInv]];
+		for CQuog in CQ do
+			TempProdInv:=<>;
+			g:=Inverse(CQuo)(CQuog);
+			for k in [1..#ProdInv] do
+				"Construct restricted group element";
+				Resg:=ResCGList[k]!RestrictMatrix(PG2GHom(g),QuotientSpaceChain,k);
+				TempInv:=<ProdInv[k][1],ProdInv[k][2],ProdInv[k][3]^(Transpose(Resg)^(-1)),TransferChar(ProdInv[k][4],ProdInv[k][2],g)>;
+				Append(~TempProdInv,TempInv);
+			end for;
+			if StabilizerImage eq TempProdInv then
+				Include(~CentralizerSubgrpGen,g);
+			end if;
+		end for;
+		ActionGrp:=sub<PermG|CentralizerSubgrpGen>;
+		ActionGrpList:=IntermediateSubgroups(CG,GrpTemp);
+		Append(~ActionGrpList,CG);
+		if ActionGrp eq GrpTemp then
+			ActionGrpSimple:=PG2GHom(ActionGrp);
+		else
+			for l in [1..#ActionGrpList] do
+				if ActionGrp eq ActionGrpList[l] then
+					ActionGrpSimple:=PG2GHom(ActionGrpList[l]);
+					break l;
+				end if;
+			end for;
+		end if;
+		//Compute Beta
+		for l in [1..#ProdInv] do
+			for k in [1..#InvSpaceGivenGrp[l]] do
+				if ProdInv[l] ne InvSpaceGivenGrp[l][k] then
+					for t in [1..Rank(InvSpaceGivenGrp[l][k][3])] do
+						Append(~Beta,[<InvSpaceGivenGrp[l][k][4][r][1],InvSpaceGivenGrp[l][k][4][r][2]*ProdInv[l][4][r][2]^(-1)>:r in [1..#ProdInv[l][4]]]);
+					end for;
+				end if;
+			end for;
+		end for;
+		SortBeta(~Beta);
+
+		//Compute Gamma
+		for t in [1..#InvSpaceConjClass[j]] do
+			Dim:=Dim+Rank(InvSpaceConjClass[j][t][3])-1;
+			if t eq 1 then
+				Append(~Gamma,InvSpaceConjClass[j][t][4]);
+			else
+				Append(~Gamma,[<InvSpaceConjClass[j][t][4][l][1],InvSpaceConjClass[j][t][4][l][2]*InvSpaceConjClass[j][t-1][4][l][2]^(-1)>:l in [1..#InvSpaceConjClass[j][t-1][4]]]);
+			end if;
+		end for;
+		
+		Append(~Symbol,1);
+		Append(~Symbol,GroupName(DeltaGrp));
+		Append(~Symbol,GroupName(GrpTemp));
+		Append(~Symbol,DeltaGrp);
+		Append(~Symbol,GrpTemp);
+		Append(~Symbol,<GroupName(ActionGrpSimple/PG2GHom(GrpTemp)),GroupName(ActionGrp)>);
+		Append(~Symbol,ActionGrpSimple);
+		Append(~Symbol,<Dim,1>);
+		Append(~Symbol,Beta);
+		Append(~Symbol,Gamma);
+		Append(~Symbol,ProdInv);
+		Append(~Symbol,QuotientSpaceChain);
+		Append(~Symbol,SpaceChain);
+
+		//Append to OutSymbols
+		Append(~OutSymbols,Symbol);
+	end for;
+end for;
+return OutSymbols;
+end function;
+
+
+//Find chain length +1
+FindChainPlus1:=function(Chain,H,LH,GrpQuo,AllGrp,ChainNode,PG2GHom)
+Out:=<>;
+
+//Add 1 node at the beginning of Chain
+AllPossible:=IntermediateSubgroups(H,Chain[2][1][6]);
+if LH!#LH in AllGrp then
+	Append(~AllPossible,H);
+end if;
+if #AllPossible ne 0 then
+	for i in [1..#AllPossible] do
+		NewGrp:=Inverse(GrpQuo)(AllPossible[i]);
+		for k in [1..#ChainNode] do
+			if #ChainNode[k] ne 0 then
+				if LH!AllPossible[i] eq ChainNode[k][1][1] then
+					Bool,g:=IsConjugate(H,ChainNode[k][1][6],AllPossible[i]);
+					for l in [1..#ChainNode[k]] do
+						NewChar:=TransferChar(ChainNode[k][l][4],NewGrp,Inverse(GrpQuo)(g));
+						if Identify2Chars(Chain[2][1][3],RestrictionChar(NewChar,Chain[2][1][3]),Chain[2][1][4]) then
+							//WeightSpace could be computed by conjugation.
+							WeightSpace:=ChainNode[k][l][5]^(Transpose(PG2GHom(Inverse(GrpQuo)(g)))^(-1));
+							if Dimension(WeightSpace) ne Dimension(Chain[2][1][5]) then
+								NewNode:=<>;
+								Append(~NewNode,ChainNode[k][1][1]);
+								Append(~NewNode,GroupName(NewGrp));
+								Append(~NewNode,NewGrp);
+								Append(~NewNode,NewChar);
+								Append(~NewNode,WeightSpace);
+								Append(~NewNode,AllPossible[i]);
+								NewChain:=<>;
+								Append(~NewChain,NewNode);
+								for t in [1..Chain[1]] do
+									Append(~NewChain,Chain[2][t]);
+								end for;
+								Append(~Out,<Chain[1]+1,NewChain>);
+							end if;
+						end if;
+					end for;
+				end if;
+			end if;
+		end for;
+	end for;
+end if;
+
+
+//Add 1 node in the middle of Chain
+if Chain[1] gt 1 then
+	for i in [1..Chain[1]-1] do
+		AllPossible:=IntermediateSubgroups(Chain[2][i][6],Chain[2][i+1][6]);
+		if #AllPossible ne 0 then
+			for j in [1..#AllPossible] do
+				NewGrp:=Inverse(GrpQuo)(AllPossible[j]);
+				NewChar:=RestrictionChar(Chain[2][i][4],NewGrp);
+				for k in [1..#ChainNode] do
+					if #ChainNode[k] ne 0 then
+						if LH!AllPossible[j] eq ChainNode[k][1][1] then
+							Bool,g:=IsConjugate(H,ChainNode[k][1][6],AllPossible[j]);
+							for l in [1..#ChainNode[k]] do
+								if Identify2Chars(NewGrp,TransferChar(ChainNode[k][l][4],NewGrp,Inverse(GrpQuo)(g)),NewChar) then
+									WeightSpace:=ChainNode[k][l][5]^(Transpose(PG2GHom(Inverse(GrpQuo)(g)))^(-1));
+									if (Dimension(WeightSpace) gt Dimension(Chain[2][i][5])) and (Dimension(WeightSpace) lt Dimension(Chain[2][i+1][5])) then
+										NewNode:=<>;
+										Append(~NewNode,ChainNode[k][l][1]);
+										Append(~NewNode,GroupName(NewGrp));
+										Append(~NewNode,NewGrp);
+										Append(~NewNode,NewChar);
+										Append(~NewNode,WeightSpace);
+										Append(~NewNode,AllPossible[j]);
+										NewChain:=<>;
+										for t in [1..i] do
+											Append(~NewChain,Chain[2][t]);
+										end for;
+										Append(~NewChain,NewNode);
+										for t in [i+1..Chain[1]] do
+											Append(~NewChain,Chain[2][t]);
+										end for;
+										Append(~Out,<Chain[1]+1,NewChain>);
+									end if;
+									continue j;
+								end if;
+							end for;
+						end if;
+					end if;
+				end for;
+			end for;
+		end if;
+	end for;
+end if;
+
+//Add 1 node at the end of Chain
+AllPossible:=IntermediateSubgroups(Chain[2][Chain[1]][6],LH[1]);
+if #AllPossible ne 0 then
+	for i in [1..#AllPossible] do
+		NewGrp:=Inverse(GrpQuo)(AllPossible[i]);
+		NewChar:=RestrictionChar(Chain[2][Chain[1]][4],NewGrp);
+		for k in [1..#ChainNode] do
+			if #ChainNode[k] ne 0 then
+				if LH!AllPossible[i] eq ChainNode[k][1][1] then
+					Bool,g:=IsConjugate(H,ChainNode[k][1][6],AllPossible[i]);
+					for l in [1..#ChainNode[k]] do
+						if Identify2Chars(NewGrp,TransferChar(ChainNode[k][l][4],NewGrp,Inverse(GrpQuo)(g)),NewChar) then
+							WeightSpace:=ChainNode[k][l][5]^(Transpose(PG2GHom(Inverse(GrpQuo)(g)))^(-1));
+							if Dimension(WeightSpace) gt Dimension(Chain[2][Chain[1]][5]) then
+								NewNode:=<>;
+								Append(~NewNode,ChainNode[k][1][1]);
+								Append(~NewNode,GroupName(NewGrp));
+								Append(~NewNode,NewGrp);
+								Append(~NewNode,NewChar);
+								Append(~NewNode,WeightSpace);
+								Append(~NewNode,AllPossible[i]);
+								NewChain:=Chain[2];
+								Append(~NewChain,NewNode);
+								Append(~Out,<Chain[1]+1,NewChain>);
+							end if;
+							continue i;
+						end if;
+					end for;
+				end if;
+			end if;
+		end for;
+	end for;
+end if;
+return Out;
+end function;
+
+
+FindIndexSetIJ:=function(Chain,SupChain)
+I:=[i:i in [1..SupChain[1]+1]];
+J:=[1];
+for i in [1..#Chain[2]] do
+	for j in [1..#SupChain[2]] do
+		if Chain[2][i] eq SupChain[2][j] then
+			Append(~J,j+1);
+		end if;
+	end for;
+end for;
+return I,J;
+end function;
+
+
+//Find all sup-chain, out format <Chain,SupChain,I,J> where J is a subset of I
+FindSupChain:=function(Chain,H,LH,GrpQuo,AllGrp,ChainNode,PG2GHom)
+Length:=Chain[1];
+Length;
+Out:=<>;
+AllSupChain:=FindChainPlus1(Chain,H,LH,GrpQuo,AllGrp,ChainNode,PG2GHom);
+NeedSupChain:=FindChainPlus1(Chain,H,LH,GrpQuo,AllGrp,ChainNode,PG2GHom);
+while #NeedSupChain ne 0 do
+	NewChain:=NeedSupChain[1];
+	RmEntry(~NeedSupChain,[1]);
+	NewSupChain:=FindChainPlus1(NewChain,H,LH,GrpQuo,AllGrp,ChainNode,PG2GHom);
+	AllSupChain:=AllSupChain cat NewSupChain;
+	NeedSupChain:=NeedSupChain cat NewSupChain;
+end while;
+
+AllSupChainWithIJ:=<>;
+for i in [1..#AllSupChain] do
+	Append(~Out,AllSupChain[i]);
+end for;
+return Out;
+end function;
+
+
+//Given two sets J subset I, compute tau_I,J
+TauIJ:=function(I,J)
+Out:=<>;
+for i in I do
+	if i notin J then
+		Append(~Out,<i>);
+	else
+		Entry:=<>;
+		Ilei:=[];
+		for t in I do
+			if t le i then
+				Include(~Ilei,t);
+			end if;
+		end for;
+		for t in Ilei do
+			Jget:=[];
+			for k in J do
+				if k ge t then
+					Append(~Jget,k);
+				end if;
+			end for;
+			M,Loc:=Min(Jget);
+			if M eq i then
+				Append(~Entry,t);
+			end if;
+		end for;
+		Append(~Out,Entry);
+	end if;
+end for;
+return Out;
+end function;
+
+
+//Apply TauIJ to symbols NGLambda Naive
+ApplyTauIJ:=procedure(I,J,~ChainSymbolNaive)
+Taufunction:=TauIJ(I,J);
+Out:=<>;
+for i in [1..#ChainSymbolNaive] do
+	TempSymbolNaive:=<>;
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][1]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][2]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][3]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][4]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][5]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][6]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][7]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][8]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][9]);
+	NewChar:=<>;
+	for j in [1..#Taufunction] do
+		TempChar:=ChainSymbolNaive[i][10][Taufunction[j][1]];
+		if #Taufunction[j] gt 1 then
+			for k in [2..#Taufunction[j]] do
+				TempChar:=[<TempChar[t][1],TempChar[t][2]*ChainSymbolNaive[i][10][Taufunction[j][k]][t][2]>:t in [1..#TempChar]];
+			end for;
+		end if;
+		Append(~NewChar,TempChar);
+	end for;
+	Append(~TempSymbolNaive,NewChar);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][11]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][12]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][13]);
+	Append(~Out,TempSymbolNaive);
+end for;
+ChainSymbolNaive:=Out;
+end procedure;
+
+//Change character from reduced form to complete form
+ChangeCharForm:=function(CharSimple,PermG)
+C:=LinearCharacters(PermG);
+for i in [1..#C] do
+	for j in [1..#CharSimple] do
+		if C[i](CharSimple[j][1]) ne CharSimple[j][2] then
+			continue i;
+		end if;
+	end for;
+	return C[i];
+end for;
+end function;
+
+
+//Apply PhiIJ to symbols NGLambda Naive
+ApplyPhiIJ:=procedure(I,J,~ChainSymbolNaive)
+Out:=<>;
+for i in [1..#ChainSymbolNaive] do
+	TempSymbolNaive:=<>;
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][1]);
+	NewH:=ChainSymbolNaive[i][4];
+	NewBeta:=ChainSymbolNaive[i][9];
+	NewGamma:=<>;
+	for j in I do
+		if j notin J then
+			NewH:=NewH meet Kernel(ChangeCharForm(ChainSymbolNaive[i][10][j],ChainSymbolNaive[i][5]));
+			Append(~NewBeta,ChainSymbolNaive[i][10][j]);
+		else
+			Append(~NewGamma,ChainSymbolNaive[i][10][j]);
+		end if;
+	end for;
+	SortBeta(~NewBeta);
+	Append(~TempSymbolNaive,GroupName(NewH));
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][3]);
+	Append(~TempSymbolNaive,NewH);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][5]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][6]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][7]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][8]);
+	Append(~TempSymbolNaive,NewBeta);
+	Append(~TempSymbolNaive,NewGamma);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][11]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][12]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][13]);
+
+	for j in [1..#NewBeta] do
+		for t in [1..#NewBeta[j]] do
+			if NewBeta[j][t][2] ne 1 then
+				continue j;
+			end if;
+		end for;
+		continue i;
+	end for;
+	Append(~Out,TempSymbolNaive);
+end for;
+ChainSymbolNaive:=Out;
+end procedure;
+
+
+CompareOrderedTuple:=function(Tup1,Tup2)
+if #Tup1 ne #Tup2 then
+	return false;
+elif #Tup1 eq 0 then
+	return true;
+else
+	for i in [1..#Tup1] do
+		if Tup1[i] ne Tup2[i] then
+			return false;
+		end if;
+	end for;
+end if;
+return true;
+end function;
+
+
+//Identify Under Induction, Chain
+
+
+//Identify Under Induction
+IdentifyUnderInduction:=procedure(NGLambdaSymbol,~ChainSymbolNaive,PermG,GrpQuo)
+Out:=<>;
+Used:=[];
+for i in [1..#ChainSymbolNaive] do
+	for j in [1..#NGLambdaSymbol] do
+		"ChainSymbolNaive",i,"NGLambdaSymbol",j;
+		if IsConjugate(PermG,ChainSymbolNaive[i][5],NGLambdaSymbol[j][5]) then
+			Bool,Conjugateg:=IsConjugate(PermG,ChainSymbolNaive[i][5],NGLambdaSymbol[j][5]);
+			Counter:=1;
+			NG:=GrpQuo(Normalizer(PermG,NGLambdaSymbol[j][5]));
+			//NG:=PermG;
+			for Newg in NG do
+				Counter,#NG;
+				g:=Conjugateg*Inverse(GrpQuo)(Newg);
+				if ChainSymbolNaive[i][4]^g eq NGLambdaSymbol[j][4] then
+					if ChainSymbolNaive[i][8] eq NGLambdaSymbol[j][8] then
+						TranslateBeta:=<>;
+						if #ChainSymbolNaive[i][9] gt 0 then
+							for k in [1..#ChainSymbolNaive[i][9]] do
+								Append(~TranslateBeta,TransferChar(ChainSymbolNaive[i][9][k],NGLambdaSymbol[j][5],g));
+							end for;
+						end if;
+						SortBeta(~TranslateBeta);
+						if CompareOrderedTuple(TranslateBeta,NGLambdaSymbol[j][9]) then
+							TranslateGamma:=<>;
+							if #ChainSymbolNaive[i][10] gt 0 then
+								for k in [1..#ChainSymbolNaive[i][10]] do
+									Append(~TranslateGamma,TransferChar(ChainSymbolNaive[i][10][k],NGLambdaSymbol[j][5],g));
+								end for;
+							end if;
+							if CompareOrderedTuple(TranslateGamma,NGLambdaSymbol[j][10]) then
+								Append(~Out,NGLambdaSymbol[j]);
+								"Append symbol",i,#ChainSymbolNaive;
+								Append(~Used,i);
+								continue i;
+							end if;
+						end if;
+					end if;
+				end if;
+				Counter:=Counter+1;
+			end for;
+		end if;
+	end for;
+end for;
+
+if #Used ne #ChainSymbolNaive then
+	for i in [1..#ChainSymbolNaive] do
+		if i notin Used then
+			Append(~Out,ChainSymbolNaive[i]);
+		end if;
+	end for;
+end if;
+
+if #Out ne #ChainSymbolNaive then
+	error "Error, Check code!";
+end if;
+ChainSymbolNaive:=Out;
+end procedure;
+
+//Change Sign
+ChangeSign:=procedure(~ChainSymbolNaive)
+Out:=<>;
+for i in [1..#ChainSymbolNaive] do
+	TempSymbolNaive:=<>;
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][1]*(-1));
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][2]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][3]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][4]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][5]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][6]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][7]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][8]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][9]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][10]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][11]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][12]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][13]);
+	Append(~Out,TempSymbolNaive);
+end for;
+ChainSymbolNaive:=Out;
+end procedure;
+
+
+//Simplify naive symbols
+SimplifySymbols:=procedure(~ChainSymbolNaive)
+Out:=<>;
+NotUsed:=[i:i in [1..#ChainSymbolNaive]];
+while #NotUsed ne 0 do
+	NewSymbol:=<>;
+	Symbol:=ChainSymbolNaive[NotUsed[1]];
+	Sum:=Symbol[1];
+	Exclude(~NotUsed,NotUsed[1]);
+	for j in NotUsed do
+		if (Symbol[4] eq ChainSymbolNaive[j][4]) and (Symbol[5] eq ChainSymbolNaive[j][5]) and (Symbol[8] eq ChainSymbolNaive[j][8]) and (Symbol[9] eq ChainSymbolNaive[j][9]) and (Symbol[10] eq ChainSymbolNaive[j][10]) then
+			Sum:=Sum+ChainSymbolNaive[j][1];
+			Exclude(~NotUsed,j);
+		end if;
+	end for;
+	if Sum ne 0 then
+		Append(~NewSymbol,Sum);
+		for i in [2..#Symbol] do
+			Append(~NewSymbol,Symbol[i]);
+		end for;
+		Append(~Out,NewSymbol);
+	end if;
+end while;
+ChainSymbolNaive:=Out;
+end procedure;
+
+
+//could find conjugacy class and generate SymbolNGLambda through conjugation.
+
+//Check two chains are conjugated and find the conjugation group element g, H is a permutation group
+CheckChainConjugation:=function(Chain1,Chain2,PermG,H,GrpQuo,PG2GHom)
+if Chain1[1] ne Chain2[1] then
+	return false,0;
+else
+	for i in [1..Chain1[1]] do
+		if Chain1[2][i][1] ne Chain2[2][i][1] then
+			return false,0;
+		end if;
+	end for;
+end if;
+Bool,Elt:=IsConjugate(H,Chain1[2][1][6],Chain2[2][1][6]);
+//NGLambdaFirstNode:=ComputeNGLambda(<1,<Chain2[2][1]>>,G,H,GrpQuo);
+NGLambdaFirstNode:=PermG;
+for g in NGLambdaFirstNode do
+	NewElt:=Inverse(GrpQuo)(Elt)*g;
+	if IdentifyChainUnderAction(Chain1,NewElt,Chain2,PG2GHom) then
+		return true,NewElt;
+	end if;
+end for;
+return false,0;
+end function;
+
+
+
+//Find SymbolNGLambda through conjugation
+//AllSymbolNGLambda element has the form <Chain,NGLambdaChain>
+FindSymbolNGLambdaConjugation:=function(Chain,AllSymbolNGLambda,PermG,H,GrpQuo,QuotientSpaceChain,PG2GHom)
+for i in [1..#AllSymbolNGLambda] do
+	Bool,Elt:=CheckChainConjugation(AllSymbolNGLambda[i][1],Chain,PermG,H,GrpQuo,PG2GHom);
+	if Bool eq true then
+		if Elt eq Identity(PermG) then
+			return AllSymbolNGLambda[i][2];
+		else
+			Out:=<>;
+			for k in [1..#AllSymbolNGLambda[i][2]] do
+				Temp:=<>;
+				Append(~Temp,AllSymbolNGLambda[i][2][k][1]);
+				Append(~Temp,AllSymbolNGLambda[i][2][k][2]);
+				Append(~Temp,AllSymbolNGLambda[i][2][k][3]);
+				Append(~Temp,AllSymbolNGLambda[i][2][k][4]^Elt);
+				Append(~Temp,AllSymbolNGLambda[i][2][k][5]^Elt);
+				Append(~Temp,AllSymbolNGLambda[i][2][k][6]);
+				Append(~Temp,AllSymbolNGLambda[i][2][k][7]);
+				Append(~Temp,AllSymbolNGLambda[i][2][k][8]);
+				NewBeta:=<>;
+				for j in [1..#AllSymbolNGLambda[i][2][k][9]] do
+					Append(~NewBeta,TransferChar(AllSymbolNGLambda[i][2][k][9][j],AllSymbolNGLambda[i][2][k][5]^Elt,Elt));
+				end for;
+				Append(~Temp,NewBeta);
+				NewGamma:=<>;
+				for j in [1..#AllSymbolNGLambda[i][2][k][10]] do
+					Append(~NewGamma,TransferChar(AllSymbolNGLambda[i][2][k][10][j],AllSymbolNGLambda[i][2][k][5]^Elt,Elt));
+				end for;
+				Append(~Temp,NewGamma);
+				GrpTemp:=AllSymbolNGLambda[i][2][k][5]^Elt;
+				ProdInv:=<>;
+				for j in [1..#QuotientSpaceChain] do
+					if Order(GrpTemp) eq 1 then
+						NSpace:=Nullspace(Transpose(RestrictMatrix(Matrix(PG2GHom(Identity(GrpTemp)))-Matrix(PG2GHom(Identity(GrpTemp))),QuotientSpaceChain,j)));
+						Append(~ProdInv,<j,GrpTemp,NSpace,NewGamma[1]>);
+					else
+						if j ne 1 then
+							NSpace:=Nullspace(Transpose(RestrictMatrix(Matrix(PG2GHom(GrpTemp.1))-(NewGamma[j][1][2]*NewGamma[j-1][1][2])*Matrix(PG2GHom(Identity(GrpTemp))),QuotientSpaceChain,j)));
+							if NumberOfGenerators(GrpTemp) gt 1 then
+								for t in [2..Ngens(GrpTemp)] do
+									NSpace:=NSpace meet Nullspace(Transpose(RestrictMatrix(Matrix(PG2GHom(GrpTemp.t))-(NewGamma[j][t][2]*NewGamma[j-1][t][2])*Matrix(PG2GHom(Identity(GrpTemp))),QuotientSpaceChain,j)));
+								end for;
+							end if;
+							Append(~ProdInv,<j,GrpTemp,NSpace,([<NewGamma[j][l][1],NewGamma[j][l][2]*NewGamma[j-1][l][2]>:l in [1..#NewGamma[j]]])>);
+						else
+							NSpace:=Nullspace(Transpose(RestrictMatrix(Matrix(PG2GHom(GrpTemp.1))-NewGamma[1][1][2]*Matrix(PG2GHom(Identity(GrpTemp))),QuotientSpaceChain,j)));
+							if NumberOfGenerators(GrpTemp) gt 1 then
+								for t in [2..Ngens(GrpTemp)] do
+									NSpace:=NSpace meet Nullspace(Transpose(RestrictMatrix(Matrix(PG2GHom(GrpTemp.t))-NewGamma[1][t][2]*Matrix(PG2GHom(Identity(GrpTemp))),QuotientSpaceChain,j)));
+								end for;
+							end if;
+							Append(~ProdInv,<j,GrpTemp,NSpace,NewGamma[1]>);
+						end if;
+					end if;
+				end for;
+				Append(~Temp,ProdInv);
+				Append(~Temp,AllSymbolNGLambda[i][2][k][12]);
+				Append(~Temp,AllSymbolNGLambda[i][2][k][13]);
+				Append(~Out,Temp);
+			end for;
+			return Out;
+		end if;
+	end if;
+end for;
+end function;
+
+
+
+
+//Find conjugacy class of AllSupChain of Chain under the action of NGLambda
+FindConjugacyClass:=function(AllSupChain,NGLambda,H,GrpQuo,PG2GHom)
+Out:=<>;
+NotUsed:=[i:i in [1..#AllSupChain]];
+while IsEmpty(NotUsed) eq false do
+	Temp:=<>;
+	Chain:=AllSupChain[NotUsed[1]];
+	Append(~Temp,Chain);
+	Exclude(~NotUsed,NotUsed[1]);
+	NGLambdaChain:=ComputeNGLambda(Chain,H,GrpQuo);
+	CosetRep:=DoubleCosetRepresentatives(GrpQuo(NGLambda),GrpQuo(NGLambdaChain),GrpQuo(sub<NGLambdaChain|Identity(NGLambdaChain)>));
+	for g in CosetRep do
+		for j in NotUsed do
+			Rep:=Inverse(GrpQuo)(g);
+			if IdentifyChainUnderAction(Chain,Rep,AllSupChain[j],PG2GHom) then
+				Append(~Temp,AllSupChain[j]);
+				Exclude(~NotUsed,j);
+			end if;
+		end for;
+	end for;
+	Append(~Out,Temp);
+end while;
+return Out;
+end function;
+
+
+
+
+
+//Compute symbol NGLambda acting on DLambda O(-1) Naive for 1 chain
+ComputeSymbolNGLambdaNaive:=function(Chain,H,LH,GrpQuo,AllGrp,ChainNode,G,PermG,AllSymbolNGLambda,PG2GHom)
+AllSupChain:=FindSupChain(Chain,H,LH,GrpQuo,AllGrp,ChainNode,PG2GHom);
+QuotientSpaceChain:=ConstructQuotientSpaceChain(Chain,G);
+SpaceChain:=ConstructSpaceChain(Chain,G);
+"Construct all Sup Chains";
+if #AllSupChain eq 0 then
+	"Compute NGLambdaSymbol";
+	return <Chain,FindSymbolNGLambdaConjugation(Chain,AllSymbolNGLambda,PermG,H,GrpQuo,QuotientSpaceChain,PG2GHom)>;
+else
+
+	SupChainClassRep:=<>;
+	NGLambda:=ComputeNGLambda(Chain,H,GrpQuo);
+	
+	SupChainClass:=FindConjugacyClass(AllSupChain,NGLambda,H,GrpQuo,PG2GHom);
+	for i in [1..#SupChainClass] do
+		Append(~SupChainClassRep,SupChainClass[i][1]);
+	end for;
+	
+	"Compute NGLambdaSymbol";
+	NGLambdaSymbol:=FindSymbolNGLambdaConjugation(Chain,AllSymbolNGLambda,PermG,H,GrpQuo,QuotientSpaceChain,PG2GHom);
+	NaiveSymbols:=NGLambdaSymbol;
+	
+	for TempChain in SupChainClassRep do
+		TempChainFullSymbolNaive:=$$(TempChain,H,LH,GrpQuo,AllGrp,ChainNode,G,PermG,AllSymbolNGLambda,PG2GHom);
+		TempChainSymbolNaive:=TempChainFullSymbolNaive[2];
+		I,J:=FindIndexSetIJ(Chain,TempChain);
+		ApplyTauIJ(I,J,~TempChainSymbolNaive);
+		ApplyPhiIJ(I,J,~TempChainSymbolNaive);
+		"Identify Under Induction";
+		IdentifyUnderInduction(NGLambdaSymbol,~TempChainSymbolNaive,PermG,GrpQuo);
+		ChangeSign(~TempChainSymbolNaive);
+		
+		NaiveSymbols:=NaiveSymbols cat TempChainSymbolNaive;
+	end for;
+	//SimplifySymbols(~NaiveSymbols);
+	return <Chain,NaiveSymbols>;
+end if;
+end function;
+
+
+//Apply Induction to symbols NGLambda Naive
+FinalInductionSymbol:=procedure(PermG,~ChainSymbolNaive,PG2GHom)
+Out:=<>;
+for i in [1..#ChainSymbolNaive] do
+	TempSymbolNaive:=<>;
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][1]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][2]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][3]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][4]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][5]);
+	NewCG:=Centralizer(PermG,ChainSymbolNaive[i][5]);
+
+	CentralizerSubgrpGen:=[];
+	for j in [1..Ngens(ChainSymbolNaive[i][5])] do
+		Include(~CentralizerSubgrpGen,ChainSymbolNaive[i][5].j);
+	end for;
+	ChangeUniverse(~CentralizerSubgrpGen,PermG);
+	CQ,CQuo:=NewCG/ChainSymbolNaive[i][5];
+	StabilizerImage:=<>;
+	for j in [1..#ChainSymbolNaive[i][13]] do
+		Append(~StabilizerImage,ChainSymbolNaive[i][13][j]);
+	end for;
+	for CQuog in CQ do
+		g:=Inverse(CQuo)(CQuog);
+		TempSpaceChain:=<>;
+		for j in [1..#ChainSymbolNaive[i][13]] do
+			Append(~TempSpaceChain,ChainSymbolNaive[i][13][j]^(Transpose(PG2GHom(g))^(-1)));
+		end for;
+		if CompareOrderedTuple(StabilizerImage,TempSpaceChain) then
+			
+			Append(~CentralizerSubgrpGen,g);
+		end if;
+	end for;
+	ActionGrp:=sub<PermG|CentralizerSubgrpGen>;
+	ActionGrpList:=IntermediateSubgroups(NewCG,ChainSymbolNaive[i][5]);
+	Append(~ActionGrpList,NewCG);
+	if ActionGrp eq ChainSymbolNaive[i][5] then
+		ActionGrpSimple:=ChainSymbolNaive[i][5];
+	else
+		for l in [1..#ActionGrpList] do
+			if ActionGrp eq ActionGrpList[l] then
+				ActionGrpSimple:=ActionGrpList[l];
+				break l;
+			end if;
+		end for;
+	end if;
+
+	Append(~TempSymbolNaive,GroupName(ActionGrpSimple/ChainSymbolNaive[i][5]));
+	Append(~TempSymbolNaive,PG2GHom(ActionGrpSimple));
+	NewV:=<ChainSymbolNaive[i][8][1],1>;
+	Append(~TempSymbolNaive,NewV);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][9]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][10]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][11]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][12]);
+	Append(~TempSymbolNaive,ChainSymbolNaive[i][13]);
+	Append(~Out,TempSymbolNaive);
+end for;
+ChainSymbolNaive:=Out;
+end procedure;
+
+
+//Compute symbol G acting on P(V) with O(-1)
+ComputeSymbolGPV:=function(ChainClass,H,LH,GrpQuo,AllGrp,ChainNode,G,PermG,AllSymbolNGLambda,G2PGHom,PG2GHom,ScalarGrp)
+Out:=<>;
+TrivialSymbol:=<>;
+
+Append(~TrivialSymbol,1);
+Append(~TrivialSymbol,GroupName(ScalarGrp));
+Append(~TrivialSymbol,GroupName(ScalarGrp));
+Append(~TrivialSymbol,G2PGHom(ScalarGrp));
+Append(~TrivialSymbol,G2PGHom(ScalarGrp));
+Append(~TrivialSymbol,GroupName(PermG/G2PGHom(ScalarGrp)));
+Append(~TrivialSymbol,G);
+Append(~TrivialSymbol,<Degree(G)-1,1>);
+Append(~TrivialSymbol,<>);
+if Order(ScalarGrp) eq 1 then
+	Append(~TrivialSymbol,<G2PGHom(Identity(ScalarGrp)),LinearCharacters(ScalarGrp)[1](Identity(ScalarGrp))>);
+else
+	Append(~TrivialSymbol,<G2PGHom(ScalarGrp.1),LinearCharacters(ScalarGrp)[2](ScalarGrp.1)>);
+end if;
+Append(~TrivialSymbol,NullSpace(Matrix(Identity(G))-Matrix(Identity(G))));
+Append(~TrivialSymbol,<<NullSpace(Matrix(Identity(G))-Matrix(Identity(G))),1,Degree(G)>>);
+Append(~TrivialSymbol,<NullSpace(Matrix(Identity(G))-Matrix(Identity(G)))>);
+Append(~Out,TrivialSymbol);
+
+for i in [1..#ChainClass] do
+	i,#ChainClass;
+	NaiveSymbols:=ComputeSymbolNGLambdaNaive(ChainClass[i],H,LH,GrpQuo,AllGrp,ChainNode,G,PermG,AllSymbolNGLambda,PG2GHom)[2];
+	I:=[j:j in [1..ChainClass[i][1]+1]];
+	J:=[1];
+	ApplyPhiIJ(I,J,~NaiveSymbols);
+	FinalInductionSymbol(PermG,~NaiveSymbols,PG2GHom);
+	Out:=Out cat NaiveSymbols;
+end for;
+SimplifySymbols(~Out);
+return Out;
+end function;
+
+
+//Compare 2 character sequence
+CompareChar:=function(char1,char2)
+counter:=1;
+while counter le #char1 do
+	if char1[counter] lt char2[counter] then
+		return -1;
+	elif char1[counter] gt char2[counter] then
+		return 1;
+	else
+		counter:=counter+1;
+	end if;
+end while;
+return 0;
+end function;
+
+//Assume the length of seq is at least 2
+IsIncreasing:=function(Seq)
+for i in [1..#Seq-1] do
+	if Seq[i] ge Seq[i+1] then
+		return false;
+	end if;
+end for;
+return true;
+end function;
+
+
+
+//Check the subsum of characters is zero
+CheckCharSumZero:=function(Beta,PermG)
+if #Beta lt 2 then
+	return false;
+else
+	IndexSet:=<>;
+	for i in [2..#Beta] do
+		Ind:=[j:j in [1..#Beta]];
+		CartSet:=<>;
+		for j in [1..i] do
+			Append(~CartSet,Ind);
+		end for;
+		AllInd:=CartesianProduct(CartSet);
+		for ind in AllInd do
+			if IsIncreasing(ind) then
+				Append(~IndexSet,ind);
+			end if;
+		end for;
+	end for;
+	
+	for i in [1..#IndexSet] do
+		Sum:=[<PermG.t,1>:t in [1..Ngens(PermG)]];
+		Index:=IndexSet[i];
+		for j in [1..#Index] do
+			Sum:=[<PermG.t,Sum[t][2]*Beta[Index[j]][t][2]>:t in [1..Ngens(PermG)]];
+		end for;
+		for j in [1..#Sum] do
+			if Sum[j][2] ne 1 then
+				continue i;
+			end if;
+		end for;
+		return true;
+	end for;
+	return false;
+end if;
+end function; 
+
+
+
+//Uniform all symbols
+UniformSymbols:=procedure(~SymbolGPV,G,PermG,G2PGHom,PG2GHom,ScalarGrp)
+Out:=<>;
+AbelSubG:=AbelianSubgroups(PermG);
+for i in [1..#AbelSubG] do
+	if G2PGHom(ScalarGrp) eq AbelSubG[i]`subgroup then
+		ScalarGrpInd:=i;
+	end if;
+end for;
+
+if Order(ScalarGrp) eq 1 then
+	TrivialSymbol:=<>;
+	Append(~TrivialSymbol,SymbolGPV[1][1]);
+	Append(~TrivialSymbol,GroupName(ScalarGrp));
+	Append(~TrivialSymbol,GroupName(ScalarGrp));
+	Append(~TrivialSymbol,AbelSubG[1]`subgroup);
+	Append(~TrivialSymbol,AbelSubG[1]`subgroup);
+	Append(~TrivialSymbol,GroupName(PermG));
+	Append(~TrivialSymbol,PermG);
+	Append(~TrivialSymbol,SymbolGPV[1][8]);
+	Append(~TrivialSymbol,<>);
+	Append(~TrivialSymbol,<>);
+	Append(~Out,TrivialSymbol);
+end if;
+
+for i in [2..#AbelSubG] do
+	if G2PGHom(ScalarGrp) subset AbelSubG[i]`subgroup then
+		for j in [1..#SymbolGPV] do
+			GPVSym:=SymbolGPV[j];
+			if IsConjugate(PermG,AbelSubG[i]`subgroup,GPVSym[5]) then
+				i,j;
+				TempSym:=<>;
+				Bool,g:=IsConjugate(PermG,GPVSym[5],AbelSubG[i]`subgroup);
+				ActionGrp:=GPVSym[7]^PG2GHom(g);
+				InvSpace:=<>;
+				for k in [1..#GPVSym[12]] do
+					Append(~InvSpace,<GPVSym[12][k][1]^Transpose(PG2GHom(g^(-1))),GPVSym[12][k][2],GPVSym[12][k][3]>);
+				end for;
+				Append(~TempSym,GPVSym[1]);
+				Append(~TempSym,GroupName(AbelSubG[ScalarGrpInd]`subgroup));
+				Append(~TempSym,GroupName(AbelSubG[i]`subgroup));
+				Append(~TempSym,AbelSubG[ScalarGrpInd]`subgroup);
+				Append(~TempSym,AbelSubG[i]`subgroup);
+				Append(~TempSym,GroupName(G2PGHom(ActionGrp)/AbelSubG[i]`subgroup));
+				Append(~TempSym,ActionGrp);
+				Append(~TempSym,GPVSym[8]);
+				Append(~TempSym,InvSpace);
+				TranslateBeta:=<>;
+				if #GPVSym[9] gt 0 then
+					for k in [1..#GPVSym[9]] do
+						Append(~TranslateBeta,TransferChar(GPVSym[9][k],AbelSubG[i]`subgroup,g));
+					end for;
+				end if;
+				Append(~TempSym,TranslateBeta);
+				if CheckCharSumZero(TranslateBeta,AbelSubG[i]`subgroup) eq false then
+					Append(~Out,TempSym);
+				end if;
+			end if;
+		end for;
+	end if;
+end for;
+SymbolGPV:=Out;
+end procedure;
+
+
+
+FindActionGroup:=function(ActionGrp,QuotientSpaceChain)
+NewBasis:=[];
+for i in [1..#QuotientSpaceChain] do
+	for j in [1..QuotientSpaceChain[i][3]] do
+		Append(~NewBasis,ElementToSequence(QuotientSpaceChain[i][1].j));
+	end for;
+end for;
+BM:=Transpose(Matrix(NewBasis));
+
+return MatrixGroup<Degree(ActionGrp),BaseRing(ActionGrp)|[BM^(-1)*ActionGrp.i*BM:i in [1..Ngens(ActionGrp)]]>;
+end function;
+
+
+
+//Apply Eta function to symbol G acting on P(V)
+ApplyEta:=function(SymbolGPV,PermG,H,LH,GrpQuo,G2PGHom,PG2GHom,ScalarGrp)
+
+HQuo:=GrpQuo;
+SubH:=LH;
+Out:=<>;
+TrivialSymbol:=<>;
+CharGrp,Isom:=AbelianGroup(SubH[1]);
+Append(~TrivialSymbol,SymbolGPV[1][1]);
+Append(~TrivialSymbol,GroupName(SubH[1]));
+Append(~TrivialSymbol,SubH[1]);
+Append(~TrivialSymbol,HQuo);
+Append(~TrivialSymbol,SymbolGPV[1][5]);
+Append(~TrivialSymbol,SubH!1);
+Append(~TrivialSymbol,<SymbolGPV[1][6],SymbolGPV[1][6]>);
+Append(~TrivialSymbol,SubH[1]);
+Append(~TrivialSymbol,SymbolGPV[1][7]);
+Append(~TrivialSymbol,SymbolGPV[1][7]);
+Append(~TrivialSymbol,SymbolGPV[1][8]);
+Append(~TrivialSymbol,SymbolGPV[1][9]);
+Append(~TrivialSymbol,[]);
+Append(~TrivialSymbol,[1]);
+Append(~TrivialSymbol,CharGrp);
+Append(~TrivialSymbol,Isom);
+Append(~Out,TrivialSymbol);
+
+for j in [1..#SubH] do
+	if IsAbelian(SubH[j]) then
+		C:=LinearCharacters(SubH[j]);
+		CharGrp,Isom:=AbelianGroup(SubH[j]);
+		for i in [2..#SymbolGPV] do
+			if IsConjugate(PermG,Inverse(HQuo)(SubH[j]),SymbolGPV[i][5]) then
+				TempSymbol:=<>;
+				Append(~TempSymbol,SymbolGPV[i][1]);
+				Bool,g:=IsConjugate(PermG,SymbolGPV[i][5],Inverse(HQuo)(SubH[j]));
+				InvSpace:=<>;
+				for k in [1..#SymbolGPV[i][9]] do
+					Append(~InvSpace,<SymbolGPV[i][9][k][1]^Transpose(PG2GHom(g^(-1))),SymbolGPV[i][9][k][2],SymbolGPV[i][9][k][3]>);
+				end for;
+				ActionGrp:=SymbolGPV[i][7]^PG2GHom(g);
+				Append(~TempSymbol,GroupName(SubH[j]));
+				Append(~TempSymbol,SubH[j]);
+				Append(~TempSymbol,HQuo);
+				Append(~TempSymbol,SymbolGPV[i][5]^g);
+				Append(~TempSymbol,SubH!j);
+				Append(~TempSymbol,<SymbolGPV[i][6],GroupName(G2PGHom(SymbolGPV[i][7])/G2PGHom(ScalarGrp))>);
+				Append(~TempSymbol,HQuo(G2PGHom(SymbolGPV[i][7])^g));
+				Append(~TempSymbol,ActionGrp);
+				Append(~TempSymbol,FindActionGroup(ActionGrp,InvSpace));
+				Append(~TempSymbol,SymbolGPV[i][8]);
+				Append(~TempSymbol,InvSpace);
+				NewBeta:=[];
+				for l in [1..#SymbolGPV[i][10]] do
+					for k in [1..#C] do
+						Indicator:=1;
+						for t in [1..Ngens(SubH[j])] do
+							if C[k](SubH[j].t) ne ChangeCharForm(SymbolGPV[i][10][l],SymbolGPV[i][5])((Inverse(HQuo)(SubH[j].t))^(g^(-1))) then
+								Indicator:=0;
+								break t;
+							end if;
+						end for;
+						if Indicator eq 1 then
+							CharSeq:=[];
+							for t in [1..Ngens(CharGrp)] do
+								for e in [0..Order(CharGrp.t)-1] do
+									if C[k](Inverse(Isom)(CharGrp.t)) eq RootOfUnity(Order(CharGrp.t))^e then
+										Append(~CharSeq,e);
+									end if;
+								end for;
+							end for;
+							Append(~NewBeta,<CharSeq[s]:s in [1..#CharSeq]>);
+						end if;
+					end for;
+				end for;
+				NewBeta:=Sort(NewBeta,CompareChar);
+				NewBeta:=<NewBeta[i]:i in [1..#NewBeta]>;
+				Append(~TempSymbol,NewBeta);
+				Append(~TempSymbol,<Order(CharGrp.i):i in [1..Ngens(CharGrp)]>);
+				Append(~TempSymbol,CharGrp);
+				Append(~TempSymbol,Isom);
+				Append(~Out,TempSymbol);
+			end if;
+		end for;
+	end if;
+end for;
+return Out;
+end function;
+
+
+
+
+
+//Simplify Burnside symbols
+SimplifyBurnside:=procedure(~BurnsideSymbols,GrpQuo,G,PG2GHom)
+Out:=<>;
+NotUsed:=[i:i in [1..#BurnsideSymbols]];
+while #NotUsed ne 0 do
+	Sym:=BurnsideSymbols[NotUsed[1]];
+	Sum:=Sym[1];
+	Exclude(~NotUsed,NotUsed[1]);
+	for j in NotUsed do
+		#NotUsed,j;
+		if (BurnsideSymbols[j][5] eq Sym[5]) and (BurnsideSymbols[j][9] eq Sym[9]) and (BurnsideSymbols[j][11] eq Sym[11]) and CompareOrderedTuple(BurnsideSymbols[j][13],Sym[13]) then
+			Sum:=Sum + BurnsideSymbols[j][1];
+			Exclude(~NotUsed,j);
+		end if;
+	end for;
+	if Sum ne 0 then
+		if Ngens(Sym[15]) ne 0 then
+			Append(~Out,<Sum,Sym[2],Sym[3],Sym[4],Sym[5],Sym[6],Sym[7],Sym[8],Sym[9],Sym[10],Sym[11],Sym[12],Sym[13],Sym[14],Sym[15],Sym[16],[PG2GHom(Inverse(GrpQuo)(Inverse(Sym[16])(Sym[15].i))):i in [1..Ngens(Sym[15])]]>);
+		else
+			Append(~Out,<Sum,Sym[2],Sym[3],Sym[4],Sym[5],Sym[6],Sym[7],Sym[8],Sym[9],Sym[10],Sym[11],Sym[12],Sym[13],Sym[14],Sym[15],Sym[16],[Identity(G)]>);
+		end if;
+	end if;
+end while;
+BurnsideSymbols:=Out;
+end procedure;
+
+
+FindEquivSymbol:=function(BurnsideSymbols,H)
+Out:=<>;
+for i in [2..#BurnsideSymbols] do
+	TempOut:=[];
+	NormalGrp:=Normalizer(H,BurnsideSymbols[i][3]);
+	Isom:=BurnsideSymbols[i][16];
+	CharGrp:=BurnsideSymbols[i][15];
+	Beta:=BurnsideSymbols[i][13];
+	for g in NormalGrp do
+		TempBeta:=[];
+		for j in [1..#Beta] do
+			TempChar:=<>;
+			for k in [1..Ngens(BurnsideSymbols[i][15])] do
+				NewGen:=Isom(Inverse(Isom)(CharGrp.k)^g);
+				Seq:=Eltseq(NewGen);
+				Eigenvalue:=1;
+				for t in [1..#Seq] do
+					Eigenvalue:=Eigenvalue*RootOfUnity(Order(CharGrp.t))^(Seq[t]*Beta[j][t]);
+				end for;
+				for t in [0..Order(CharGrp.k)-1] do
+					if Eigenvalue eq RootOfUnity(Order(CharGrp.k))^t then
+						Append(~TempChar,t);
+					end if;
+				end for;
+			end for;
+			Append(~TempBeta,TempChar);
+			
+		end for;
+		TempBeta:=Sort(TempBeta,CompareChar);
+		TempBeta:=<TempBeta[i]:i in [1..#TempBeta]>;
+		Include(~TempOut,TempBeta);
+	end for;
+	Append(~Out,<i,<TempOut>>);
+end for;
+return Out;
+end function;
+
+
+//Compute symbol in Burnside group
+ComputeBurnsideSymbol:=function(G,F,FScale)
+time PG2GHom,G2PGHom,FPG2GHom,G2FPGHom,PG2FPGHom,FPG2PGHom,PermG,FPG,H,LH,GrpQuo,AllGrp,ChainNode,ChainClass,ScalarGrp:=ConstructChain(G,F,FScale);
+AllSymbolNGLambda:=<>;
+for i in [1..#ChainClass] do
+	i,#ChainClass;
+	Append(~AllSymbolNGLambda,<ChainClass[i],ComputeSymbolNGLambda(ChainClass[i],G,PermG,H,GrpQuo,PG2GHom,ScalarGrp,FScale,F)>);
+end for;
+SymbolGPV:=ComputeSymbolGPV(ChainClass,H,LH,GrpQuo,AllGrp,ChainNode,G,PermG,AllSymbolNGLambda,G2PGHom,PG2GHom,ScalarGrp);
+
+//Put all symbol in a uniform form
+UniformSymbols(~SymbolGPV,G,PermG,G2PGHom,PG2GHom,ScalarGrp);
+
+TempBurnsideSymbols:=ApplyEta(SymbolGPV,PermG,H,LH,GrpQuo,G2PGHom,PG2GHom,ScalarGrp);
+SimplifyBurnside(~TempBurnsideSymbols,GrpQuo,G,PG2GHom);
+
+BurnsideSymbols:=TempBurnsideSymbols;
+
+//ClusterBurnside(~TempBurnsideSymbols);
+//BurnsideSymbols:=<>;
+//Append(~BurnsideSymbols,TempBurnsideSymbols[1][1]);
+//for i in [2..#TempBurnsideSymbols] do
+//	Remain:=KillByBurn(TempBurnsideSymbols[i]);
+//	BurnsideSymbols:=BurnsideSymbols cat Remain;
+//end for;
+
+"BurnsideSymbols";
+
+for i in [1..#BurnsideSymbols] do
+	BurnsideSymbols[i][1],BurnsideSymbols[i][6],BurnsideSymbols[i][2],BurnsideSymbols[i][7][2],BurnsideSymbols[i][11][1],BurnsideSymbols[i][13];
+end for;
+
+"Equivalent Symbols under conjugation by normalizer";
+
+EquivSymbols:=FindEquivSymbol(BurnsideSymbols,H);
+for i in [1..#EquivSymbols] do
+	EquivSymbols[i];
+end for;
+return BurnsideSymbols,PG2GHom,G2PGHom,PermG,H,LH,GrpQuo,AllGrp,ChainNode,ChainClass,ScalarGrp,AllSymbolNGLambda;
+end function;
