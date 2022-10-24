@@ -16,7 +16,7 @@ author_profile: true
 ### Magma code:
 
 <ul>
-<li><a href="http://kaiqi-yang1994.github.io/files/DCPonProj/DCPonProj.txt">Computes equivariant birational class in $mathrm{Burn}_n(G)$ by De Concini-Procesi</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/files/DCPonProj/DCPonProj.txt">Computes equivariant birational class in $\mathrm{Burn}_n(G)$ by De Concini-Procesi</a></li>
 </ul>
 
 
