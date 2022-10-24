@@ -41,6 +41,6 @@ BurnsideSymbols,PG2GHom,G2PGHom,PermG,H,LH,GrpQuo,AllGrp,ChainNode,ChainClass,Sc
 
 * The result is as follows,
 
-![My Image](http://kaiqi-yang1994.github.io/files/DCPonProj/DCPexample2.png)
+![My Image](http://kaiqi-yang1994.github.io/files/DCPonProj/DCPexample2.jpg)
 
 
