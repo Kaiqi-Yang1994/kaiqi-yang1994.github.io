@@ -6,6 +6,8 @@ author_profile: true
 
 We compute $\mathcal{BC}_n(G)$ by two methods and take symmetric group $G=\mathcal{S}_5$ as an example.
 
+## Remark: the group $G$ is of type GrpPerm.
+
 First, we compute $\mathcal{BC}_n(G)$ by definition:
 
 * Open the magma code that computes group $\mathcal{BC}_n(G)$ by definition, copy all lines of code and paste in Magma.
@@ -61,4 +63,7 @@ We see result:<br>
 ![My Image](http://kaiqi-yang1994.github.io/files/bcn/BnGexamplestep4.jpg)
 
 * These two methods give the same result.
+
+
+
 
