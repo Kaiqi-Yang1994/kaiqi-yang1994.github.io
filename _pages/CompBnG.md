@@ -19,7 +19,7 @@ author_profile: true
 <ul>
 <li><a href="http://kaiqi-yang1994.github.io/files/bcn/BrutalBC.txt">Computes group $\mathcal{BC}_n(G)$ by definition</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/files/bcn/ComputationBNonAb.txt">Computes group $\mathcal{BC}_n(G)$ by decomposition</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/CompBnG/exmaples">Examples</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/CompBnG/exmaples">Examples</a></li>
 </ul>
 
 
