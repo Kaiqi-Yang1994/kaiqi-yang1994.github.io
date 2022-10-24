@@ -1,4 +1,3 @@
-
 ---
 permalink: /projects/CompBnG
 title: "Projects"
@@ -6,23 +5,9 @@ author_profile: true
 redirect_from: 
   - /projects/CompBnG.html
 ---
-<HTML>
-<HEAD>
-
-<style type="text/css">
-A:link {TEXT-DECORATION:none; }
-a:visited {TEXT-DECORATION:none; }
-a:active { text-decoration:none; }
-</STYLE>
-
-<body text="#000000" LINK="#0000F0" VLINK="#000090">
-
-<style> A:link {TEXT-DECORATION:"none"}
-        A:visited {TEXT-DECORATION:"none"}
-</STYLE>
 
 <TITLE>Computation of combinatorial Burnside group and equivariant symbol group</TITLE>
-</HEAD>
+
 
 
 
