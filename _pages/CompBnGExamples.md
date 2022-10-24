@@ -11,11 +11,12 @@ We compute $\mathcal{BC}_n(G)$ by two methods and take symmetric group $G=\mathc
 * Open the magma code that computes group $\mathcal{BC}_n(G)$ by definition, copy all lines of code and paste in Magma.
 * Let $G=\mathcal{S}_5, n=2$ and compute $\mathcal{BC}_n(G)$:
 
-
+---
 <pre>
 G:=SymmetricGroup(5);
 BC,FullLattice,QuoMap,Generators,IndSet2,RelationBase:=BrutalBC(G,2);
 </pre>
+---
 
 ![My Image](http://kaiqi-yang1994.github.io/files/bcn/BnGexamplestep1.png)
 
@@ -34,6 +35,7 @@ BC,FullLattice,QuoMap,Generators,IndSet2,RelationBase:=BrutalBC(G,2);
 
 * Type the following code:<br>
 
+---
 <pre>
 for i in [1..#Out] do
 	if Type(Out[i][1]) eq RngIntElt then
@@ -52,6 +54,7 @@ for i in [1..#Out] do
 end for;
 SequenceToMultiset(S);
 </pre>
+---
 
 We see result:<br>
 
