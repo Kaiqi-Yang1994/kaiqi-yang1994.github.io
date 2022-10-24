@@ -32,3 +32,15 @@ We give an example of $G=A_6$ acting on $\mathbb{P}^2$.
 * The group $G=A_6$ has representation as follows:
 
 ![My Image](http://kaiqi-yang1994.github.io/files/DCPonProj/DCPexample1.png)
+
+* Use function ComputeBurnsideSymbol(G,n)
+
+<pre>
+BurnsideSymbols,PG2GHom,G2PGHom,PermG,H,LH,GrpQuo,AllGrp,ChainNode,ChainClass,ScalarGrp,AllSymbolNGLambda:=ComputeBurnsideSymbol(G,F,FScale);
+</pre>
+
+* The result is as follows,
+
+![My Image](http://kaiqi-yang1994.github.io/files/DCPonProj/DCPexample2.png)
+
+
