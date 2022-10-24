@@ -15,7 +15,7 @@ Potentially stably rational del Pezzo surface</a>
 </p>
 <p>
 [2]<a href = "https://kaiqi-yang1994.github.io/projects/CompBnG">
-Computation of </a>$\mathcal{B}_n(G)$
+Computation of combinatorial Burnside group $\mathcal{BC}_n(G)$ and equivariant symbol group</a>$\mathcal{B}_n(G)$
 </p>
 
 
