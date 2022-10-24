@@ -6,8 +6,6 @@ author_profile: true
 
 We give an example of $G=A_6$ acting on $\mathbb{P}^2$.
 
-The representation is given as follows:
-
 * Copy all lines in magma code.
 * Input the following code:
   <pre>
@@ -31,3 +29,6 @@ The representation is given as follows:
   [1/sq5,1/sq5,1/sq5, 2/sq5,s/sq5,t/sq5, 2/sq5,t/sq5,s/sq5],
   [1/sq5,L1/sq5,L1/sq5, 2*L2/sq5,s/sq5,t/sq5, 2*L2/sq5,t/sq5,s/sq5]>;
   </pre>
+* The group $G=A_6$ has representation as follows:
+
+![My Image](http://kaiqi-yang1994.github.io/files/DCPonProj/DCPexample1.png)
