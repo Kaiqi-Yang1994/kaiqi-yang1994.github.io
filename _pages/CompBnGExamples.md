@@ -46,7 +46,8 @@ for i in [1..#Out] do
 end for;
 SequenceToMultiset(S);
 ~~~
-We see result:
+We see result:\
+
 ![My Image](http://kaiqi-yang1994.github.io/files/bcn/BnGexamplestep4.jpg)
 
 * These two methods give the same result.
