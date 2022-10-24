@@ -4,16 +4,13 @@ title: "Projects"
 author_profile: true
 ---
 
-### Computation of combinatorial Burnside group and equivariant symbol group
-
+# Computation of combinatorial Burnside group and equivariant symbol group
 
 # This page contains magma code and examples for  
 <br>
 # <a href="http://kaiqi-yang1994.github.io/files/bcn/bcn.pdf">Combinatorial Burnside groups</a>,(With Yuri Tschinkel and Zhijia Zhang)
 
-
 <br>
-
 
 ## Magma code
 <ul>
