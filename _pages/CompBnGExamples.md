@@ -6,7 +6,7 @@ author_profile: true
 
 We compute $\mathcal{BC}_n(G)$ by two methods and take symmetric group $G=\mathcal{S}_5$ as an example.
 
-1. Compute $\mathcal{BC}_n(G)$ by definition:
+First, we compute $\mathcal{BC}_n(G)$ by definition:
 
 * Open the magma code that computes group $\mathcal{BC}_n(G)$ by definition, copy all lines of code and paste in Magma.
 * Let $G=\mathcal{S}_5, n=2$ and compute $\mathcal{BC}_n(G)$:
@@ -25,7 +25,7 @@ BC,FullLattice,QuoMap,Generators,IndSet2,RelationBase:=BrutalBC(G,2);
 ![My Image](http://kaiqi-yang1994.github.io/files/bcn/BnGexamplestep2.png)
 
 
-2. Compute $\mathcal{BC}_n(G)$ by decomposition:
+Then we compute $\mathcal{BC}_n(G)$ by decomposition:
 
 * Open the magma code that computes group $\mathcal{BC}_n(G)$ by decomposition, copy all lines of code and paste in Magma.
 
