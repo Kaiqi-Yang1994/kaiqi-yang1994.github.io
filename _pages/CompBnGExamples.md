@@ -13,6 +13,7 @@ Compute $\mathcal{BC}_n(G)$ by definition:
 <li>Open the magma code that computes group $\mathcal{BC}_n(G)$ by definition.
 <li>Copy all lines of code and paste in Magma.
 <li>Let $G=\mathcal{S}_5.n=2$ and compute $\mathcal{BC}_n(G)$:
+  
 ```
 G:=SymmetricGroup(5);
 BC,FullLattice,QuoMap,Generators,IndSet2,RelationBase:=BrutalBC(G,2);
