@@ -19,7 +19,7 @@ Computation of combinatorial Burnside group and equivariant symbol group</a>
 </p>
 <p>
 [3]<a href = "https://kaiqi-yang1994.github.io/projects/DPonProj">
-Computation of equivariant birational symbols in equivariant Burnside group $\rm{Burn}_n(G)$</a>
+Computation of equivariant birational symbols in equivariant Burnside group</a>
 </p>
 
 	
