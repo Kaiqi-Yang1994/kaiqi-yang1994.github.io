@@ -1,4 +1,11 @@
 
+---
+permalink: /projects/CompBnG
+title: "Projects"
+author_profile: true
+redirect_from: 
+  - /projects/CompBnG.html
+---
 <HTML>
 <HEAD>
 
@@ -14,14 +21,11 @@ a:active { text-decoration:none; }
         A:visited {TEXT-DECORATION:"none"}
 </STYLE>
 
-<TITLE>H1 programs</TITLE>
+<TITLE>Computation of combinatorial Burnside group and equivariant symbol group</TITLE>
 </HEAD>
 
 
 
-<h1>Galois cohomology of del Pezzo surfaces</h1>
-
-<br>
 
 <font size="5">
 
