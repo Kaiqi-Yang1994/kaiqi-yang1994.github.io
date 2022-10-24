@@ -14,7 +14,7 @@ redirect_from:
 Potentially stably rational del Pezzo surface</a>
 </p>
 <p>
-[2]<a href = "https://kaiqi-yang1994.github.io/projects/CompBnG.html">
+[2]<a href = "https://kaiqi-yang1994.github.io/projects/CompBnG">
 Computation of combinatorial Burnside group and equivariant symbol group</a>
 </p>
 
