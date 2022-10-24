@@ -2,8 +2,6 @@
 permalink: /projects/CompBnG
 title: "Projects"
 author_profile: true
-redirect_from: 
-  - /projects/CompBnG.html
 ---
 
 ### Computation of combinatorial Burnside group and equivariant symbol group
@@ -35,7 +33,7 @@ and <a href="http://www.cims.nyu.edu/~tschinke/papers/yuri/18h1dp/magma/d5-conic
 </font>
 
 </body>
-</html>
+
 
 
 
