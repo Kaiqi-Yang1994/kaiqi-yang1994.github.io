@@ -12,10 +12,12 @@ Compute $\mathcal{BC}_n(G)$ by definition:
 
 * Open the magma code that computes group $\mathcal{BC}_n(G)$ by definition, copy all lines of code and paste in Magma.
 * Let $G=\mathcal{S}_5, n=2$ and compute $\mathcal{BC}_n(G)$:
+
 ```
 G:=SymmetricGroup(5);
 BC,FullLattice,QuoMap,Generators,IndSet2,RelationBase:=BrutalBC(G,2);
 ```
+
 ![My Image](http://kaiqi-yang1994.github.io/files/bcn/BnGexamplestep1.png)
 
 * The result is $\mathcal{BC}_2(G)=(\mathbb{Z}/2)^6 \times \mathbb{Z}/4$.
@@ -25,6 +27,7 @@ BC,FullLattice,QuoMap,Generators,IndSet2,RelationBase:=BrutalBC(G,2);
 * Open the magma code that computes group $\mathcal{BC}_n(G)$ by decomposition, copy all lines of code and paste in Magma.
 
 * Compute $\mathcal{BC}_n(G)$:
+
 ![My Image](http://kaiqi-yang1994.github.io/files/bcn/BnGexamplestep3.png)
 
 * Type the following code:<br>
