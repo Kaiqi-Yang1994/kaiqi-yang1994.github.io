@@ -1,5 +1,5 @@
 ---
-permalink: /projects/DPonProj
+permalink: /projects/DCPonProj
 title: "Projects"
 author_profile: true
 ---
@@ -13,6 +13,10 @@ author_profile: true
 <br>
 
 
-### Magma code
+### Magma code:
+
+<ul>
+<li><a href="http://kaiqi-yang1994.github.io/files/DCPonProj/DCPonProj.txt">Computes group $rm{Burn}_n(G)$ by De Concini-Procesi</a></li>
+</ul>
 
 
