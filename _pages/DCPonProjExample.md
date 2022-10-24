@@ -1,5 +1,5 @@
 ---
-permalink: /projects/DCPonProj/example
+permalink: /projects/DCPonProj/examples
 title: "Projects"
 author_profile: true
 ---
