@@ -1,0 +1,224 @@
+R<x>:=PolynomialRing(Rationals());
+f1:=x^2+x+1;
+K<rho>:=NumberField(f1);
+R<y>:=PolynomialRing(K);
+f2:=y^2+1;
+F<tau>:=ext<K|f2>;
+//F.1=tau=(-1)^(1/2),F.2=y=\rho=e^(2\pi i/3)
+G:=MatrixGroup<5,F|
+[0,1,0,0,0, 0,0,1,0,0, 1,0,0,0,0, 0,0,0,F.2,0, 0,0,0,0,F.2^2],
+[1,0,0,0,0, 0,0,1,0,0, 0,1,0,0,0, 0,0,0,0,-1, 0,0,0,1,0]>;
+
+N:=MatrixGroup<5,F|
+[F.2,0,0,0,0, 0,F.2,0,0,0, 0,0,F.2,0,0, 0,0,0,F.2,0, 0,0,0,0,F.2]>;
+
+GroupS4:=MatrixGroup<3,F|
+[-1,0,0, 1,1,0, 0,0,1],
+[0,1,0, 0,0,1, -1,-1,-1]>;
+
+H:=G/(G meet N);
+
+LG:=SubgroupLattice(G);
+ListG:=AllSubgroups(G);
+
+LH:=SubgroupLattice(H);
+
+CScal:={};
+
+for i in [1..#LG] do
+	if N subset LG[i] then
+		Include(~CScal,i);
+	end if;
+end for;
+
+
+InvariantSpace:=function(G)
+NGenerators:=#Generators(G);
+Ind:=<>;
+for i in [1..NGenerators] do
+	Append(~Ind,{@j:j in [1..#Eigenvalues(G.i)]@});
+end for;
+Ind:=CartesianProduct(Ind);
+InvSpa:=<>;
+for i in Ind do
+	Spa:=&meet [Eigenspace(Transpose(G.j),SetToIndexedSet(Eigenvalues(G.j))[i[j]][1]):j in [1..NGenerators]];
+	if Dimension(Spa) gt 0 then
+		Eigen:=<SetToIndexedSet(Eigenvalues(G.j))[i[j]][1]:j in [1..NGenerators]>;
+		Append(~InvSpa,<Spa,Eigen>);
+	end if;
+end for;
+return InvSpa;
+end function;
+
+//Transpose Group
+TransGroup:=function(G)
+local R,d;
+R:=CoefficientRing(G);
+d:=Degree(G);
+H:=MatrixGroup<d,R|{Transpose(G.k):k in [1..#Generators(G)]}>;
+return H;
+end function;
+
+
+InvUnderAction:=function(G,V)
+B:=Basis(V);
+O:=SetToIndexedSet(Orbit(TransGroup(G),B));
+Want:=<>;
+IndSet:={i:i in [1..#O]};
+Ind:=1;
+while #IndSet ne 0 do
+	Append(~Want,O[Ind]);
+	Exclude(~IndSet,Ind);
+	for j in IndSet do
+		if VectorSpaceWithBasis(O[Ind]) eq VectorSpaceWithBasis(O[j]) then
+			Exclude(~IndSet,j);
+		end if;
+	end for;
+	if #IndSet ne 0 then
+		Ind:=Min(IndSet);
+	else
+		break;
+	end if;
+end while;
+return Want;
+end function;
+
+FindStab:=function(G,V)
+B:=Basis(V);
+Generator:=[];
+Delete:=[];
+for g in G do
+	if g notin Delete then
+		if {#InvUnderAction(sub<G|g>,VectorSpaceWithBasis([B[i]])) eq 1:i in [1..#B]} eq {true} then
+			EiV:=[];
+			for k in [1..#B] do
+				Ind:=1;
+				while B[k][Ind] eq 0 do
+					Ind:=Ind+1;
+				end while;
+				Include(~EiV,(B[k]^Transpose(g))[Ind]/B[k][Ind]);
+			end for;
+			if #EiV eq 1 then
+				Include(~Generator,g);
+				for i in [1..Order(g)] do	
+					Include(~Delete,g^i);
+				end for;
+			else
+				Include(~Delete,g);
+			end if;
+		else
+			Include(~Delete,g);
+		end if;
+	end if;
+	#Delete;
+end for;
+return sub<G|Generator>;
+end function;
+
+FindStabLoose:=function(G,V)
+B:=Basis(V);
+Generator:=[];
+Delete:=[];
+for g in G do
+	if g notin Delete then
+		if #InvUnderAction(sub<G|g>,VectorSpaceWithBasis(B)) eq 1 then
+			EiV:=[];
+			for k in [1..#B] do
+				Ind:=1;
+				while B[k][Ind] eq 0 do
+					Ind:=Ind+1;
+				end while;
+				Include(~EiV,(B[k]^Transpose(g))[Ind]/B[k][Ind]);
+			end for;
+			if #EiV eq 1 then
+				Include(~Generator,g);
+				for i in [1..Order(g)] do	
+					Include(~Delete,g^i);
+				end for;
+			else
+				Include(~Delete,g);
+			end if;
+		else
+			Include(~Delete,g);
+		end if;
+	end if;
+	#Delete;
+end for;
+return sub<G|Generator>;
+end function;
+
+CheckContain:=function(v,B)
+for i in [1..#B] do
+	if VectorSpaceWithBasis(v) subset VectorSpaceWithBasis(B[i]) then
+		return true;
+	end if;
+end for;
+return false;
+end function;
+
+CheckMulti:=function(S)
+IndSet:={i:i in [1..#S]};
+Output:=<>;
+while IsEmpty(IndSet) eq false do
+	Ind:=Min(IndSet);
+	Exclude(~IndSet,Ind);
+	Count:=1;
+	for i in IndSet do
+		if VectorSpaceWithBasis(S[i][3]) eq VectorSpaceWithBasis(S[Ind][3]) then
+			Count:=Count+1;
+			Exclude(~IndSet,i);
+		end if;
+	end for;
+	Append(~Output,<S[Ind][2],S[Ind][3],Count>);
+end while;
+return Output;
+end function;
+
+CheckMultiNum:=function(S)
+IndSet:={i:i in [1..#S]};
+Output:=<>;
+while IsEmpty(IndSet) eq false do
+	Ind:=Min(IndSet);
+	Exclude(~IndSet,Ind);
+	Count:=1;
+	for i in IndSet do
+		if VectorSpaceWithBasis(S[i][3]) eq VectorSpaceWithBasis(S[Ind][3]) then
+			Count:=Count+1;
+			Exclude(~IndSet,i);
+		end if;
+	end for;
+	Append(~Output,<S[Ind][2],S[Ind][3],Count>);
+end while;
+IndSet:={i:i in [1..#Output]};
+Out:=<>;
+while IsEmpty(IndSet) eq false do
+	Ind:=Min(IndSet);
+	Exclude(~IndSet,Ind);
+	Count:=1;
+	for i in IndSet do
+		if Output[i][1] eq Output[Ind][1] and Output[i][3] eq Output[Ind][3] then
+			Count:=Count+1;
+			Exclude(~IndSet,i);
+		end if;
+	end for;
+	Append(~Out,<Count,Output[Ind][1],Output[Ind][3]>);
+end while;
+return Out;
+end function;
+
+DecompChar:=function(G)
+M:=GModule(G);
+Char:=Character(M);
+Table:=CharacterTable(G);
+Decomp:=<>;
+for i in [1..#Table] do
+	if InnerProduct(Table[i],Char) ne 0 then
+		Append(~Decomp,<Table[i],InnerProduct(Table[i],Char)>);
+	end if;
+end for;
+return Decomp;
+end function;
+
+
+
+

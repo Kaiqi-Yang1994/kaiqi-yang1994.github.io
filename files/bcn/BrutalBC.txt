@@ -1,0 +1,540 @@
+//return 1 means char1 is larger, return -1 means char2 is larger
+CompareChar:=function(char1,char2)
+counter:=1;
+while counter le #char1 do
+	if char1[counter] lt char2[counter] then
+		return -1;
+	elif char1[counter] gt char2[counter] then
+		return 1;
+	else
+		counter:=counter+1;
+	end if;
+end while;
+return 0;
+end function;
+
+
+
+
+
+CheckIndOrd:=function(IndTuple)
+if #IndTuple ge 2 then
+	for i in [1..#IndTuple-1] do
+		if IndTuple[i] gt IndTuple[i+1] then
+			return false;
+		end if;
+	end for;
+else
+	return true;
+end if;
+return true;
+end function;
+
+
+
+CreateCharInd:=function(Char,n)
+Out:=<>;
+for i in [1..n] do
+	IndSet:=CartesianProduct(<[1..#Char]:j in [1..i]>);
+	for j in IndSet do
+		if CheckIndOrd(j) then
+			Append(~Out,j);
+		end if;
+	end for;
+end for;
+return Out;
+end function;
+
+
+
+
+CheckGenFullChar:=function(Generators)
+Out:=<>;
+for i in [1..#Generators] do
+	gen:=Generators[i];
+	ng:=#gen[7];
+	M:=RSpace(IntegerRing(),ng);
+	BM:=Basis(M);
+	B:=[BM[i]*gen[7][i]:i in [1..ng]];
+	CharLattice:=quo<M|RSpaceWithBasis(B)>;
+	BW:=[];
+	for i in [1..#gen[6]] do
+		V:=M!0;
+		for j in [1..ng] do
+			V:=V+BM[j]*gen[6][i][j];
+		end for;
+		Include(~BW,V);
+	end for;
+	CharWeight:=sub<CharLattice|BW>;
+	if #quo<CharLattice|CharWeight> eq 1 then
+		if BW[1] ne CharLattice!0 then
+			Append(~Out,Generators[i]);
+		end if;
+	end if;
+end for;
+return Out;
+end function;
+
+
+
+
+ConstructIndRange:=function(Generators)
+Out2:=<>;
+Counter:=1;
+G1:=Generators[1][5];
+G2:=Generators[1][4];
+for i in [1..#Generators] do
+	if Generators[i][5] ne G1 then
+		Append(~Out2,<GroupName(G1),GroupName(G2),Counter,i-1,G1,G2>);
+		G1:=Generators[i][5];
+		G2:=Generators[i][4];
+		Counter:=i;
+	end if;
+	if Generators[i][4] ne G2 then
+		Append(~Out2,<GroupName(G1),GroupName(G2),Counter,i-1,G1,G2>);
+		G1:=Generators[i][5];
+		G2:=Generators[i][4];
+		Counter:=i;
+	end if;
+end for;
+Append(~Out2,<GroupName(G1),GroupName(G2),Counter,#Generators,G1,G2>);
+return Out2;
+end function;
+
+
+
+
+CheckZeroSum:=function(ind,gen)
+Indicator:=0;
+for i in [1..#gen[7]] do
+	if (gen[6][ind[1]][i]+gen[6][ind[2]][i]) mod gen[7][i] ne 0 then
+		Indicator:=1;
+	end if;
+end for;
+if Indicator eq 1 then
+	return false;
+else
+	return true;
+end if;
+end function;
+
+
+
+
+B1Relation:=function(Generators)
+Out:=<>;
+for i in [1..#Generators] do
+	if #Generators[i][6] gt 1 then
+		IndSet:=<>;
+		for j in [1..#Generators[i][6]-1] do
+			for l in [j+1..#Generators[i][6]] do
+				Append(~IndSet,[j,l]);
+			end for;
+		end for;
+		for k in [1..#IndSet] do
+			if CheckZeroSum(IndSet[k],Generators[i]) eq true then
+				Append(~Out,i);
+				break k;
+			end if;
+		end for;
+	end if;
+end for;
+return Out;
+end function;
+
+
+
+
+WeightDiff:=function(gen,Ind1,Ind2)
+NewWeight:=<>;
+for i in [1..#gen[6]] do
+	if i eq Ind1 then
+		w:=<>;
+		for j in [1..#gen[6][Ind1]] do
+			Append(~w,(gen[6][Ind1][j]-gen[6][Ind2][j]) mod gen[7][j]);
+		end for;
+		Append(~NewWeight,w);
+	else
+		Append(~NewWeight,gen[6][i]);
+	end if;
+end for;
+return <gen[1],gen[2],gen[3],gen[4],gen[5],NewWeight,gen[7],gen[8],gen[9]>;
+end function;
+
+
+
+
+CheckInd:=function(gen,IndSet2,Generators);
+for i in [1..#IndSet2] do
+	if gen[4] eq IndSet2[i][6] then
+		if gen[5] eq IndSet2[i][5] then
+			for j in [IndSet2[i][3]..IndSet2[i][4]] do
+				if #gen[6] eq #Generators[j][6] then
+					if gen[6] eq Generators[j][6] then
+						return j;
+					end if;
+				end if;
+			end for;
+		end if;
+	end if;
+end for;
+end function;
+
+
+TupToSeq:=function(Tup)
+Out:=[];
+for i in [1..#Tup] do
+	Append(~Out,Tup[i]);
+end for;
+return Out;
+end function;
+
+
+
+CheckVanish:=function(gen,Ind1,Ind2)
+w:=<>;
+for j in [1..#gen[6][Ind1]] do
+	Append(~w,(gen[6][Ind1][j]-gen[6][Ind2][j]) mod gen[7][j]);
+end for;
+ng:=#gen[7];
+M:=RSpace(IntegerRing(),ng);
+BM:=Basis(M);
+B:=[BM[i]*gen[7][i]:i in [1..ng]];
+CharLattice:=quo<M|RSpaceWithBasis(B)>;
+Bchar:=B;
+Append(~Bchar,CharLattice!TupToSeq(w));
+QuoLattice,QM:=quo<CharLattice|sub<CharLattice|Bchar>>;
+if #QuoLattice eq 1 then
+	return true;
+else
+	for k in [1..#gen[6]] do
+		if k ne Ind1 then 
+			if QM(CharLattice!TupToSeq(gen[6][k])) eq QuoLattice!0 then
+				return true;
+			end if;
+		end if;
+	end for;
+	return false;
+end if;
+end function;
+
+
+
+ModChar:=function(gen,Ind1,Ind2)
+Out:=<>;
+w:=[];
+for j in [1..#gen[6][Ind1]] do
+	Append(~w,(gen[6][Ind1][j]-gen[6][Ind2][j]) mod gen[7][j]);
+end for;
+ng:=#gen[7];
+M:=RSpace(IntegerRing(),ng);
+BM:=Basis(M);
+B:=[BM[i]*gen[7][i]:i in [1..ng]];
+CharLattice:=quo<M|RSpaceWithBasis(B)>;
+Bchar:=B;
+Append(~Bchar,CharLattice!w);
+QuoLattice,QM:=quo<CharLattice|sub<CharLattice|Bchar>>;
+for i in [1..#gen[6]] do
+	if i ne Ind1 then
+		c:=[];
+		for j in [1..#gen[7]] do
+			Append(~c,gen[6][i][j]);
+		end for;
+		Modchar:=<>;
+		for j in [1..#Eltseq(QM(CharLattice!c))] do
+			Append(~Modchar,Eltseq(QM(CharLattice!c))[j]);
+		end for;
+		Append(~Out,Modchar);
+	end if;
+end for;
+return Out;
+end function;
+
+
+
+ChangeWeightOrder:=function(gen,CompareChar)
+if #gen[6] ge 2 then
+	w:=[];
+	for i in [1..#gen[6]] do
+		Append(~w,gen[6][i]);
+	end for;
+	sw:=Sort(w,CompareChar);
+	SWeight:=<>;
+	for i in [1..#gen[6]] do
+		Append(~SWeight,sw[i]);
+	end for;
+	return <gen[1],gen[2],gen[3],gen[4],gen[5],SWeight,gen[7],gen[8]>;
+else
+	return gen;
+end if;
+end function;
+
+
+
+
+ConjugateGen:=function(gen,Symbols,G)
+Out:=<>;
+N:=Normalizer(G,gen[4]);
+for i in [1..#Symbols] do
+	if Symbols[i][4] eq gen[4] then
+		if IsConjugate(N,gen[5],Symbols[i][5]) then
+			TF,Elt:=IsConjugate(N,Symbols[i][5],gen[5]);
+			NewY:=Symbols[i][4];
+			NewH:=Symbols[i][5];
+		end if;
+	end if;
+end for;
+Grp,Iso:=AbelianGroup(NewH);
+Generate:=<Inverse(Iso)(Grp.l):l in [1..Ngens(Grp)]>;
+Ord:=<Order(Grp.l):l in [1..Ngens(Grp)]>;
+NewWeight:=<>;
+for j in [1..#gen[6]] do
+	w:=<>;
+	for k in [1..#Generate] do
+		Im:=Eltseq(gen[8](Generate[k]^Elt));
+		Sum:=0;
+		for l in [1..#Im] do
+			Sum:=Sum+Im[l]*gen[6][j][l]/gen[7][l];
+		end for;
+		Append(~w,Floor(gen[7][k]*(Sum-Floor(Sum))));
+	end for;
+	Append(~NewWeight,w);
+end for;
+Out:=<GroupName(NewH),GroupName(NewY/NewH),Grp,NewY,NewH,NewWeight,Ord,Iso,Generate>;
+Out:=ChangeWeightOrder(Out,CompareChar);
+return Out;	
+end function;
+
+
+
+
+B2Relation:=function(G,IndSet2,Symbols,Generators)
+Out:=<>;
+for i in [1..#Generators] do
+	gen:=Generators[i];
+	IndSet:=<>;
+	for j in [1..#gen[6]] do
+		for l in [j+1..#gen[6]] do
+			Append(~IndSet,[j,l]);
+		end for;
+	end for;
+	for k in [1..#IndSet] do
+		i,#Generators,IndSet[k];
+		Theta1:=<>;
+		Theta2:=<>;
+		if gen[6][IndSet[k][1]] ne gen[6][IndSet[k][2]] then
+			Sym1:=WeightDiff(gen,IndSet[k][1],IndSet[k][2]);
+			Sym2:=WeightDiff(gen,IndSet[k][2],IndSet[k][1]);
+			if CheckVanish(gen,IndSet[k][1],IndSet[k][2]) eq false then
+				DualGrp:=AbelianGroup(CyclicGroup(Lcm(TupToSeq(gen[7]))));
+				Endo:=hom<gen[3]->DualGrp|[gen[3].l->Sym1[6][IndSet[k][1]][l]*Floor(Lcm(TupToSeq(gen[7]))/Order(gen[3].l))*DualGrp.1:l in [1..#gen[7]]]>;
+				Hbar:=Kernel(gen[8]*Endo);
+				Ybar:=gen[4];
+				Betabar:=ModChar(gen,IndSet[k][1],IndSet[k][2]);
+				Sym3:=<>;
+				Grp,Iso:=AbelianGroup(Hbar);
+				Generate:=<Inverse(Iso)(Grp.l): l in [1..Ngens(Grp)]>;
+				Append(~Sym3,GroupName(Hbar));
+				Append(~Sym3,GroupName(Ybar/Hbar));
+				Append(~Sym3,Grp);
+				Append(~Sym3,Ybar);
+				Append(~Sym3,Hbar);
+				Append(~Sym3,Betabar);
+				Ord:=<Order(Sym3[3].l): l in [1..Ngens(Sym3[3])]>;
+				Append(~Sym3,Ord);
+				Append(~Sym3,Iso);
+				Append(~Sym3,Generate);
+				Sym3:=ConjugateGen(Sym3,Symbols,G);
+				Sym3:=ChangeWeightOrder(Sym3,CompareChar);
+				Append(~Theta2,CheckInd(Sym3,IndSet2,Generators));
+			end if;
+			Sym1:=ChangeWeightOrder(Sym1,CompareChar);
+			Sym2:=ChangeWeightOrder(Sym2,CompareChar);
+			Append(~Theta1,CheckInd(Sym1,IndSet2,Generators));
+			Append(~Theta1,CheckInd(Sym2,IndSet2,Generators));
+			Append(~Out,<i,Theta1,Theta2>);
+		else
+			Sym1:=WeightDiff(gen,IndSet[k][1],IndSet[k][2]);
+			if CheckVanish(gen,IndSet[k][1],IndSet[k][2]) eq false then
+				Endo:=hom<gen[3]->gen[3]|[gen[3].l->Sym1[6][IndSet[k][1]][l]*gen[3].l:l in [1..#gen[7]]]>;
+				Hbar:=Kernel(gen[8]*Endo);
+				Ybar:=gen[4];
+				Betabar:=ModChar(gen,IndSet[k][1],IndSet[k][2]);
+				Sym3:=<>;
+				Grp,Iso:=AbelianGroup(Hbar);
+				Generate:=<Inverse(Iso)(Grp.l): l in [1..Ngens(Grp)]>;
+				Append(~Sym3,GroupName(Hbar));
+				Append(~Sym3,GroupName(Ybar/Hbar));
+				Append(~Sym3,Grp);
+				Append(~Sym3,Ybar);
+				Append(~Sym3,Hbar);
+				Append(~Sym3,Betabar);
+				Ord:=<Order(Sym3[3].l): l in [1..Ngens(Sym3[3])]>;
+				Append(~Sym3,Ord);
+				Append(~Sym3,Iso);
+				Append(~Sym3,Generate);
+				Sym3:=ConjugateGen(Sym3,Symbols,G);
+				Sym3:=ChangeWeightOrder(Sym3,CompareChar);
+				Append(~Theta2,CheckInd(Sym3,IndSet2,Generators));
+			end if;
+			Append(~Out,<i,Theta1,Theta2>);
+		end if;
+	end for;
+end for;
+return Out;
+end function;
+
+ConjugacyRelation:=function(G,IndSet2,Symbols,Generators)
+Out:=[];
+for i in [1..#Generators] do
+	gen:=Generators[i];
+	N:=Normalizer(G,gen[4]);
+	for g in N do
+		for t in [1..#Symbols] do
+			if Symbols[t][4] eq gen[4] then
+				if Symbols[t][5] eq gen[5]^g then
+					NInd:=t;
+					NewY:=Symbols[NInd][4];
+					NewH:=Symbols[NInd][5];
+					Generate:=Symbols[NInd][8];
+					NewWeight:=<>;
+					for j in [1..#gen[6]] do
+						w:=<>;
+						for k in [1..#Generate] do
+							Im:=Eltseq(gen[8](Generate[k]^(g^(-1))));
+							Sum:=0;
+							for l in [1..#Im] do
+								Sum:=Sum+Im[l]*gen[6][j][l]/gen[7][l];
+							end for;
+							Append(~w,Floor(gen[7][k]*(Sum-Floor(Sum))));
+						end for;
+						Append(~NewWeight,w);
+					end for;
+					GenUnderConjugate:=<GroupName(NewH),GroupName(NewY/NewH),Symbols[NInd][3],NewY,NewH,NewWeight,Symbols[NInd][6],Symbols[NInd][7],Generate>;
+					GenUnderConjugate:=ChangeWeightOrder(GenUnderConjugate,CompareChar);
+					Ind:=CheckInd(GenUnderConjugate,IndSet2,Generators);
+					if Ind gt i then
+						Include(~Out,[i,Ind]);
+					elif Ind lt i then
+						Include(~Out,[Ind,i]);
+					end if;
+				end if;
+			end if;
+		end for;
+	end for;
+end for;
+return Out;
+end function;
+
+
+
+
+CheckIn:=function(SymConj2,sym,G)
+N:=Normalizer(G,sym[2]);
+for i in [1..#SymConj2] do
+	if SymConj2[i][2] eq sym[2] then
+		if IsConjugate(N,SymConj2[i][1],sym[1]) then
+			return true;
+		end if;
+	end if;
+end for;
+return false;
+end function;
+
+BrutalBC:=function(G,n)
+Symbols:=<>;
+TempSym:=<>;
+List:=SubgroupLattice(G);
+AllSub:=AllSubgroups(G);
+for i in [2..#AllSub] do
+	if IsAbelian(AllSub[i]) then
+		Cen:=Centralizer(G,AllSub[i]);
+		CenSub:=AllSubgroups(Cen);
+		for j in [1..#CenSub] do
+			if AllSub[i] subset CenSub[j] then
+				Append(~TempSym,<AllSub[i],CenSub[j]>);
+			end if;
+		end for;
+	end if;
+end for;
+SymConj1:=<>;
+SymConj2:=<>;
+for i in [1..#TempSym] do
+	for j in [1..#List] do
+		if IsConjugate(G,TempSym[i][2],List[j]) then
+			Ind:=j;
+			TF,Elt:=IsConjugate(G,TempSym[i][2],List[j]);
+		end if;
+	end for;
+	Append(~SymConj1,<TempSym[i][1]^Elt,List[Ind]>);
+end for;
+
+Append(~SymConj2,SymConj1[1]);
+
+Counter:=1;
+while Counter le #SymConj1 do
+	if CheckIn(SymConj2,SymConj1[Counter],G) then
+		Counter:=Counter+1;
+	else
+		Append(~SymConj2,SymConj1[Counter]);
+		Counter:=Counter+1;
+	end if;
+end while;
+for i in [1..#SymConj2] do
+	Grp,Iso:=AbelianGroup(SymConj2[i][1]);
+	Ord:=<Order(Grp.l): l in [1..Ngens(Grp)]>;
+	Generate:=<Inverse(Iso)(Grp.l): l in [1..Ngens(Grp)]>;
+	Append(~Symbols,<GroupName(SymConj2[i][1]),GroupName(SymConj2[i][2]/SymConj2[i][1]),Grp,SymConj2[i][2],SymConj2[i][1],Ord,Iso,Generate>);
+end for;
+Generators:=<>;
+for k in [1..#Symbols] do
+	NG:=Ngens(AbelianGroup(Symbols[k][3]));
+	Ord:=<Order(Symbols[k][3].l): l in [1..NG]>;
+	CharTemp:=CartesianProduct(<[0..Ord[i]-1]:i in [1..#Ord]>);
+	Char:=<>;
+	for i in CharTemp do
+		Append(~Char,i);
+	end for;
+	CharInd:=CreateCharInd(Char,n);
+	for j in CharInd do
+		Weight:=<>;
+		for i in [1..#j] do
+			Append(~Weight,Char[j[i]]);
+		end for;
+		Append(~Generators,<Symbols[k][1],Symbols[k][2],Symbols[k][3],Symbols[k][4],Symbols[k][5],Weight,Symbols[k][6],Symbols[k][7],Symbols[k][8]>);
+	end for;
+end for;
+Generators:=CheckGenFullChar(Generators);
+if #Generators gt 0 then
+	IndSet2:=ConstructIndRange(Generators);
+	B1:=B1Relation(Generators);
+	B2:=B2Relation(G,IndSet2,Symbols,Generators);
+	CR:=ConjugacyRelation(G,IndSet2,Symbols,Generators);
+	FullLattice:=RSpace(IntegerRing(),#Generators);
+	Base:=Basis(FullLattice);
+	RelationBase:=[Base[i]:i in B1];
+	for i in [1..#B2] do
+		b:=Base[B2[i][1]];
+		if #B2[i][2] eq 2 then
+			b:=b-Base[B2[i][2][1]]-Base[B2[i][2][2]];
+		end if;
+		if #B2[i][3] eq 1 then
+			b:=b-Base[B2[i][3][1]];
+		end if;
+		Append(~RelationBase,b);
+	end for;
+	for i in [1..#CR] do
+		b:=Base[CR[i][1]]-Base[CR[i][2]];
+		Append(~RelationBase,b);
+	end for;
+	for i in [1..#Generators] do
+		if Generators[i][6][1] eq <0:j in [1..#Generators[i][6][1]]> then
+			Append(~RelationBase,Base[i]);
+		end if;
+	end for;
+	BC,QuoMap:=quo<FullLattice|sub<FullLattice|RelationBase>>;
+	return BC,FullLattice,QuoMap,Generators,IndSet2,RelationBase;
+else
+	return 0,0,0,0,0,0;
+end if;
+end function;
