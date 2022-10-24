@@ -31,6 +31,7 @@ BC,FullLattice,QuoMap,Generators,IndSet2,RelationBase:=BrutalBC(G,2);
 ![My Image](http://kaiqi-yang1994.github.io/files/bcn/BnGexamplestep3.png)
 
 * Type the following code:<br>
+
 ```
 for i in [1..#Out] do
 	if Type(Out[i][1]) eq RngIntElt then
@@ -49,6 +50,7 @@ for i in [1..#Out] do
 end for;
 SequenceToMultiset(S);
 ```
+
 We see result:<br>
 
 ![My Image](http://kaiqi-yang1994.github.io/files/bcn/BnGexamplestep4.jpg)
