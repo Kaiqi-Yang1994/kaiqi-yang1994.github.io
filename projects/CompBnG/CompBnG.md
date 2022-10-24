@@ -6,7 +6,7 @@ redirect_from:
   - /projects/CompBnG.html
 ---
 
-<TITLE>Computation of combinatorial Burnside group and equivariant symbol group</TITLE>
+Computation of combinatorial Burnside group and equivariant symbol group
 
 
 
