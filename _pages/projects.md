@@ -18,11 +18,11 @@ Potentially stably rational del Pezzo surface</a>
 Computation of combinatorial Burnside group and equivariant symbol group</a>
 </p>
 	
-<!--  
+
 <p>
 [3]<a href = "https://kaiqi-yang1994.github.io/projects/DCPonProj">
 Computation of equivariant birational class in equivariant Burnside group</a>
-</p> -->
+</p>
 
 	
 	
