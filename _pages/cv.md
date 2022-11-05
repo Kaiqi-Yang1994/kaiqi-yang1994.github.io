@@ -9,4 +9,4 @@ redirect_from:
 
 {% include base_path %}
 
-This is my [CV](https://kaiqi-yang1994.github.io/files/CV.pdf).
+This is my [CV](https://kaiqi-yang1994.github.io/files/CV.pdf){:target="_blank"}.
