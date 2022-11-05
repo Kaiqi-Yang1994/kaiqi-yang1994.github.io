@@ -5,6 +5,10 @@ author_profile: true
 redirect_from:
   - /talks.html
 ---
+  * MPS Conference on Higher Dimensional Geometry,
+   
+    Simons Foundation's Gerald D. Fischbach Auditorium in New York City, October 24-28, 2022.
+    Poster: [poster](https://kaiqi-yang1994.github.io/files/SimonshigherGeo2022/Equivariant_birational_geometry_of_linear_action.pdf)
   * Simons Collaboration on Arithmetic Geometry, Number Theory, and Computation Annual Meeting,
 
     Zoom online, January 13 - 14, 2022.
