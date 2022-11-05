@@ -9,12 +9,12 @@ redirect_from:
    
     Simons Foundation, New York City, October 24 - 28, 2022.
     
-    [Poster](https://kaiqi-yang1994.github.io/files/SimonshigherDimGeo2022/Equivariant_birational_geometry_of_linear_action.pdf)
+    [Poster](https://kaiqi-yang1994.github.io/files/SimonshigherDimGeo2022/Equivariant_birational_geometry_of_linear_action.pdf){:target="_blank"}.
   * Simons Collaboration on Arithmetic Geometry, Number Theory, and Computation Annual Meeting,
 
     Zoom online, January 13 - 14, 2022.
     
-    Lightening talk: [slides](https://kaiqi-yang1994.github.io/files/SimonsAnnualMeeting2022/Simons_2022_presentation_Equivariant_Burnside_groups.pdf)
+    Lightening talk: [slides](https://kaiqi-yang1994.github.io/files/SimonsAnnualMeeting2022/Simons_2022_presentation_Equivariant_Burnside_groups.pdf){:target="_blank"}.
   * Simons Collaboration on Arithmetic Geometry, Number Theory & Computation Annual Meeting,
 
     Simons Foundation, New York City, January 9 - 10, 2020.
