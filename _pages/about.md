@@ -11,3 +11,5 @@ redirect_from:
 Kaiqi Yang(杨凯奇)
 
 I am a mathematics PhD student at NYU Courant, studying algebraic geometry under my advisor Prof. [Yuri Tschinkel](https://cims.nyu.edu/~tschinke/).
+
+[My research statement](https://kaiqi-yang1994.github.io/files/Research_statement.pdf)
