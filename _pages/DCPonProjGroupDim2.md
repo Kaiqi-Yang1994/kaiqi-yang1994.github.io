@@ -1,5 +1,5 @@
 ---
-permalink: /projects/CompBnG/ProjLinGrpDim2
+permalink: /projects/DCPonProj/ProjLinGrpDim2
 title: "Projects"
 author_profile: true
 ---

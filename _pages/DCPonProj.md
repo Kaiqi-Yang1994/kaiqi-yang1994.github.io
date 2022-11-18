@@ -17,7 +17,12 @@ author_profile: true
 
 <ul>
 <li><a href="http://kaiqi-yang1994.github.io/files/DCPonProj/DCPonProj.txt">Computes equivariant birational class in $\mathrm{Burn}_n(G)$ by De Concini-Procesi</a></li>
+<ul>
+
+###Some examples and results:
+<ul>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/examples">Examples</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2">Finite subgroups of $PGL(2,\mathbb{C})$</a></li>
 </ul>
 
 
