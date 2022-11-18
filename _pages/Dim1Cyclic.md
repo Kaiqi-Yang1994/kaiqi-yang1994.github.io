@@ -14,8 +14,25 @@ G=
 \end{align*}
 where $\zeta_n$ is a nth root of unity, $a$ is coprime to $n$.
 
-The magma code:
+Here we take $n=3$ as an example:
 <pre>
+
+n:=3;
+
+FScale:=CyclotomicField(n:Sparse:=true);
+
+F:=FScale;
+
+Zn:=F.1;
+
+s:=1;
+
+G:=MatrixGroup<2,F|
+[Zn^s,0, 0,1]>;
 
 </pre>
 
+The Burnside symbol is
+\begin{align*}
+
+\end{align*}

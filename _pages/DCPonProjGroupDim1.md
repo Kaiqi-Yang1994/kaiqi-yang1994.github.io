@@ -13,7 +13,7 @@ It is well known that a finite subgroup of $\rm{PGL}(2,\mathbb{C})$ is isomorphi
 * the octahedral group $S_4$ of order 24;
 * the icosahedral group $A_5$ of order 60.
 
-The explicit generators of group $G$ and the Burnside symbol of $G$ acting on $\mathbb{P}^1$ are given in the following pages:'
+The explicit generators of group $G$ and the Burnside symbol of $G$ acting on $\mathbb{P}^1$ are given in the following pages:
 
 <ul>
 <li><a href="http://kaiqi-yang1994.github.io/files/DCPonProj/ProjLinGrpDim2/Cyclic">Cyclic group $C_n$</a></li>
