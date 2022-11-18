@@ -8,7 +8,7 @@ author_profile: true
 
 ### This page contains Magma code for De Concini-Procesi algorithm mentioned in
 <br>
-### <a href="https://www.math.nyu.edu/~tschinke/papers/yuri/21reptheory/reptheory.pdf">Equivariant Burnside groups and representation theory</a>,(Andrew Kresch and Yuri Tschinkel)
+### <a href="https://www.math.nyu.edu/~tschinke/papers/yuri/21reptheory/reptheory.pdf">Equivariant Burnside groups and representation theory</a>, (Andrew Kresch and Yuri Tschinkel)
 
 <br>
 
