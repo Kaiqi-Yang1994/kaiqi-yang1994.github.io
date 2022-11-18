@@ -16,10 +16,10 @@ It is well known that a finite subgroup of $\rm{PGL}(2,\mathbb{C})$ is isomorphi
 The explicit generators of group $G$ and the Burnside symbol of $G$ acting on $\mathbb{P}^1$ are given in the following pages:
 
 <ul>
-<li><a href="http://kaiqi-yang1994.github.io/files/DCPonProj/ProjLinGrpDim1/Cyclic">Cyclic group $C_n$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/files/DCPonProj/ProjLinGrpDim1/Dihedral">Dihedral group $C_n$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/files/DCPonProj/ProjLinGrpDim1/tetrahedral">Tetrahedral group $C_n$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/files/DCPonProj/ProjLinGrpDim1/Octahedral">Octahedral group $C_n$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/files/DCPonProj/ProjLinGrpDim1/Icosahedral">Icosahedral group $C_n$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Cyclic">Cyclic group $C_n$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Dihedral">Dihedral group $C_n$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/tetrahedral">Tetrahedral group $C_n$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Octahedral">Octahedral group $C_n$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Icosahedral">Icosahedral group $C_n$</a></li>
 </ul>
 
