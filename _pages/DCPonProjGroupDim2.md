@@ -4,9 +4,9 @@ title: "Projects"
 author_profile: true
 ---
 
-In this page, there is a list of all finite groups of $PGL(2,\mathbb{C})$ acting on Project space $\mathbb{P}^2$.
+In this page, there is a list of all finite groups of $\rm{PGL}(2,\mathbb{C})$ acting on Project space $\mathbb{P}^2$.
 
-It is well known that a finite subgroup of $PGL(2,\mathbb{C})$ is isomorphic to one of the following groups:
+It is well known that a finite subgroup of $\rm{PGL}(2,\mathbb{C})$ is isomorphic to one of the following groups:
 * a cyclic group $C_n$;
 * a dihedral group $D_{n}$ of order $2n$, $n \geq 2$;
 * the tetrahedral group $A_4$ of order 12;
