@@ -10,7 +10,7 @@ $$
 \begin{align*}
 G=\langle
 \begin{pmatrix}
-\zeta_n^a & 0 \\
+\zeta_n^s & 0 \\
 0 & 1
 \end{pmatrix}
 \rangle,
@@ -19,7 +19,7 @@ $$
 
 where $\zeta_n$ is a nth root of unity, $a$ is coprime to $n$.
 
-Here we take $n=3$ as an example:
+Here we take $n=3$ as an example, the magma code is as follows:
 <pre>
 
 n:=3;
@@ -39,5 +39,5 @@ G:=MatrixGroup<2,F|
 
 The Burnside symbol is
 \begin{align*}
-
+[X \righttoleftarrow G]=
 \end{align*}
