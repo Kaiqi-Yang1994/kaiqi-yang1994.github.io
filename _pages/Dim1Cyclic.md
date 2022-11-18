@@ -38,6 +38,8 @@ G:=MatrixGroup<2,F|
 </pre>
 
 The Burnside symbol is
+$$
 \begin{align*}
 [X \righttoleftarrow G]=
 \end{align*}
+$$
