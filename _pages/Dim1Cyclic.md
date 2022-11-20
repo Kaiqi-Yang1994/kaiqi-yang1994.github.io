@@ -40,6 +40,6 @@ G:=MatrixGroup<2,F|
 The Burnside symbol is
 $$
 \begin{align*}
-[X \CircleArrowright G]=
+[X \circlearrowright G]=
 \end{align*}
 $$
