@@ -37,9 +37,10 @@ G:=MatrixGroup<2,F|
 
 </pre>
 
-The Burnside symbol is
+For general $n$ and $s$ coprime to $n$, the Burnside symbol is
 $$
 \begin{align*}
-[X \Circlearrowleft G]=
+[X \circlearrowleft G]=&(1,C_n \circlearrowright k(x),())\\
+&+(C_n,1 \circlearrowright k,(s))+(C_n,1 \circlearrowright k,(n-s))
 \end{align*}
 $$
