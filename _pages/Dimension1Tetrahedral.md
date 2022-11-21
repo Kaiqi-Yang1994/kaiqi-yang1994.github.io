@@ -1,6 +1,6 @@
 ---
 permalink: /projects/DCPonProj/ProjLinGrpDim1/Tetrahedral
-title: "Dimension1 Dihedral"
+title: "Dimension1 Tetrahedral"
 author_profile: true
 ---
 
