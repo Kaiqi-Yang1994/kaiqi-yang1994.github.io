@@ -18,7 +18,7 @@ The explicit generators of group $G$ and the Burnside symbol of $G$ acting on $\
 <ul>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Cyclic">Cyclic group $C_n$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Dihedral">Dihedral group $D_n$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/tetrahedral">Tetrahedral group $A_4$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Tetrahedral">Tetrahedral group $A_4$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Octahedral">Octahedral group $S_4$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Icosahedral">Icosahedral group $A_5$</a></li>
 </ul>

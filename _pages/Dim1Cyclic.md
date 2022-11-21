@@ -19,18 +19,17 @@ $$
 
 where $\zeta_n$ is a nth root of unity, $s$ is coprime to $n$.
 
-Here we take $n=3$ as an example, the magma code is as follows:
+Here we take $n=3,s=1$ as an example, the Magma code is as follows:
 <pre>
 
 n:=3;
+s:=1;
 
 FScale:=CyclotomicField(n:Sparse:=true);
 
 F:=FScale;
 
-Zn:=F.1;
-
-s:=1;
+Zn:=RootOfUnity(n);
 
 G:=MatrixGroup<2,F|
 [1,0, 0,Zn^s]>;
