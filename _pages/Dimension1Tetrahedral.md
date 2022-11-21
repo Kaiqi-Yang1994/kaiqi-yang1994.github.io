@@ -7,6 +7,7 @@ author_profile: true
 Group $G=A_4$ does not have 2-dimensional representation, its binary-extension $SL(2,3)$ has 2-dimensional representation:
 
 $$
+\begin{align*}
 G=\langle
 \begin{pmatrix}
 \zeta_4 & 0\\
@@ -21,6 +22,7 @@ G=\langle
 (1+\zeta_4)/2 & (1-\zeta_4)/2
 \end{pmatrix}
 \rangle.
+\end{align*}
 $$
 
 The Magma code is as follows:
@@ -52,6 +54,7 @@ $$
 where
 
 $$
+\begin{align*}
 C_2=\langle
 \begin{pmatrix}
 0 & i\\
@@ -64,4 +67,5 @@ C_3=\langle
 (1+\zeta_4)/2 & (1-\zeta_4)/2
 \end{pmatrix}
 \rangle
+\end{align*}
 $$
