@@ -17,7 +17,7 @@ G=\langle
 \begin{pmatrix}
 0 & 1\\
 1 & 0
-\end{pamtrix}
+\end{pmatrix}
 \rangle,
 \end{align*}
 $$
@@ -36,7 +36,7 @@ G=\langle
 \begin{pmatrix}
 0 & 1\\
 1 & 0
-\end{pamtrix}
+\end{pmatrix}
 \rangle,
 \end{align*}
 $$
