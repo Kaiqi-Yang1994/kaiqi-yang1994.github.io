@@ -65,6 +65,7 @@ G:=MatrixGroup<2,F|
 </pre>
 
 If $n$ is odd and $s$ coprime to $n$, the Burnside symbol is
+
 $$
 \begin{align*}
 [\mathbb{P}^1 \circlearrowleft G]=&(1,G \circlearrowright k(x),())\\
@@ -74,6 +75,7 @@ $$
 $$
 
 where
+
 $$
 C_2=\langle
 \begin{pmatrix}
@@ -89,6 +91,7 @@ C_n=\langle
 $$
 
 If $n$ is even and $s$ coprime to $2n$, the Burnside symbol is
+
 $$
 \begin{align*}
 [\mathbb{P}^1 \circlearrowleft G]=&(1,G \circlearrowright k(x),())\\
@@ -98,6 +101,7 @@ $$
 $$
 
 where
+
 $$
 1.C_2=\langle
 \begin{pmatrix}
