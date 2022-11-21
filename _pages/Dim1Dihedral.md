@@ -86,7 +86,7 @@ C_2=\langle
 C_n=\langle
 \begin{pmatrix}
 \zeta_n^s & 0\\
-0 & \zeta_n^s
+0 & \zeta_n^{-s}
 \end{pmatrix}
 \rangle
 \end{align*}
@@ -119,7 +119,7 @@ $$
 C_n=\langle
 \begin{pmatrix}
 \zeta_{2n}^s & 0\\
-0 & \zeta_{2n}^s
+0 & \zeta_{2n}^{-s}
 \end{pmatrix}
 \rangle
 \end{align*}
