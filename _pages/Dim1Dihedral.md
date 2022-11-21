@@ -5,7 +5,7 @@ author_profile: true
 ---
 
 
-When $n$ is odd, group $G=D_n$ with representation given by
+When $n$ is odd, group $G=D_n$ has representation given by
 
 $$
 \begin{align*}
@@ -24,7 +24,7 @@ $$
 
 where $\zeta_n$ is a $n$-th root of unity, $s$ is coprime to $n$.
 
-When $n$ is even, group $G=D_n$ with projective representation given by
+When $n$ is even, group $G=D_n$ has projective representation given by
 
 $$
 \begin{align*}
