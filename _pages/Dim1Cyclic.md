@@ -4,7 +4,7 @@ title: "Dimension1 Cyclic"
 author_profile: true
 ---
 
-The group $G=C_n$ has a representation given by
+The group $G=C_n$ has representation given by
 
 $$
 \begin{align*}
