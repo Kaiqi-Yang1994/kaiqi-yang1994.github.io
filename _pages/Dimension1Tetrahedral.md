@@ -25,6 +25,8 @@ G=\langle
 \end{align*}
 $$
 
+where $\zeta_4$ is a 4-th root of unity.
+
 The Magma code is as follows:
 <pre>
 
