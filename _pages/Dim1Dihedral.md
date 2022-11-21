@@ -12,7 +12,7 @@ $$
 G=\langle
 \begin{pmatrix}
 \zeta_n^s & 0 \\
-0 & \zeta_n^{(-s)}
+0 & \zeta_n^{-s}
 \end{pmatrix},
 \begin{pmatrix}
 0 & 1\\
@@ -31,7 +31,7 @@ $$
 G=\langle
 \begin{pmatrix}
 \zeta_{2n}^s & 0 \\
-0 & \zeta_{2n}^{(-s)}
+0 & \zeta_{2n}^{-s}
 \end{pmatrix},
 \begin{pmatrix}
 0 & 1\\
