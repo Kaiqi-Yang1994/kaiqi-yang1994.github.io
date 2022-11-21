@@ -40,7 +40,7 @@ G:=MatrixGroup<2,F|
 For general $n$ and $s$ coprime to $n$, the Burnside symbol is
 $$
 \begin{align*}
-[\mathbb{P}^1 \circlearrowleft G]=&(1,C_n \circlearrowright k(x),())\\
+[\mathbb{P}^1 \circlearrowleft G]=&(1,G \circlearrowright k(x),())\\
 &+(C_n,1 \circlearrowright k,(s))+(C_n,1 \circlearrowright k,(n-s))
 \end{align*}
 $$

@@ -64,10 +64,55 @@ G:=MatrixGroup<2,F|
 
 </pre>
 
-For general $n$ and $s$ coprime to $n$, the Burnside symbol is
+If $n$ is odd and $s$ coprime to $n$, the Burnside symbol is
 $$
 \begin{align*}
-[\mathbb{P}^1 \circlearrowleft G]=&(1,C_n \circlearrowright k(x),())\\
-&+(C_n,1 \circlearrowright k,(s))+(C_n,1 \circlearrowright k,(n-s))
+[\mathbb{P}^1 \circlearrowleft G]=&(1,G \circlearrowright k(x),())\\
+&+2(C_2,1 \circlearrowright k,(1))\\
+&+(C_n,1 \circlearrowright k,(s))
 \end{align*}
+$$
+
+where
+$$
+C_2=\langle
+\begin{pmatrix}
+0 & 1\\
+1 & 0
+\end{pmatrix}\rangle,
+C_n=\langle
+\begin{pmatrix}
+\zeta_n^s & 0\\
+0 & \zeta_n^s
+\end{pmatrix}
+\rangle
+$$
+
+If $n$ is even and $s$ coprime to $2n$, the Burnside symbol is
+$$
+\begin{align*}
+[\mathbb{P}^1 \circlearrowleft G]=&(1,G \circlearrowright k(x),())\\
+&+(1.C_2,1 \circlearrowright k,(1))+(2.C_2,1 \circlearrowright k,(1))\\
+&+(C_n,1 \circlearrowright k,(s))
+\end{align*}
+$$
+
+where
+$$
+1.C_2=\langle
+\begin{pmatrix}
+0 & 1\\
+1 & 0
+\end{pmatrix}\rangle,
+2.C_2=\langle
+\begin{pmatrix}
+0 & i\\
+-i & 0
+\end{pmatrix}\rangle,
+C_n=\langle
+\begin{pmatrix}
+\zeta_{2n}^s & 0\\
+0 & \zeta_{2n}^s
+\end{pmatrix}
+\rangle
 $$
