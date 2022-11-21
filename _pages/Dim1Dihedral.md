@@ -77,6 +77,7 @@ $$
 where
 
 $$
+\begin{align*}
 C_2=\langle
 \begin{pmatrix}
 0 & 1\\
@@ -88,6 +89,7 @@ C_n=\langle
 0 & \zeta_n^s
 \end{pmatrix}
 \rangle
+\end{align*}
 $$
 
 If $n$ is even and $s$ coprime to $2n$, the Burnside symbol is
@@ -103,6 +105,7 @@ $$
 where
 
 $$
+\begin{align*}
 1.C_2=\langle
 \begin{pmatrix}
 0 & 1\\
@@ -119,4 +122,5 @@ C_n=\langle
 0 & \zeta_{2n}^s
 \end{pmatrix}
 \rangle
+\end{align*}
 $$
