@@ -79,3 +79,18 @@ G2:=MatrixGroup<3,F|
 [1,0,0, 0,Zn^t',0, 0,0,1],
 [0,0,1, 1,0,0, 0,1,0]>;
 </pre>
+
+The Burnside Symbols are
+
+$$
+\begin{align*}
+[\mathbb{P}(V_1) \circlearrowleft G]=
+\end{align*}
+$$
+
+and 
+
+$$
+\begin{align*}
+[\mathbb{P}(V_2) \circlearrowleft G]=
+$$
