@@ -192,7 +192,7 @@ $$
 $$
 \begin{align*}
 2.C_2^2=
-\left\langle
+\langle
 &\frac{1}{7}
 \begin{pmatrix}
 3\zeta_{84}^{22} - \zeta_{84}^{16} + \zeta_{84}^{12} - 3\zeta_{84}^8 - 3\zeta_{84}^6 + \zeta_{84}^2 - 1 & 2\zeta_{84}^{22} + 2\zeta_{84}^{18} + \zeta_{84}^{16} - 2\zeta_{84}^8 + \zeta_{84}^6 - \zeta_{84}^2 + 2 & -2\zeta_{84}^{22} + 3\zeta_{84}^{18} + 2\zeta_{84}^{16} - 4\zeta_{84}^{12} + 2\zeta_{84}^8 + 3\zeta_{84}^6 - 2\zeta_{84}^2\\
