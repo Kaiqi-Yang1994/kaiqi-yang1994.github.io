@@ -79,6 +79,7 @@ C_4=\langle
 $$
 
 There are conjugaction relations:
+
 $$
 \begin{align*}
 (C_3,1 \circlearrowright k,(1))=(C_3,1 \circlearrowright k,(2))\\

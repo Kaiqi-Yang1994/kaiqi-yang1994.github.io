@@ -86,6 +86,7 @@ C_5=\langle
 $$
 
 There are conjugation relation:
+
 $$
 \begin{align*}
 (C_3,1 \circlearrowright k,(1))=(C_3,1 \circlearrowright k,(2))\\
@@ -175,6 +176,7 @@ C_5=\langle
 $$
 
 There are conjugation relation:
+
 $$
 \begin{align*}
 (C_3,1 \circlearrowright k,(1))=(C_3,1 \circlearrowright k,(2))\\
