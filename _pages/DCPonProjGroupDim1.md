@@ -1,6 +1,6 @@
 ---
 permalink: /projects/DCPonProj/ProjLinGrpDim1
-title: "Finite subgroups of PGL(2,C)"
+title: "Projects"
 author_profile: true
 ---
 
