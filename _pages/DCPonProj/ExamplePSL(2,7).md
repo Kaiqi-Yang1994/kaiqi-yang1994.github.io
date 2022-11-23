@@ -106,10 +106,22 @@ The Burnside Symbols are
 $$
 \begin{align*}
 [\mathbb{P}(V_1) \circlearrowleft G]=&(1,G \circlearrowright k(x,y),())\\
-&+(C_2, C_2^2\circlearrowright k(x),(1))+(C_3,1 \circlearrowright k,(1,1))\\
+&+2(C_2, C_2^2\circlearrowright k(x),(1))+(C_3,1 \circlearrowright k,(1,1))\\
 &+(C_7,1 \circlearrowright k,(3,6))+(C_7,1 \circlearrowright k,(1,2))\\
 &+(1.C_2^2,1 \circlearrowright k,((0,1),(1,0)))+(2.C_2^2,1 \circlearrowright k,((0,1),(1,1)))\\
-&+(C_4,1 \circlearrowright k,(1,1))+(C_4,1 \circlearrowright k,(2,3))
+&+(C_4,1 \circlearrowright k,(1,1))+2(C_4,1 \circlearrowright k,(2,3))
+\end{align*}
+$$
+
+and 
+
+$$
+\begin{align*}
+[\mathbb{P}(V_2) \circlearrowleft G]=&(1,G \circlearrowright k(x,y),())\\
+&+2(C_2, C_2^2\circlearrowright k(x),(1))+(C_3,1 \circlearrowright k,(1,1))\\
+&+(C_7,1 \circlearrowright k,(2,4))+(C_7,1 \circlearrowright k,(5,6))\\
+&+(1.C_2^2,1 \circlearrowright k,((0,1),(1,0)))+(2.C_2^2,1 \circlearrowright k,((0,1),(1,0)))\\
+&+(C_4,1 \circlearrowright k,(1,1))+2(C_4,1 \circlearrowright k,(2,3))
 \end{align*}
 $$
 
@@ -235,17 +247,3 @@ $$
 &(C_4,1 \circlearrowright k,(2,3))=(C_4,1 \circlearrowright k,(1,2))
 \end{align*}
 $$
-
-
-$$
-\begin{align*}
-[\mathbb{P}(V_2) \circlearrowleft G]=&(1,G \circlearrowright k(x,y),())\\
-&+(C_2, C_2^2\circlearrowright k(x),(1))+(C_3,1 \circlearrowright k,(1,1))\\
-&+(C_7,1 \circlearrowright k,(2,4))+(C_7,1 \circlearrowright k,(5,6))\\
-&+(1.C_2^2,1 \circlearrowright k,((0,1),(1,0)))+(2.C_2^2,1 \circlearrowright k,((0,1),(1,0)))\\
-&+(C_4,1 \circlearrowright k,(1,1))+(C_4,1 \circlearrowright k,(2,3))
-\end{align*}
-$$
-
-where
-
