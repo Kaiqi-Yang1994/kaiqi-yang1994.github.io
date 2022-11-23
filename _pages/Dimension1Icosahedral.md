@@ -85,7 +85,7 @@ C_5=\langle
 \end{align*}
 $$
 
-There are conjugation relation:
+There are conjugation relations:
 
 $$
 \begin{align*}
@@ -175,7 +175,7 @@ C_5=\langle
 \end{align*}
 $$
 
-There are conjugation relation:
+There are conjugation relations:
 
 $$
 \begin{align*}
