@@ -1,6 +1,6 @@
 ---
 permalink: /projects/DCPonProj/ProjLinGrpDim1
-title: "Finite subgroups of $\mathrm{PGL}(2,\mathbb{C})$"
+title: "Finite subgroups of PGL(2,C)"
 author_profile: true
 ---
 
