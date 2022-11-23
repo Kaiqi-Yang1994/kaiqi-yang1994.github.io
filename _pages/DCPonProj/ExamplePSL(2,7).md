@@ -4,7 +4,7 @@ title: "Example PSL(2,7)"
 author_profile: true
 ---
 
-Group $G=PSL(2,7)$ has 2 3-dimensional faithful representation $V_1,V_2$.
+Group $G=\rm{PSL}(2,7)$ has 2 3-dimensional faithful representation $V_1,V_2$.
 
 Two representations are given as follows:
 
@@ -117,9 +117,9 @@ where
 
 $$
 \begin{align*}
-C_2=
+C_2=\frac{1}{7}
 \begin{pmatrix}
-
+-2\zeta_{84}^{22}+3\zeta_{84}^{16}-3\zeta_{84}^{12}+2\zeta_{84}^{8}+2\zeta_{84}^{6}-3\zeta_{84}^{2}-4 & 4\zeta_{84}^{22}-\zeta_{84}^{18}-\zeta_{84}^{16}+4\zeta_{84}^{12}-4\zeta_{84}^{8}-2\zeta_{84}^{6}+\zeta_{84}^{2}+2 & 2*\zeta_{84}^{18}+4*\zeta_{84}^{16}-3*\zeta_{84}^{12}+3*\zeta_{84}^{6}-4*\zeta_{84}^2-2\\
 \end{pmatrix}
 \end{align*}
 $$
