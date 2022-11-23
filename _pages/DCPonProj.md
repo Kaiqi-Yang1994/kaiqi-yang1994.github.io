@@ -25,7 +25,7 @@ author_profile: true
 <ul>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/examples">Examples</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ExamplePSL(2,7)">Example $\rm{PSL}(2,7)$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/C3extRank2">Example $C_3:C_n^2$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/C3extRank2">Example $C_n^2:C_3$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1">Finite subgroups of $\rm{PGL}(2,\mathbb{C})$</a></li>
 </ul>
 
