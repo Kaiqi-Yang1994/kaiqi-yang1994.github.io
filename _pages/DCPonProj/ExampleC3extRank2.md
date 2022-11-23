@@ -32,10 +32,12 @@ G=
 0 & 0 & 1\\
 1 & 0 & 0\\
 0 & 1 & 0
-\end{pmatrix},
+\end{pmatrix}
 \rangle \subseteq \rm{PGL}(3,\mathbb{C}).
 \end{align*}
 $$
+
+where for $V_1$, we choose $s=1,t=2$ and for $V_2$, we choose $s'=3,t'=4$.
 
 As a linear group in $\rm{GL}(3,\mathbb{C})$, it has center
 
@@ -50,7 +52,6 @@ C_n=
 \rangle.
 $$
 
-where for $V_1$, we choose $s=1,t=2$ and for $V_2$, we choose $s'=3,t'=4$.
 
 The Magma code is as follows:
 <pre>
@@ -64,7 +65,7 @@ F:=FScale;
 Zn:=RootOfUnity(n);
 
 s:=1;
-t:=4;
+t:=2;
 
 G1:=MatrixGroup<3,F|
 [Zn^s,0,0, 0,1,0, 0,0,1],
