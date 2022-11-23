@@ -108,7 +108,7 @@ $$
 [\mathbb{P}(V_1) \circlearrowleft G]=&(1,G \circlearrowright k(x,y),())\\
 &+(C_2, C_2^2\circlearrowright k(x),(1))+(C_3,1 \circlearrowright k,(1,1))\\
 &+(C_7,1 \circlearrowright k,(3,6))+(C_7,1 \circlearrowright k,(1,2))\\
-&+(1.C_2^2,1 \circlearrowright k,((0,1),(1,0)))+(2.C_2^2,1 \circlearrowright k,((0,1),(1,0)))\\
+&+(1.C_2^2,1 \circlearrowright k,((0,1),(1,0)))+(2.C_2^2,1 \circlearrowright k,((0,1),(1,1)))\\
 &+(C_4,1 \circlearrowright k,(1,1))+(C_4,1 \circlearrowright k,(2,3))
 \end{align*}
 $$
@@ -220,5 +220,18 @@ C_4=
 -2\zeta_{84}^{22} + 3\zeta_{84}^{18} + 2\zeta_{84}^{16} - 4\zeta_{84}^{12} + 2\zeta_{84}^8 + 3\zeta_{84}^6 - 2\zeta_{84}^2 & 3\zeta_{84}^{22} - \zeta_{84}^{16} + \zeta_{84}^{12} - 3\zeta_{84}^8 - 3\zeta_{84}^6 + \zeta_{84}^2 - 1 & 2\zeta_{84}^{22} + 2\zeta_{84}^{18} + \zeta_{84}^{16} - 2\zeta_{84}^8 + \zeta_{84}^6 - \zeta_{84}^2 + 2
 \end{pmatrix}
 \rangle
+\end{align*}
+$$
+
+There are conjugation relations:
+$$
+\begin{align*}
+(C_3,1 \circlearrowright k,(1,1))=(C_3,1 \circlearrowright k,(2,2))\\
+(C_7,1 \circlearrowright k,(3,6))=(C_7,1 \circlearrowright k,(3,5))=(C_7,1 \circlearrowright k,(5,6))\\
+(C_7,1 \circlearrowright k,(1,2))=(C_7,1 \circlearrowright k,(1,4))=(C_7,1 \circlearrowright k,(2,4))\\
+(1.C_2^2,1 \circlearrowright k,((0,1),(1,0)))=(1.C_2^2,1 \circlearrowright k,((0,1),(1,1)))=(1.C_2^2,1 \circlearrowright k,((1,0),(1,1)))\\
+(2.C_2^2,1 \circlearrowright k,((0,1),(1,1)))=(2.C_2^2,1 \circlearrowright k,((0,1),(1,0)))=(2.C_2^2,1 \circlearrowright k,((1,0),(1,1)))\\
+(C_4,1 \circlearrowright k,(1,1))=(C_4,1 \circlearrowright k,(3,3))\\
+(C_4,1 \circlearrowright k,(2,3))=(C_4,1 \circlearrowright k,(1,2))
 \end{align*}
 $$
