@@ -1,6 +1,6 @@
 ---
 permalink: /projects/DCPonProj/C3extRank2
-title: "Example $C_n^2:C_3$"
+title: "Example C_n^2:C_3"
 author_profile: true
 ---
 
