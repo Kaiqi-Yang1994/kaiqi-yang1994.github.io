@@ -117,11 +117,43 @@ where
 
 $$
 \begin{align*}
-C_2=\frac{1}{7}
+C_2=\langle
+\frac{1}{7}
 \begin{pmatrix}
 -2\zeta_{84}^{22}+3\zeta_{84}^{16}-3\zeta_{84}^{12}+2\zeta_{84}^{8}+2\zeta_{84}^{6}-3\zeta_{84}^{2}-4 & 4\zeta_{84}^{22}-\zeta_{84}^{18}-\zeta_{84}^{16}+4\zeta_{84}^{12}-4\zeta_{84}^{8}-2\zeta_{84}^{6}+\zeta_{84}^{2}+2 & 2\zeta_{84}^{18}+4\zeta_{84}^{16}-3\zeta_{84}^{12}+3\zeta_{84}^{6}-4\zeta_{84}^2-2\\
 \zeta_{84}^{22}+\zeta_{84}^{18}-3\zeta_{84}^{16}-\zeta_{84}^8-3\zeta_{84}^6+3\zeta_{84}^2+1 & 3\zeta_{84}^{22}-\zeta_{84}^{16}+\zeta_{84}^{12}-3\zeta_{84}^8-3\zeta_{84}^6+\zeta_{84}^2-1 & -3\zeta_{84}^{22}+3\zeta_{84}^{18}-2\zeta_{84}^{12}+3\zeta_{84}^8+4\zeta_{84}^6-2\\
 -\zeta_{84}^{22}-2\zeta_{84}^{18}+\zeta_{84}^{16}-2\zeta_{84}^{12}+\zeta_{84}^8-2\zeta_{84}^6-\zeta_{84}^2 & -\zeta_{84}^{22}-3\zeta_{84}^{18}-\zeta_{84}^{16}+3\zeta_{84}^{12}+\zeta_{84}^8+\zeta_{84}^2+1 & -\zeta_{84}^{22}-2\zeta_{84}^{16}+2\zeta_{84}^{12}+\zeta_{84}^8+\zeta_{84}^6+2\zeta_{84}^2-2
 \end{pmatrix}
+\rangle
 \end{align*}
+$$
+
+The action on $\mathbb{P}^1$ is given by
+$$
+\begin{align*}
+C_2^2=
+\langle
+\frac{1}{7}
+\begin{pmatrix}
+-3\zeta_{84}^{22}+2\zeta_{84}^{18}+5\zeta_{84}^{16}-4\zeta_{84}^{12}+3\zeta_{84}^8-\zeta_{84}^6-5\zeta_{84}^2-1 & -\zeta_{84}^{22}-4\zeta_{84}^{18}+4\zeta_{84}^{16}+\zeta_{84}^{12}+\zeta_{84}^8+2\zeta_{84}^6-4\zeta_{84}^2-5\\
+-5\zeta_{84}^{22}+\zeta_{84}^18+6\zeta_{84}^{16}-9\zeta_{84}^{12}+5\zeta_{84}^8+3\zeta_{84}^6-6\zeta_{84}^2-4 & 3\zeta_{84}^{22}-2\zeta_{84}^{18}-5\zeta_{84}^{16}+4\zeta_{84}^{12}-3\zeta_{84}^8+\zeta_{84}^6+5\zeta_{84}^2+1
+\end{pmatrix},
+\frac{1}{7}
+\begin{pmatrix}
+2\zeta_{84}^{22}-6\zeta_{84}^{18}-\zeta_{84}^{16}+5\zeta_{84}^{12}-2\zeta_{84}^8-4\zeta_{84}^6+\zeta_{84}^2+3 & -4\zeta_{84}^{22}-2\zeta_{84}^{18}+2\zeta_{84}^{16}+4\zeta_{84}^{12}+4\zeta_{84}^8+\zeta_{84}^6-2\zeta_{84}^2+1\\
+8\zeta_{84}^{22}-3\zeta_{84}^{18}-4\zeta_{84}^{16}+6\zeta_{84}^{12}-8\zeta_{84}^8-2\zeta_{84}^6+4\zeta_{84}^2-2 & -2\zeta_{84}^{22}+6\zeta_{84}^{18}+\zeta_{84}^{16}-5\zeta_{84}^{12}+2\zeta_{84}^8+4\zeta_{84}^6-\zeta_{84}^2-3
+\end{pmatrix}
+\rangle
+\end{align*}
+$$
+
+$$
+C_3=
+\langle
+\begin{pmatrix}
+0 & 0 & 0\zeta_{84}^{22}-\zeta_{84}^8\\
+-\zeta_{84}^{16}+\zeta_{84}^2 & 0 & 0\\
+0 & -\zeta_{84}^{18} & 0
+\end{pmatrix}
+\rangle
 $$
