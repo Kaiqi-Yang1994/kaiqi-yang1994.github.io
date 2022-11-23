@@ -42,6 +42,7 @@ where for $V_1$, we choose $s=1,t=2$ and for $V_2$, we choose $s'=3,t'=4$.
 As a linear group in $\rm{GL}(3,\mathbb{C})$, it has center
 
 $$
+\begin{align*}
 C_n=
 \langle
 \begin{pmatrix}
@@ -50,6 +51,7 @@ C_n=
 0 & 0 & 1
 \end{pmatrix}
 \rangle.
+\end{align*}
 $$
 
 
