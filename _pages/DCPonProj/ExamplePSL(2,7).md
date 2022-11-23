@@ -32,6 +32,28 @@ $$
 \end{align*}
 $$
 
+where $\zeta_7$ is a 7-th root of unity.
+
+The Magma code is as follows:
+<pre>
+
+FScale:=CyclotomicField(84);
+
+F:=FScale;
+
+Z7:=RootOfUnity(7);
+a:=Z7^4-Z7^3;
+b:=Z7^2-Z7^5;
+c:=Z7-Z7^6;
+isq7:= 2*Z7^4 + 2*Z7^2 + 2*Z7 + 1;
+
+G:=MatrixGroup<3,F|
+[0,1,0, 0,0,1, 1,0,0],
+[-a/isq7,-b/isq7,-c/isq7, -b/isq7,-c/isq7,-a/isq7, -c/isq7,-a/isq7,-b/isq7],
+[Z7,0,0, 0,Z7^2,0, 0,0,Z7^4]>;
+
+</pre>
+
 $$
 \begin{align*}
 \mathbb{P}(V_2)=
@@ -56,3 +78,48 @@ $$
 \end{align*}
 $$
 
+where $\zeta_7$ is a 7-th root of unity.
+
+The Magma code is as follows:
+<pre>
+
+FScale:=CyclotomicField(84);
+
+F:=FScale;
+
+Z7:=RootOfUnity(7);
+a:=Z7^4-Z7^3;
+b:=Z7^2-Z7^5;
+c:=Z7-Z7^6;
+isq7:= 2*Z7^4 + 2*Z7^2 + 2*Z7 + 1;
+
+G:=MatrixGroup<3,F|
+[0,1,0, 0,0,1, 1,0,0],
+[-a/isq7,-b/isq7,-c/isq7, -b/isq7,-c/isq7,-a/isq7, -c/isq7,-a/isq7,-b/isq7],
+[Z7^3,0,0, 0,Z7^6,0, 0,0,Z7^5]>;
+
+</pre>
+
+
+The Burnside Symbols are
+
+$$
+\begin{align*}
+[\mathbb{P}(V_1) \circlearrowleft G]=&(1,G \circlearrowright k(x,y),())\\
+&+(C_2, C_2^2\circlearrowright k(x),(1))+(C_3,1 \circlearrowright k,(1,1))\\
+&+(C_7,1 \circlearrowright k,(3,6))+(C_7,1 \circlearrowright k,(1,2))\\
+&+(1.C_2^2,1 \circlearrowright k,((0,1),(1,0)))+(2.C_2^2,1 \circlearrowright k,((0,1),(1,0)))\\
+&+(C_4,1 \circlearrowright k,(1,1))+(C_4,1 \circlearrowright k,(2,3))
+\end{align*}
+$$
+
+where
+
+$$
+\begin{align*}
+C_2=
+\begin{pmatrix}
+
+\end{pmatrix}
+\end{align*}
+$$
