@@ -168,7 +168,12 @@ C_3=
 -\zeta_{84}^{16}+\zeta_{84}^2 & 0 & 0\\
 0 & -\zeta_{84}^{18} & 0
 \end{pmatrix}
-\rangle,\\
+\rangle.
+\end{align*}
+$$
+
+$$
+\begin{align*}
 C_7=
 \langle
 \frac{1}{7}
