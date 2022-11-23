@@ -4,7 +4,7 @@ title: "Dimension1 Tetrahedral"
 author_profile: true
 ---
 
-Group $G=A_4$ does not have 2-dimensional representation, its binary-extension $SL(2,3)$ has 2-dimensional representation:
+Group $G=A_4$ does not have 2-dimensional representation, its binary-extension $SL(2,3)$ has 3 2-dimensional representation, one representation is as follows:
 
 $$
 \begin{align*}
@@ -71,3 +71,5 @@ C_3=\langle
 \rangle
 \end{align*}
 $$
+
+The other 2 projective linear representation of $A_4$ gives the same Burnside symbols.
