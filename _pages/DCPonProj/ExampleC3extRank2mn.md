@@ -180,7 +180,7 @@ $$
 \end{align*}
 $$
 
-Now if we fix generator for $C_2 \times C_{14}=\langle g_{m,r}^1,g_{n,s,t}^2\rangle$. Two Burnside Symbols are
+Now if we fix generator for $C_2 \times C_{14}=\langle g_{m,r},g_{n,s,t}\rangle$. Two Burnside Symbols are
 
 $$
 \begin{align*}
