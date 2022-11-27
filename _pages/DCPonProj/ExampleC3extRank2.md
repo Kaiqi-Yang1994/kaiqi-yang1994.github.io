@@ -103,7 +103,7 @@ C_5=\langle
 0 & \zeta_5^4 & 0\\
 0 & 0 & 1
 \end{pmatrix}
-\rangle,
+\rangle, 
 C_5^2=\langle
 \begin{pmatrix}
 \zeta_5^3 & 0 & 0\\
@@ -148,7 +148,7 @@ C_5=\langle
 0 & \zeta_5^2 & 0\\
 0 & 0 & 1
 \end{pmatrix}
-\rangle,
+\rangle, 
 C_5^2=\langle
 \begin{pmatrix}
 1 & 0 & 0\\
@@ -173,7 +173,7 @@ $$
 \end{align*}
 $$
 
-Now if we fix generator for $C_5=\langle (g_{n,s}^1)^t(g_{n,t}^2)^s\rangle$ and $C_5^2=\langleg_{n,s}^1,g_{n,t}^2\rangle$. Two Burnside Symbols are
+Now if we fix generator for $C_5=\langle (g_{n,s}^1)^t(g_{n,t}^2)^s\rangle$ and $C_5^2=\langle g_{n,s}^1,g_{n,t}^2\rangle$. Two Burnside Symbols are
 $$
 \begin{align*}
 [\mathbb{P}(V_1) \circlearrowleft G]=&(1,G \circlearrowright k(x,y),())\\
@@ -197,12 +197,12 @@ $$
 \end{align*}
 $$
 
-Remark: we don't consider symbols with trivial stabilizer group in the computation of $\mathfrak{BC}$.
+Remark: we don't consider symbols with trivial stabilizer group in the computation of $\mathcal{BC}$.
 
 
 Let $T_2^{1,2},T_{30}^{1,2}$ and $e_i$, $i=1,\dots,19$ be the generators for $(\mathbb{Z}/2)^2$, $(\mathbb{Z}/30)^2$ and the torsion-free part respectively. 
 
-The difference of images of two Burnside symbols $[\mathbb{P}(V_1) \circlearrowleft G]-[\mathbb{P}(V_2) \circlearrowleft G]$ under the map $\rm{Burn}_2(G) \to \mathfrak{BC}_2(G)$ is:
+The difference of images of two Burnside symbols $[\mathbb{P}(V_1) \circlearrowleft G]-[\mathbb{P}(V_2) \circlearrowleft G]$ under the map $\rm{Burn}_2(G) \to \mathcal{BC}_2(G)$ is:
 
 $$
 \begin{align*}
