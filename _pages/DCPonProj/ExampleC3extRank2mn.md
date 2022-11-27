@@ -1,6 +1,6 @@
 ---
 permalink: /projects/DCPonProj/C3extRank2mn
-title: "Example (C_n*C_m):C_3"
+title: "Example (C_m*C_n):C_3"
 author_profile: true
 ---
 
