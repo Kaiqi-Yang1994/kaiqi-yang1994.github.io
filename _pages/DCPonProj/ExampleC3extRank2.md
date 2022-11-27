@@ -59,7 +59,7 @@ The Magma code is as follows:
 <pre>
 
 n:=5;
-FScale:=CyclotomicField(3);
+FScale:=CyclotomicField(3:Sparse:=true);
 FScale:=Compositum(FScale,CyclotomicField(n^2:Sparse:=true));
 
 F:=FScale;
@@ -174,6 +174,7 @@ $$
 $$
 
 Now if we fix generator for $C_5=\langle (g_{n,s}^1)^t(g_{n,t}^2)^s\rangle$ and $C_5^2=\langle g_{n,s}^1,g_{n,t}^2\rangle$. Two Burnside Symbols are
+
 $$
 \begin{align*}
 [\mathbb{P}(V_1) \circlearrowleft G]=&(1,G \circlearrowright k(x,y),())\\
