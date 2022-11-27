@@ -4,7 +4,7 @@ title: "Example (C_n*C_m):C_3"
 author_profile: true
 ---
 
-Group $G=(C_m \times C_n)^2:C_3$ is described by the short exact sequence
+Group $G=(C_m \oplus C_n):C_3$ is described by the short exact sequence
 
 $$
 \begin{align*}
@@ -18,14 +18,14 @@ $$
 \begin{align*}
 G=
 \langle
-g_{m,s}^1=\begin{pmatrix}
+g_{m,r}^1=\begin{pmatrix}
 \zeta_m^r & 0 & 0\\
 0 & 1 & 0\\
 0 & 0 & 1
 \end{pmatrix},
-g_{n,t}^2=\begin{pmatrix}
-1 & 0 & 0\\
-\zeta_n^s & \zeta_n^t & 0\\
+g_{n,s,t}^2=\begin{pmatrix}
+\zeta_n^s & 0 & 0\\
+0 & \zeta_n^t & 0\\
 0 & 0 & 1
 \end{pmatrix},
 \begin{pmatrix}
@@ -37,9 +37,7 @@ g_{n,t}^2=\begin{pmatrix}
 \end{align*}
 $$
 
-There are two representation of $G$
-
-where for $V_1$, we choose $s=3,r=t=1$ and for $V_2$, we choose $s'=5,r'=t'=1$.
+There are two representation $V_1,V_2$ of $G$, for $V_1$, we choose $s=3,r=t=1$ and for $V_2$, we choose $s'=5,r'=t'=1$.
 
 As a linear group in $\rm{GL}(3,\mathbb{C})$, it has center
 
@@ -141,7 +139,7 @@ $$
 
 $$
 \begin{align*}
-[\mathbb{P}(V_1) \circlearrowleft G]=&(1,G \circlearrowright k(x,y),())\\
+[\mathbb{P}(V_2) \circlearrowleft G]=&(1,G \circlearrowright k(x,y),())\\
 &+2(C_2,C_{14} \circlearrowright k(x),(1))\\
 &+(C_2\times C_{14},1 \circlearrowright k,((1,5),(1,10)))+(C_2\times C_{14},1 \circlearrowright k,((0,1),(1,4)))
 \end{align*}
@@ -182,40 +180,41 @@ $$
 \end{align*}
 $$
 
-Now if we fix generator for $C_2 \times C_{14}=\langle g_{m,s}^1,g_{n,t}^2\rangle$. Two Burnside Symbols are
+Now if we fix generator for $C_2 \times C_{14}=\langle g_{m,r}^1,g_{n,s,t}^2\rangle$. Two Burnside Symbols are
+
 $$
 \begin{align*}
 [\mathbb{P}(V_1) \circlearrowleft G]=&(1,G \circlearrowright k(x,y),())\\
-&+(C_5,C_5^2/C_5 \circlearrowright k(x),(2))+(C_5,C_5^2/C_5 \circlearrowright k(x),(3))\\
-&+(C_5^2,1 \circlearrowright k,((0,3),(1,0)))+(C_5^2,1 \circlearrowright k,((0,2),(4,0)))
+&+2(C_2,C_{14} \circlearrowright k(x),(1))\\
+&+(C_2\times C_{14},1 \circlearrowright k,((1,2),(1,11)))+(C_2\times C_{14},1 \circlearrowright k,((1,3),(1,12)))
 \end{align*}
 $$
 
 $$
 \begin{align*}
 [\mathbb{P}(V_2) \circlearrowleft G]=&(1,G \circlearrowright k(x,y),())\\
-&+(C_5,C_5^2/C_5 \circlearrowright k(x),(2))+(C_5,C_5^2/C_5 \circlearrowright k(x),(3))\\
-&+(C_5^2,1 \circlearrowright k,((0,1),(3,0)))+(C_5^2,1 \circlearrowright k,((0,4),(2,0)))
+&+2(C_2,C_{14} \circlearrowright k(x),(1))\\
+&+(C_2\times C_{14},1 \circlearrowright k,((1,5),(1,10)))+(C_2\times C_{14},1 \circlearrowright k,((1,4),(1,9)))
 \end{align*}
 $$
 
-The combinatorial Burnside group of $C_5^2:C_3$ is
+The combinatorial Burnside group of $C_7:A_4$ is
 $$
 \begin{align*}
-\mathcal{BC}_2(C_5^2:C_3)=(\mathbb{Z}/2)^2 \times (\mathbb{Z}/30)^2 \times \mathbb{Z}^{19}
+\mathcal{BC}_2(C_7:A_4)=(\mathbb{Z}/2)^{16} \times \mathbb{Z}/6 \times (\mathbb{Z}/12)^2 \times \mathbb{Z}/72 \times \mathbb{Z}^{21}
 \end{align*}
 $$
 
 Remark: we don't consider symbols with trivial stabilizer group in the computation of $\mathcal{BC}$.
 
 
-Let $T_2^{1,2},T_{30}^{1,2}$ and $e_i$, $i=1,\dots,19$ be the generators for $(\mathbb{Z}/2)^2$, $(\mathbb{Z}/30)^2$ and the torsion-free part respectively. 
+Let $T_2^{1,\dots,16},T_{6},T_{12}^{1,2},T_{72}$ and $e_i$, $i=1,\dots,21$ be the generators for $(\mathbb{Z}/2)^{16}$, $\mathbb{Z}/6$, $(\mathbb{Z}/12)^2$, $\mathbb{Z}/72$ and the torsion-free part respectively. 
 
 The difference of images of two Burnside symbols $[\mathbb{P}(V_1) \circlearrowleft G]-[\mathbb{P}(V_2) \circlearrowleft G]$ under the map $\rm{Burn}_2(G) \to \mathcal{BC}_2(G)$ is:
 
 $$
 \begin{align*}
-T_2^2+13T_{30}^2+e_3-e_7+e_8+2e_{11}-e_{12}+e_{16}\neq 0
+4T_{12}^1+56T_{72} \neq 0
 \end{align*}
 $$
 
