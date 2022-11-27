@@ -1,6 +1,6 @@
 ---
 permalink: /projects/DCPonProj
-title: "Projects"
+title: "Computation of equivariant birational symbols in equivariant Burnside group"
 author_profile: true
 ---
 
