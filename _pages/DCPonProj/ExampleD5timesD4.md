@@ -8,7 +8,7 @@ Group $D_5 \times D_4$ has two representation $V_1,V_2$ given by
 
 $$
 \begin{align*}
-G1=\langle
+G_1=\langle
 \begin{pmatrix}
 0 & 1 & 0 & 0\\
 1 & 0 & 0 & 0\\
@@ -41,7 +41,7 @@ and
 
 $$
 \begin{align*}
-G1=\langle
+G_2=\langle
 \begin{pmatrix}
 0 & 1 & 0 & 0\\
 1 & 0 & 0 & 0\\
