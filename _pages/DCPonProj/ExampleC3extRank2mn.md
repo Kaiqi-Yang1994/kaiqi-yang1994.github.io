@@ -18,12 +18,12 @@ $$
 \begin{align*}
 G=
 \langle
-g_{m,r}^1=\begin{pmatrix}
+g_{m,r}=\begin{pmatrix}
 \zeta_m^r & 0 & 0\\
 0 & 1 & 0\\
 0 & 0 & 1
 \end{pmatrix},
-g_{n,s,t}^2=\begin{pmatrix}
+g_{n,s,t}=\begin{pmatrix}
 \zeta_n^s & 0 & 0\\
 0 & \zeta_n^t & 0\\
 0 & 0 & 1
