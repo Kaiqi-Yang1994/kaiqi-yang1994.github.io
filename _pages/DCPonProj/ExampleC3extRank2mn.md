@@ -1,6 +1,6 @@
 ---
 permalink: /projects/DCPonProj/C3extRank2mn
-title:""
+title:"Example (C_n times C_m):C_3"
 author_profile: true
 ---
 <h1>Example $(C_n \times C_m):C_3$</h1>
