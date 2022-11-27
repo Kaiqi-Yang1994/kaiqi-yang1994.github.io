@@ -1,3 +1,9 @@
+---
+permalink: /projects/DCPonProj/C3extRank2mn
+title: "Example C_n^2:C_3"
+author_profile: true
+---
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
