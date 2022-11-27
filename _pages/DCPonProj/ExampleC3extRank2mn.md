@@ -1,10 +1,8 @@
 ---
 permalink: /projects/DCPonProj/C3extRank2mn
-title:"Example (C_n times C_m):C_3"
+title: "Example (C_n times C_m):C_3"
 author_profile: true
 ---
-<h1>Example $(C_n \times C_m):C_3$</h1>
-
 
 Group $G=C_n^2:C_3$ is described by the short exact sequence
 
