@@ -23,9 +23,9 @@ author_profile: true
 
 ### Some examples and results:
 <ul>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/examples">Examples</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ExamplePSL(2,7)">Example $\rm{PSL}(2,7)$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1">Finite subgroups of $\rm{PGL}(2,\mathbb{C})$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/examples" target="_blank" rel="noopener noreferrer">Examples</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ExamplePSL(2,7)" target="_blank" rel="noopener noreferrer">Example $\rm{PSL}(2,7)$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1" target="_blank" rel="noopener noreferrer">Finite subgroups of $\rm{PGL}(2,\mathbb{C})$</a></li>
 </ul>
 
 
