@@ -193,7 +193,7 @@ $$
 The combinatorial Burnside group of $C_5^2:C_3$ is
 $$
 \begin{align*}
-\mathfrak{BC}_2(C_5^2:C_3)=(\mathbb{Z}/2)^2 \times (\mathbb{Z}/30)^2 \times \mathbb{Z}^{19}
+\mathcal{BC}_2(C_5^2:C_3)=(\mathbb{Z}/2)^2 \times (\mathbb{Z}/30)^2 \times \mathbb{Z}^{19}
 \end{align*}
 $$
 
