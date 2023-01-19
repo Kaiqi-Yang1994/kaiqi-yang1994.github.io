@@ -36,7 +36,9 @@ We give an example of $G=A_6$ acting on $\mathbb{P}^2$.
 * Use function ComputeBurnsideSymbol(G,F,FScale).
 
 <pre>
+<small>
 BurnsideSymbols,PG2GHom,G2PGHom,PermG,H,LH,GrpQuo,AllGrp,ChainNode,ChainClass,ScalarGrp,AllSymbolNGLambda:=ComputeBurnsideSymbol(G,F,FScale);
+</small>
 </pre>
 
 * The result is as follows,
