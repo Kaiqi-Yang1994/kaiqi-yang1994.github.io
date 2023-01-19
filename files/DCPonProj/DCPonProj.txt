@@ -414,8 +414,10 @@ if OrdScalar eq 1 then
 else
 	for i in [1..#LinearCharacters(ScalarGrp)] do
 		if Order(LinearCharacters(ScalarGrp)[i]) eq Order(ScalarGrp) then
-			ScalarChar:=LinearCharacters(ScalarGrp)[i];
-			break i;
+			if LinearCharacters(ScalarGrp)[i](ScalarGrp.1) eq Matrix(ScalarGrp.1)[1][1] then
+				ScalarChar:=LinearCharacters(ScalarGrp)[i];
+				break i;
+			end if;
 		end if;
 	end for;
 end if;
@@ -2043,6 +2045,29 @@ for i in [2..#BurnsideSymbols] do
 end for;
 return Out;
 end function;
+
+
+
+FindConjEquiv:=procedure(BurnsideSymbols,H)
+"Equivalent Symbols under conjugation by normalizer";
+
+EquivSymbols:=FindEquivSymbol(BurnsideSymbols,H);
+for i in [1..#EquivSymbols] do
+	EquivSymbols[i];
+end for;
+end procedure;
+
+
+
+ReadBurnsideSymbols:=procedure(BurnsideSymbols)
+"BurnsideSymbols";
+
+for i in [1..#BurnsideSymbols] do
+	BurnsideSymbols[i][1],BurnsideSymbols[i][6],BurnsideSymbols[i][2],BurnsideSymbols[i][7][2],BurnsideSymbols[i][11][1],BurnsideSymbols[i][13];
+end for;
+end procedure;
+
+
 
 
 //Compute symbol in Burnside group
