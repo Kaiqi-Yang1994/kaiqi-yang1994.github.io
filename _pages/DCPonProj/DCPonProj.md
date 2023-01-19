@@ -1,10 +1,10 @@
 ---
 permalink: /projects/DCPonProj
-title: "Computation of equivariant birational symbols in equivariant Burnside group"
+title: "Computation of equivariant birational class in equivariant Burnside group"
 author_profile: true
 ---
 
-### Computation of equivariant birational symbols in equivariant Burnside group $\rm{Burn}_n(G)$.
+### Computation of equivariant birational class in equivariant Burnside group $\rm{Burn}_n(G)$.
 
 ### This page contains Magma code for De Concini-Procesi algorithm mentioned in
 <br>
