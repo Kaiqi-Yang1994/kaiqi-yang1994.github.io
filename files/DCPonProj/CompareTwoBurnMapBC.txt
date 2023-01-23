@@ -1,0 +1,748 @@
+//Computation of BC by decomposition
+
+CheckGenFullCharB:=function(Generators)
+Out:=<>;
+for i in [1..#Generators] do
+	gen:=Generators[i];
+	ng:=#gen[2];
+	M:=RSpace(IntegerRing(),ng);
+	BM:=Basis(M);
+	B:=[BM[i]*gen[2][i]:i in [1..ng]];
+	CharLattice:=quo<M|RSpaceWithBasis(B)>;
+	BW:=[];
+	for i in [1..#gen[1]] do
+		V:=M!0;
+		for j in [1..ng] do
+			V:=V+BM[j]*gen[1][i][j];
+		end for;
+		Include(~BW,V);
+	end for;
+	CharWeight:=sub<CharLattice|BW>;
+	if #quo<CharLattice|CharWeight> eq 1 then
+		Append(~Out,Generators[i]);
+	end if;
+end for;
+return Out;
+end function;
+
+CheckIndOrd:=function(IndTuple)
+if #IndTuple ge 2 then
+	for i in [1..#IndTuple-1] do
+		if IndTuple[i] gt IndTuple[i+1] then
+			return false;
+		end if;
+	end for;
+else
+	return true;
+end if;
+return true;
+end function;
+
+
+CreateCharIndB:=function(Char,n)
+Out:=<>;
+IndSet:=CartesianProduct(<[1..#Char]:j in [1..n]>);
+for j in IndSet do
+	if CheckIndOrd(j) then
+		Append(~Out,j);
+	end if;
+end for;
+return Out;
+end function;
+
+
+WeightDiffB:=function(gen,Ind1,Ind2)
+NewWeight:=<>;
+for i in [1..#gen[1]] do
+	if i eq Ind1 then
+		w:=<>;
+		for j in [1..#gen[1][Ind1]] do
+			Append(~w,(gen[1][Ind1][j]-gen[1][Ind2][j]) mod gen[2][j]);
+		end for;
+		Append(~NewWeight,w);
+	else
+		Append(~NewWeight,gen[1][i]);
+	end if;
+end for;
+return <NewWeight,gen[2]>;
+end function;
+
+CompareChar:=function(char1,char2)
+counter:=1;
+while counter le #char1 do
+	if char1[counter] lt char2[counter] then
+		return -1;
+	elif char1[counter] gt char2[counter] then
+		return 1;
+	else
+		counter:=counter+1;
+	end if;
+end while;
+return 0;
+end function;
+
+ChangeWeightOrderB:=function(gen,CompareChar)
+if #gen[1] ge 2 then
+	w:=[];
+	for i in [1..#gen[1]] do
+		Append(~w,gen[1][i]);
+	end for;
+	sw:=Sort(w,CompareChar);
+	SWeight:=<>;
+	for i in [1..#gen[1]] do
+		Append(~SWeight,sw[i]);
+	end for;
+	return <SWeight,gen[2]>;
+else
+	return gen;
+end if;
+end function;
+
+CheckIndB:=function(Generators,gen)
+for i in [1..#Generators] do
+	if gen[1] eq Generators[i][1] then
+		return i;
+	end if;
+end for;
+return 0;
+end function;
+
+
+BRelation:=function(Generators)
+Out:=<>;
+IndSet:=[];
+for j in [1..#Generators[1][1]-1] do
+	for l in [j+1,#Generators[1][1]] do
+		Include(~IndSet,[j,l]);
+	end for;
+end for;
+for i in [1..#Generators] do
+	gen:=Generators[i];
+	for k in [1..#IndSet] do
+		if Generators[i][1][IndSet[k][1]] eq Generators[i][1][IndSet[k][2]] then
+			Theta_1:=WeightDiffB(gen,IndSet[k][1],IndSet[k][2]);
+			Theta_1:=ChangeWeightOrderB(Theta_1,CompareChar);
+			Append(~Out,<i,CheckIndB(Generators,Theta_1)>);
+		else
+			Theta_1:=WeightDiffB(gen,IndSet[k][1],IndSet[k][2]);
+			Theta_2:=WeightDiffB(gen,IndSet[k][2],IndSet[k][1]);
+			Theta_1:=ChangeWeightOrderB(Theta_1,CompareChar);
+			Theta_2:=ChangeWeightOrderB(Theta_2,CompareChar);
+			Append(~Out,<i,CheckIndB(Generators,Theta_1),CheckIndB(Generators,Theta_2)>);
+		end if;
+	end for;		
+end for;
+return Out;
+end function;
+
+ConjugationRelationB:=function(Generators,G,K,T,Grp,Iso)
+Out:=[];
+Act:=Normalizer(T,G) meet Normalizer(T,K);
+for i in [1..#Generators] do
+	gen:=Generators[i];
+	for g in Act do
+		GenUnderConjugate:=<>;
+		for j in [1..Ngens(Grp)] do
+			Append(~GenUnderConjugate,Eltseq(Iso(Inverse(Iso)(Grp.j)^(g^(-1)))));
+		end for;
+		NewWeight:=<>;
+		for k in [1..#gen[1]] do
+			wei:=<>;
+			for l in [1..#gen[1][k]] do
+				S:=0;
+				for t in [1..#GenUnderConjugate] do
+					S:=S+gen[1][k][t]*GenUnderConjugate[t][l];
+				end for;
+				Append(~wei,S mod gen[2][l]);
+			end for;
+			Append(~NewWeight,wei);
+		end for;
+		Newgen:=<NewWeight,gen[2]>;
+		Newgen:=ChangeWeightOrderB(Newgen,CompareChar);
+		Ind:=CheckIndB(Generators,Newgen);
+		if i lt Ind then
+			Include(~Out,[i,Ind]);
+		elif i gt Ind then
+			Include(~Out,[Ind,i]);
+		end if;
+	end for;
+end for;
+return Out;
+end function;
+
+
+//G is an abelian, K is a subgroup of centralizer of G, T is the whole group.
+CompB:=function(G,K,T,n)
+Grp,Iso:=AbelianGroup(G);
+Generators:=<>;
+NG:=Ngens(AbelianGroup(G));
+Ord:=<Order(AbelianGroup(G).l): l in [1..NG]>;
+CharTemp:=CartesianProduct(<[0..Ord[i]-1]:i in [1..#Ord]>);
+Char:=<>;
+for i in CharTemp do
+	Append(~Char,i);
+end for;
+CharInd:=CreateCharIndB(Char,n);
+for j in CharInd do
+	Weight:=<>;
+	for i in [1..#j] do
+		Append(~Weight,Char[j[i]]);
+	end for;
+	Append(~Generators,<Weight,Ord>);
+end for;
+Generators:=CheckGenFullCharB(Generators);
+if #Generators ne 0 then
+	BRel:=BRelation(Generators);
+	CR:=ConjugationRelationB(Generators,G,K,T,Grp,Iso);
+	FullLattice:=RSpace(IntegerRing(),#Generators);
+	Base:=Basis(FullLattice);
+	RelationBase:=[];
+	for i in [1..#BRel] do
+		b:=Base[BRel[i][1]];	
+		if #BRel[i] eq 2 then
+			b:=b-Base[BRel[i][2]];
+		end if;
+		if #BRel[i] eq 3 then
+			b:=b-Base[BRel[i][2]]-Base[BRel[i][3]];
+		end if;
+		Append(~RelationBase,b);
+	end for;
+	for i in [1..#CR] do
+		b:=Base[CR[i][1]]-Base[CR[i][2]];
+		Append(~RelationBase,b);
+	end for;
+	B,QuoMap:=quo<FullLattice|sub<FullLattice|RelationBase>>;
+	return B,QuoMap,Generators,FullLattice,RelationBase;
+else
+	return 0,0,0,0,0;
+end if;
+end function;
+
+
+
+
+CheckInConjUnderNGK:=function(grp,ConjUnderNGK,K,G)
+for i in [1..#ConjUnderNGK] do
+	if IsConjugate(Normalizer(G,K),grp,ConjUnderNGK[i]) then
+		return true;
+	end if;
+end for;
+return false;
+end function;
+
+
+
+
+CompBC:=function(G,n)
+Out:=<>;
+List:=AbelianSubgroups(G);
+GKTList:=<>;
+for i in [2..#List] do
+	Cen:=Centralizer(G,List[i]`subgroup);
+	AllSub:=AllSubgroups(Cen);
+	ConjUnderNGK:=<>;
+	Counter:=2;
+	while Counter le #AllSub do
+		if List[i]`subgroup subset AllSub[Counter] then
+			if CheckInConjUnderNGK(AllSub[Counter],ConjUnderNGK,List[i]`subgroup,G) then
+				Counter:=Counter+1;
+			else
+				Append(~ConjUnderNGK,AllSub[Counter]);
+				Counter:=Counter+1;
+			end if;
+		else
+			Counter:=Counter+1;
+		end if;
+	end while;
+	for j in [1..#ConjUnderNGK] do
+		Append(~GKTList,<List[i]`subgroup,ConjUnderNGK[j],G>);
+	end for;
+end for;
+for i in [1..#GKTList] do
+	i,#GKTList;
+	B,QuoMap,Generators,FullLattice:=CompB(GKTList[i][1],GKTList[i][2],GKTList[i][3],n);
+	Append(~Out,<B,QuoMap,Generators,FullLattice,GKTList[i]>);
+end for;
+print("Done");
+return Out;
+end function;
+
+//------------------------------------------------------------------------------------
+
+
+//specify an isomorphism from G1 to G2
+
+//Iso: G1 to G2.
+
+Burnside2BCSymbols:=function(BurnsideSymbols)
+BCSymbols:=<>;
+for i in [2..#BurnsideSymbols] do
+	TempBC:=<>;
+	Append(~TempBC,BurnsideSymbols[i][1]);
+	Append(~TempBC,BurnsideSymbols[i][2]);
+	Append(~TempBC,BurnsideSymbols[i][3]);
+	Append(~TempBC,BurnsideSymbols[i][7]);
+	Append(~TempBC,BurnsideSymbols[i][8]);
+	Beta:=<>;
+	for j in [1..#BurnsideSymbols[i][13]] do
+		Char:=[];
+		for k in [1..Ngens(BurnsideSymbols[i][15])] do
+			Append(~Char,<Inverse(BurnsideSymbols[i][16])(BurnsideSymbols[i][15].k),RootOfUnity(BurnsideSymbols[i][14][k])^BurnsideSymbols[i][13][j][k]>);
+		end for;
+		Append(~Beta,Char);
+	end for;
+	Append(~TempBC,Beta);
+	Append(~BCSymbols,TempBC);
+end for;
+return BCSymbols;
+end function;
+
+
+
+//Transfer character of group PermG under conjugation by g
+TransferChar:=function(Char,PermG,g)
+Out:=[];
+Temp:=[];
+for i in [1..#Char] do
+	Append(~Temp,<Char[i][1]^g,Char[i][2]>);
+end for;
+NewPerm:=PermutationGroup<Degree(PermG)|[Temp[i][1]:i in [1..#Temp]]>;
+TempFPG,TempFPHom:=FPGroup(NewPerm);
+for i in [1..Ngens(PermG)] do
+	Eltseq:=ElementToSequence(Inverse(TempFPHom)(PermG.i));
+	Eigen:=1;
+	for j in [1..#Eltseq] do
+		if Eltseq[j] gt 0 then
+			Eigen:=Eigen*Temp[Eltseq[j]][2];
+		else
+			Eigen:=Eigen*(Temp[-1*Eltseq[j]][2]^(-1));
+		end if;
+	end for;
+	Append(~Out,<PermG.i,Eigen>);
+end for;
+return Out;
+end function;
+
+
+
+
+//BCSymbols1 is the BCSymbols of group G1, Isom is an isomorphism from G1 to G2
+TransferBCSymbols:=function(BCSymbols1,Isom)
+BCAfterIsom:=<>;
+for i in [1..#BCSymbols1] do
+	TempBC:=<>;
+	Append(~TempBC,BCSymbols1[i][1]);
+	Append(~TempBC,BCSymbols1[i][2]);
+	Append(~TempBC,Isom(BCSymbols1[i][3]));
+	Append(~TempBC,BCSymbols1[i][4]);
+	Append(~TempBC,Isom(BCSymbols1[i][5]));
+	NewBeta:=<>;
+	for j in [1..#BCSymbols1[i][6]] do
+		NewChar:=[];
+		for k in [1..#BCSymbols1[i][6][j]] do
+			Append(~NewChar,<Isom(BCSymbols1[i][6][j][k][1]),BCSymbols1[i][6][j][k][2]>);
+		end for;
+		Append(~NewBeta,NewChar);
+	end for;
+	Append(~TempBC,NewBeta);
+	Append(~BCAfterIsom,TempBC);
+end for;
+return BCAfterIsom;
+end function;
+
+
+//Change character from reduced form to complete form
+ChangeCharForm:=function(CharSimple,PermG)
+C:=LinearCharacters(PermG);
+for i in [1..#C] do
+	for j in [1..#CharSimple] do
+		if C[i](CharSimple[j][1]) ne CharSimple[j][2] then
+			continue i;
+		end if;
+	end for;
+	return C[i];
+end for;
+end function;
+
+
+
+//Uniform all symbols to the chosen representative from all abelian subgroups conjugacy classes of G2
+UniformBCSymbols:=function(G2,BCSymbols,AbelSubG)
+Out:=<>;
+
+for i in [2..#AbelSubG] do
+	AbGrp,AbelMap:=AbelianGroup(AbelSubG[i]`subgroup);
+	for j in [1..#BCSymbols] do
+		BCSym:=BCSymbols[j];
+		if IsConjugate(G2,AbelSubG[i]`subgroup,BCSym[3]) then
+			i,j;
+			TempSym:=<>;
+			Bool,g:=IsConjugate(G2,BCSym[3],AbelSubG[i]`subgroup);
+			ActionGrp:=BCSym[5]^g;
+			Append(~TempSym,BCSym[1]);
+			Append(~TempSym,BCSym[2]);
+			Append(~TempSym,AbelSubG[i]`subgroup);
+			Append(~TempSym,BCSym[4]);
+			Append(~TempSym,ActionGrp);
+			TranslateBeta:=<>;
+			if #BCSym[6] gt 0 then
+				for k in [1..#BCSym[6]] do
+					Char:=[];
+					NewChar:=TransferChar(BCSym[6][k],AbelSubG[i]`subgroup,g);
+					NewChar:=ChangeCharForm(NewChar,AbelSubG[i]`subgroup);
+					for t in [1..Ngens(AbGrp)] do
+						Append(~Char,<Inverse(AbelMap)(AbGrp.t),NewChar(Inverse(AbelMap)(AbGrp.t))>);
+					end for;
+					Append(~TranslateBeta,Char);
+				end for;
+			end if;
+			Append(~TempSym,TranslateBeta);
+			Append(~Out,TempSym);
+		end if;
+	end for;
+end for;
+return Out,AbelSubG;
+end function;
+
+
+//Form substraction BCSymbols1-BCSymbols2
+FormSubstraction:=function(BCSymbols1,BCSymbols2)
+Out:=<>;
+for i in [1..#BCSymbols1] do
+	Append(~Out,BCSymbols1[i]);
+end for;
+
+for i in [1..#BCSymbols2] do
+	NewSym:=<>;
+	Append(~NewSym,BCSymbols2[i][1]*(-1));
+	Append(~NewSym,BCSymbols2[i][2]);
+	Append(~NewSym,BCSymbols2[i][3]);
+	Append(~NewSym,BCSymbols2[i][4]);
+	Append(~NewSym,BCSymbols2[i][5]);
+	Append(~NewSym,BCSymbols2[i][6]);
+	Append(~Out,NewSym);
+end for;
+return Out;
+end function;
+
+
+
+
+//Simplify BC Symbols
+SimplifyBCSymbols:=function(NBC)
+Out:=<>;
+Ind:=[i:i in [1..#NBC]];
+while #Ind ne 0 do
+	Sym:=NBC[Ind[1]];
+	Exclude(~Ind,Ind[1]);
+	Coeff:=Sym[1];
+	for j in Ind do
+		if NBC[j][3] eq Sym[3] then
+			if NBC[j][5] eq Sym[5] then
+				if NBC[j][6] eq Sym[6] then
+					Coeff:=Coeff+NBC[j][1];
+					Exclude(~Ind,j);
+				end if;
+			end if;
+		end if;
+	end for;
+	if Coeff ne 0 then
+		NewSym:=<>;
+		Append(~NewSym,Coeff);
+		Append(~NewSym,Sym[2]);
+		Append(~NewSym,Sym[3]);
+		Append(~NewSym,Sym[4]);
+		Append(~NewSym,Sym[5]);
+		Append(~NewSym,Sym[6]);
+		Append(~Out,NewSym);
+	end if;
+end while;
+return Out;
+end function;
+
+
+
+NumOfFac:=function(n)
+if n eq 1 then
+	return 0;
+else
+	Seq:=Factorization(n);
+	Out:=0;
+	for i in [1..#Seq] do
+		Out:=Out+Seq[i][2];
+	end for;
+	return Out;
+end if;
+end function;
+
+CheckValue:=function(G1,G2,S)
+for i in [1..#S] do
+	if S[i][1] eq G1 then
+		if S[i][2] eq G2 then
+			return S[i][3];
+		end if;
+	end if;
+end for;
+end function;
+
+
+MobiusFunction:=function(G)
+L:=AllSubgroups(G);
+MaxLev:=1;
+OutInd:=<>;
+Out:=<>;
+for i in [1..#L] do
+	for j in [1..#L] do
+		if L[i] subset L[j] then
+			Append(~OutInd,[i,j,NumOfFac(Floor(Order(L[j])/Order(L[i])))]);
+			if NumOfFac(Floor(Order(L[j])/Order(L[i]))) gt MaxLev then
+				MaxLev:=NumOfFac(Floor(Order(L[j])/Order(L[i])));
+			end if;
+		end if;
+		if i eq j then
+			Append(~Out,<L[i],L[j],1>);
+		end if;
+	end for;
+end for;
+for i in [1..MaxLev] do
+	for j in [1..#OutInd] do
+		if OutInd[j][3] eq i then
+			LTemp:=IntermediateSubgroups(L[OutInd[j][2]],L[OutInd[j][1]]);
+			TempValue:=-1;
+			for k in [1..#LTemp] do
+				TempValue:=TempValue-CheckValue(L[OutInd[j][1]],LTemp[k],Out);
+			end for;
+			Append(~Out,<L[OutInd[j][1]],L[OutInd[j][2]],TempValue>);
+		end if;
+	end for;
+end for;
+return Out;
+end function;
+
+//H1 is a subgroup of H2
+EvaluateMobius:=function(H1,H2,Mobiusfunc)
+for i in [1..#Mobiusfunc] do
+	if Mobiusfunc[i][1] eq H1 then
+		if Mobiusfunc[i][2] eq H2 then
+			return Mobiusfunc[i][3];
+		end if;
+	end if;
+end for;
+end function;
+
+
+MobiusTo1BCSym:=function(BCSym,Mobiusfunc)
+Out:=<>;
+AllSub:=AllSubgroups(BCSym[3]);
+for i in [2..#AllSub] do
+	i;
+	Mobiusvalue:=EvaluateMobius(AllSub[i],BCSym[3],Mobiusfunc);
+	
+	//Check beta, the sequence of characters, contains 0 or not
+	//Construct restriction of beta
+	Beta:=<>;
+	for j in [1..#BCSym[6]] do
+		FullChar:=ChangeCharForm(BCSym[6][j],BCSym[3]);
+		if Order(Restriction(FullChar,AllSub[i])) eq 1 then
+			continue i;
+		end if;
+		Char:=[];
+		for k in [1..Ngens(AllSub[i])] do
+			Append(~Char,<AllSub[i].k,FullChar(AllSub[i].k)>);
+		end for;
+		Append(~Beta,Char);
+	end for;
+	TempSym:=<>;
+	Append(~TempSym,BCSym[1]*Mobiusvalue);
+	Append(~TempSym,GroupName(AllSub[i]));
+	Append(~TempSym,AllSub[i]);
+	Append(~TempSym,<GroupName(BCSym[5]/AllSub[i]),GroupName(BCSym[5])>);
+	Append(~TempSym,BCSym[5]);
+	Append(~TempSym,Beta);
+	Append(~Out,TempSym);
+end for;
+return Out;	
+end function;
+
+
+ApplyMobiusBCSymbols:=function(NBC,Mobiusfunc)
+Out:=<>;
+for i in [1..#NBC] do
+	AfterMobius:=MobiusTo1BCSym(NBC[i],Mobiusfunc);
+	for j in [1..#AfterMobius] do
+		Append(~Out,AfterMobius[j]);
+	end for;
+end for;
+return Out;
+end function;
+
+
+//Simplify beta, the sequence of characters
+SimplifyBeta:=function(BCSymbols,CompareChar)
+Out:=<>;
+for i in [1..#BCSymbols] do
+	TempBCSym:=<>;
+	Append(~TempBCSym,BCSymbols[i][1]);
+	Append(~TempBCSym,BCSymbols[i][2]);
+	Append(~TempBCSym,BCSymbols[i][3]);
+	Append(~TempBCSym,BCSymbols[i][4]);
+	Append(~TempBCSym,BCSymbols[i][5]);
+	NewBeta:=[];
+	AbGrp,AbelMap:=AbelianGroup(BCSymbols[i][3]);
+	for j in [1..#BCSymbols[i][6]] do
+		CharSeq:=[];
+		for t in [1..Ngens(AbGrp)] do
+			for e in [0..Order(AbGrp.t)-1] do
+				if BCSymbols[i][6][j][t][2] eq RootOfUnity(Order(AbGrp.t))^e then
+					Append(~CharSeq,e);
+				end if;
+			end for;
+		end for;
+		Append(~NewBeta,<CharSeq[s]:s in [1..#CharSeq]>);
+	end for;
+	NewBeta:=Sort(NewBeta,CompareChar);
+	NewBeta:=<NewBeta[i]:i in [1..#NewBeta]>;
+	Append(~TempBCSym,NewBeta);
+	Append(~TempBCSym,<BCSymbols[i][6][1][j][1]:j in [1..#BCSymbols[i][6][1]]>);
+	Append(~Out,TempBCSym);
+end for;
+return Out;
+end function;
+
+
+ClusterBCSymbolsByDecomp:=function(BCSymbols)
+Out:=<>;
+Ind:=[i:i in [1..#BCSymbols]];
+while #Ind ne 0 do
+	TempClass:=<>;
+	Append(~TempClass,BCSymbols[Ind[1]]);
+	Exclude(~Ind,Ind[1]);
+	if #Ind ne 0 then
+		for j in Ind do
+			if BCSymbols[j][3] eq TempClass[1][3] then
+				if BCSymbols[j][5] eq TempClass[1][5] then
+					Append(~TempClass,BCSymbols[j]);
+					Exclude(~Ind,j);
+				end if;
+			end if;
+		end for;
+	end if;
+	Append(~Out,TempClass);
+end while;
+return Out;
+end function;
+
+
+FindImageBCByBrutal:=function(BCSymbols,H2,BCGrp,FullLattice,QuoMap,Generators)
+Out:=<>;
+Vector:=FullLattice!0;
+for i in [1..#BCSymbols] do
+	for j in [1..#Generators] do
+		if Generators[j][5] eq BCSymbols[i][3] then
+			if IsConjugate(Normalizer(H2,Generators[j][5]),Generators[j][4],BCSymbols[i][5]) then
+				if #BCSymbols[i][6] eq #Generators[j][6] then
+					if BCSymbols[i][6] eq Generators[j][6] then
+						i,j;
+						Vector:=Vector+FullLattice.j*BCSymbols[i][1];
+					end if;
+				end if;
+			end if;
+		end if;
+	end for;
+end for;
+Out:=QuoMap(Vector);
+return Out,Vector;
+end function;
+
+
+
+FindImageBCByDecomp:=function(ClusterBCSymbols,BCGrp,H2)
+Out:=<>;
+for i in [1..#BCGrp] do
+	for j in [1..#ClusterBCSymbols] do
+		if BCGrp[i][5][1] eq ClusterBCSymbols[j][1][3] then
+			if IsConjugate(Normalizer(H2,BCGrp[i][5][1]),BCGrp[i][5][2],ClusterBCSymbols[j][1][5]) then
+				i,j;
+				Vector:=BCGrp[i][4]!0;
+				for k in [1..#ClusterBCSymbols[j]] do
+					for l in [1..#BCGrp[i][3]] do
+						if #ClusterBCSymbols[j][k][6] eq #BCGrp[i][3][l][1] then
+							if ClusterBCSymbols[j][k][6] eq BCGrp[i][3][l][1] then
+								Vector:=Vector+BCGrp[i][4].l*ClusterBCSymbols[j][k][1];
+							end if;
+						end if;
+					end for;
+				end for;
+				Append(~Out,<BCGrp[i],Vector,BCGrp[i][2](Vector)>);
+			end if;
+		end if;
+	end for;
+end for;
+return Out;
+end function;
+
+
+
+//Find the difference in BC, Isom is an isomorphism from G1 to G2
+CompareTwoBurnSymbolsByBrutal:=function(BurnsideSymbols1,BurnsideSymbols2,Isom,H1,H2,Dim,CompareChar,BrutalBC)
+
+AbelSubH2:=AbelianSubgroups(H2);
+
+BCSymbols1:=Burnside2BCSymbols(BurnsideSymbols1);
+BCSymbols2:=Burnside2BCSymbols(BurnsideSymbols2);
+
+NBCSymbols1:=TransferBCSymbols(BCSymbols1,Isom);
+
+NBC:=FormSubstraction(NBCSymbols1,BCSymbols2);
+
+NBC:=UniformBCSymbols(H2,NBC,AbelSubH2);
+
+NBC:=SimplifyBCSymbols(NBC);
+
+//Change the form of beta, the sequence of characters
+BrutalNBC:=SimplifyBeta(NBC,CompareChar);
+
+
+BCGrp,FullLattice,QuoMap,Generators,IndSet2,RelationBase:=BrutalBC(H2,Dim);
+
+Out,Vector:=FindImageBCByBrutal(BrutalNBC,H2,BCGrp,FullLattice,QuoMap,Generators);
+
+return Out;
+end function;
+
+
+//Find the difference in BC, Isom is an isomorphism from G1 to G2
+CompareTwoBurnSymbolsByDecomp:=function(BurnsideSymbols1,BurnsideSymbols2,Isom,H1,H2,Dim)
+
+AbelSubH2:=AbelianSubgroups(H2);
+
+BCSymbols1:=Burnside2BCSymbols(BurnsideSymbols1);
+BCSymbols2:=Burnside2BCSymbols(BurnsideSymbols2);
+
+NBCSymbols1:=TransferBCSymbols(BCSymbols1,Isom);
+
+NBC:=FormSubstraction(NBCSymbols1,BCSymbols2);
+
+NBC:=UniformBCSymbols(H2,NBC,AbelSubH2);
+
+//NBC:=SimplifyBCSymbols(NBC);
+
+Mobiusfunc:=MobiusFunction(H2);
+
+DecompNBC:=ApplyMobiusBCSymbols(NBC,Mobiusfunc);
+
+DecompNBC:=UniformBCSymbols(H2,DecompNBC,AbelSubH2);
+
+//Change the form of beta, the sequence of characters
+DecompNBC:=SimplifyBeta(DecompNBC,CompareChar);
+
+
+DecompBCGrp:=CompBC(H2,Dim);
+
+//Cluster BC Symbols according to stabilizer and action group
+DecompNBC:=ClusterBCSymbolsByDecomp(DecompNBC);
+
+Out:=FindImageBCByDecomp(DecompNBC,DecompBCGrp,H2);
+
+return Out;
+end function;
