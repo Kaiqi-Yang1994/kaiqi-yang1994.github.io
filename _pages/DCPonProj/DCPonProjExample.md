@@ -37,7 +37,8 @@ We give an example of $G=A_6$ acting on $\mathbb{P}^2$.
 
 <pre>
 <small>
-BurnsideSymbols,PG2GHom,G2PGHom,PermG,H,LH,GrpQuo,AllGrp,ChainNode,ChainClass,ScalarGrp,AllSymbolNGLambda:=ComputeBurnsideSymbol(G,F,FScale);
+BurnsideSymbols,PG2GHom,G2PGHom,PermG,H,LH,GrpQuo,AllGrp,ChainNode,ChainClass,<br>
+ScalarGrp,AllSymbolNGLambda:=ComputeBurnsideSymbol(G,F,FScale);
 </small>
 </pre>
 
