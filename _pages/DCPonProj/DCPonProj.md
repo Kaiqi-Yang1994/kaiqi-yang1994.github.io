@@ -23,6 +23,7 @@ author_profile: true
 
 ### Some examples and results:
 <ul>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/Instructions" target="_blank" rel="noopener noreferrer">Instructions to use Magma code</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/examples" target="_blank" rel="noopener noreferrer">Examples</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ExamplePSL(2,7)" target="_blank" rel="noopener noreferrer">Example $\rm{PSL}(2,7)$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/C3extRank2" target="_blank" rel="noopener noreferrer">Example $C_n^2:C_3$</a></li>
