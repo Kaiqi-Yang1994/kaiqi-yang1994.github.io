@@ -1,6 +1,6 @@
 ---
 permalink: /projects/DCPonProj/examples
-title: "Projects"
+title: "Example"
 author_profile: true
 ---
 

@@ -1,6 +1,6 @@
 ---
 permalink: /projects/DCPonProj/ProjLinGrpDim1
-title: "Projects"
+title: "PGL(2,C)"
 author_profile: true
 ---
 
