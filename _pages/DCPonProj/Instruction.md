@@ -1,6 +1,6 @@
 ---
 permalink: /projects/DCPonProj/Instructions
-title: "Projects"
+title: "Instructions"
 author_profile: true
 ---
 Given a representation $\Phi$ of a group $G \subset PGL_{n+1}$ acting on $\mathbb{P}^n$, follow the instructions to compute the Burnside symbols.

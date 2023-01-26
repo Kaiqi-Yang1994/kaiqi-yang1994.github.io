@@ -1,6 +1,6 @@
 ---
 permalink: /projects/CompBnG
-title: "Projects"
+title: "Combinatorial Burnside group"
 author_profile: true
 ---
 
