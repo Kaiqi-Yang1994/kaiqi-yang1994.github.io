@@ -1,10 +1,12 @@
 ---
 permalink: /projects/DCPonProj/ProjLinGrpDim2/A6
-title: "Dimension2 A5"
+title: "Dimension2 A6"
 author_profile: true
 ---
 
-Group $G=A_5$ has 2 3-dimensional representations, one representation is as follows:
+Group $G=A_6$ does not have 3-dimensional representations, its cover group $C_3.A_6$ has 4 3-dimensional representations.
+
+The first representation is as follows:
 
 $$
 \begin{align*}
