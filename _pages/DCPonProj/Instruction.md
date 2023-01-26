@@ -24,7 +24,7 @@ BurnsideSymbols,PG2GHom,G2PGHom,PermG,H,LH,GrpQuo,AllGrp,ChainNode,ChainClass,<b
 ScalarGrp,AllSymbolNGLambda:=ComputeBurnsideSymbol(G,F,FScale);
 </small>
 </pre>
-It will computes the Burnside symbols, display the simplified version of Burnside symbols and computes the conjugated $\beta$ under the action of normalizer of stabilizer of the corresponding symbol.
+It computes the Burnside symbols, display the simplified version of Burnside symbols and computes the conjugated $\beta$ under the action of normalizer of stabilizer of the corresponding symbol.
 </li>
 
 <li>To check the simplified version of BurnsideSymbols again, use command
