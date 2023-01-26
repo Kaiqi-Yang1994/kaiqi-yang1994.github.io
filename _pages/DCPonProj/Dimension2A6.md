@@ -1,5 +1,5 @@
 ---
-permalink: /projects/DCPonProj/ProjLinGrpDim2/A5
+permalink: /projects/DCPonProj/ProjLinGrpDim2/A6
 title: "Dimension2 A5"
 author_profile: true
 ---
