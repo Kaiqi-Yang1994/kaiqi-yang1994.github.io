@@ -12,10 +12,10 @@ REPRESENTATION THEORY</a>)
 $\textbf{Intransitive}$ subgroups: the representation is reducible and has the form $G=C_n \times G'$ where $G' \subset GL_2$, which is
 cyclic, Dihedral, $A_4$, $S_4$ or $A_5$.
 
-$\textbf{transitive but imprimitive}$ subgroups: the action is not transitive, but there is a nontrivial normal subgroup of $G$ acting intransitively.
+$\textbf{Transitive but imprimitive}$ subgroups: the action is not transitive, but there is a nontrivial normal subgroup of $G$ acting intransitively.
 They are 4 types.
 
-$\textbf{primitive}$ subgroups of $\rm{PGL}(3,\mathbb{C})$ are isomorphic to one of the following groups:
+$\textbf{Primitive}$ subgroups of $\rm{PGL}(3,\mathbb{C})$ are isomorphic to one of the following groups:
 * $A_5$ of order 60,
 * $A_6$ of order 360,
 * $PSL_2(\mathbb{F}_7)$ of order 168,
@@ -26,9 +26,10 @@ $\textbf{primitive}$ subgroups of $\rm{PGL}(3,\mathbb{C})$ are isomorphic to one
 The explicit generators of $\textbf{primitive}$ groups $G$ and the Burnside symbols of $G$ acting on $\mathbb{P}^2$ are given in the following pages:
 
 <ul>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Cyclic">Cyclic group $C_n$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Dihedral">Dihedral group $D_n$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Tetrahedral">Tetrahedral group $A_4$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Octahedral">Octahedral group $S_4$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Icosahedral">Icosahedral group $A_5$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/A5">$A_5$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/A6">$A_6$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/PSL(2,7)">$PSL_2(\mathbb{F}_7)$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/ASL(2,3)">$ASL_2(\mathbb{F}_3)$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/PSU(3,2)">$PSU_3(\mathbb{F}_2)$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/C3S3C2">$C3:S3.C2$</a></li>
 </ul>
