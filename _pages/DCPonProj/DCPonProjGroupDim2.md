@@ -4,10 +4,13 @@ title: "Projects"
 author_profile: true
 ---
 
-In this page, there is a list of all finite groups of $\rm{PGL}(3,\mathbb{C})$ acting on Project space $\mathbb{P}^2$,(see section 10 in <a href="https://arxiv.org/pdf/2108.00518.pdf">EQUIVARIANT BURNSIDE GROUPS AND
+In this page, there is a list of all finite groups of $\rm{PGL}(3,\mathbb{C})$ acting on Project space $\mathbb{P}^2$,
+
+(see section 10 in <a href="https://arxiv.org/pdf/2108.00518.pdf">EQUIVARIANT BURNSIDE GROUPS AND
 REPRESENTATION THEORY</a>)
 
-$\textbf{Intransitive}$ subgroups: the representation is reducible and has the form $G=C_n \times G'$ where $G' \subset GL_2$.
+$\textbf{Intransitive}$ subgroups: the representation is reducible and has the form $G=C_n \times G'$ where $G' \subset GL_2$, which is
+cyclic, Dihedral, $A_4$, $S_4$ or $A_5$.
 
 $\textbf{transitive but imprimitive}$ subgroups: the action is not transitive, but there is a nontrivial normal subgroup of $G$ acting intransitively.
 They are 4 types.
@@ -20,7 +23,7 @@ $\textbf{primitive}$ subgroups of $\rm{PGL}(3,\mathbb{C})$ are isomorphic to one
 * A subgroup of Hessian group, $PSU_3(\mathbb{F}_2)$ of order 72,
 * A subgroup of Hessian group, $C3:S3.C2$ of order 36.
 
-The explicit generators of group $G$ and the Burnside symbol of $G$ acting on $\mathbb{P}^1$ are given in the following pages:
+The explicit generators of $\textbf{primitive}$ groups $G$ and the Burnside symbols of $G$ acting on $\mathbb{P}^2$ are given in the following pages:
 
 <ul>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1/Cyclic">Cyclic group $C_n$</a></li>
