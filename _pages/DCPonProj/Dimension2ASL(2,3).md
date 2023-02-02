@@ -1,6 +1,6 @@
 ---
-permalink: /projects/DCPonProj/ProjLinGrpDim2/A6
-title: "Dimension2 A6"
+permalink: /projects/DCPonProj/ProjLinGrpDim2/ASL(2,3)
+title: "Dimension2 ASL(2,3)"
 author_profile: true
 ---
 
