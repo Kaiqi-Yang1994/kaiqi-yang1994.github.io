@@ -1,6 +1,6 @@
 ---
 permalink: /projects/DCPonProj/ProjLinGrpDim2/PSL(2,7)
-title: "Dimension2 PSL(2,7)"
+title: "Dimension2 $PSL(2,7)$"
 author_profile: true
 ---
 

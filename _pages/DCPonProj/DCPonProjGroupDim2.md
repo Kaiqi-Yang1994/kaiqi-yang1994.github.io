@@ -31,5 +31,5 @@ The explicit generators of $\textbf{primitive}$ groups $G$ and the Burnside symb
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/PSL(2,7)" target="_blank" rel="noopener noreferrer">$PSL_2(\mathbb{F}_7)$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/ASL(2,3)" target="_blank" rel="noopener noreferrer">$ASL_2(\mathbb{F}_3)$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/PSU(3,2)" target="_blank" rel="noopener noreferrer">$PSU_3(\mathbb{F}_2)$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/C3S3C2" target="_blank" rel="noopener noreferrer">$C3:S3.C2$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/C3S3C2" target="_blank" rel="noopener noreferrer">$C_3:S_3.C_2$</a></li>
 </ul>

@@ -1,6 +1,6 @@
 ---
 permalink: /projects/DCPonProj/ProjLinGrpDim2/A5
-title: "Dimension2 A_5"
+title: "Dimension2 $A_5$"
 author_profile: true
 ---
 

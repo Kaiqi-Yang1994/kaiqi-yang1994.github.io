@@ -1,6 +1,6 @@
 ---
 permalink: /projects/DCPonProj/ProjLinGrpDim2/PSU(3,2)
-title: "Dimension2 PSU(3,2)"
+title: "Dimension2 $PSU(3,2)$"
 author_profile: true
 ---
 
