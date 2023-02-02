@@ -4,7 +4,7 @@ title: "Dimension2 A5"
 author_profile: true
 ---
 
-Group $G=A_5$ has 2 3-dimensional representations, one representation is as follows:
+Group $G=A_5$ has 2 irreducible 3-dimensional representations, one representation is as follows:
 
 $$
 \begin{align*}
