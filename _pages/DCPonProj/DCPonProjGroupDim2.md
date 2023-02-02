@@ -26,10 +26,10 @@ $\textbf{Primitive}$ subgroups of $\rm{PGL}(3,\mathbb{C})$ are isomorphic to one
 The explicit generators of $\textbf{primitive}$ groups $G$ and the Burnside symbols of $G$ acting on $\mathbb{P}^2$ are given in the following pages:
 
 <ul>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/A5">$A_5$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/A6">$A_6$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/PSL(2,7)">$PSL_2(\mathbb{F}_7)$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/ASL(2,3)">$ASL_2(\mathbb{F}_3)$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/PSU(3,2)">$PSU_3(\mathbb{F}_2)$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/C3S3C2">$C3:S3.C2$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/A5" target="_blank" rel="noopener noreferrer">$A_5$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/A6" target="_blank" rel="noopener noreferrer">$A_6$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/PSL(2,7)" target="_blank" rel="noopener noreferrer">$PSL_2(\mathbb{F}_7)$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/ASL(2,3)" target="_blank" rel="noopener noreferrer">$ASL_2(\mathbb{F}_3)$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/PSU(3,2)" target="_blank" rel="noopener noreferrer">$PSU_3(\mathbb{F}_2)$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2/C3S3C2" target="_blank" rel="noopener noreferrer">$C3:S3.C2$</a></li>
 </ul>
