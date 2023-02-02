@@ -62,7 +62,7 @@ $$
 \end{align*}
 $$
 
-For more detail, see file <a href="http://kaiqi-yang1994.github.io/files/DCPonProj/Dim2A51" download> First $A_5$ Magma state</a>
+For more detail, see file <a href="http://kaiqi-yang1994.github.io/files/DCPonProj/Dim2A51.txt" download> First $A_5$ Magma state</a>
 
 
 Another linear representation of $A_5$ is given by
