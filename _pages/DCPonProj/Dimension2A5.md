@@ -63,7 +63,7 @@ $$
 $$
 
 For more detail, see file <a href="http://kaiqi-yang1994.github.io/files/DCPonProj/Dim2A51.txt" download target="_blank" rel="noopener noreferrer"> First $A_5$ Magma state</a>
-
+[Download Minion](http://kaiqi-yang1994.github.io/files/DCPonProj/Dim2A51.txt "download")
 
 Another linear representation of $A_5$ is given by
 
