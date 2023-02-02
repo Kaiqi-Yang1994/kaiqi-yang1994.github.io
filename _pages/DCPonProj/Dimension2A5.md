@@ -62,7 +62,7 @@ $$
 \end{align*}
 $$
 
-For more detail, see file <a href="http://kaiqi-yang1994.github.io/files/DCPonProj/Dim2A51.magma" download> First $A_5$</a>
+For more detail, see file <a href="http://kaiqi-yang1994.github.io/files/DCPonProj/Dim2A51" download target="_blank"> First $A_5$</a>
 
 
 Another linear representation of $A_5$ is given by
@@ -125,6 +125,6 @@ $$
 $$
 
 
-For more detail, see file<a href="http://kaiqi-yang1994.github.io/files/DCPonProj/Dim2A52.magma" download> Second $A_5$</a>
+For more detail, see file<a href="http://kaiqi-yang1994.github.io/files/DCPonProj/Dim2A52" download target="_blank"> Second $A_5$</a>
 
 These 2 Burnside classes are the same.
