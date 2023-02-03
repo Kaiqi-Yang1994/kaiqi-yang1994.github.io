@@ -72,6 +72,8 @@ G_2=\langle
 $$
 
 To compare these 2 symbols in $BC_3(D_5 \times D_4)$:
-1.Copy all lines in <a href="http://kaiqi-yang1994.github.io/files/DCPonProj/DCPonProj.txt" target="_blank" rel="noopener noreferrer">Computes equivariant birational class in $\mathrm{Burn}_n(G)$ by De Concini-Procesi</a></li>.
-2.Copy all lines in <a href="http://kaiqi-yang1994.github.io/files/DCPonProj/CompareTwoBurnMapBC.txt" target="_blank" rel="noopener noreferrer">Compare 2 Burnside Symbols in BC</a></li>.
-3.Run code in <a href="http://kaiqi-yang1994.github.io/files/DCPonProj/Dimension4 D5timesD4.txt" target="_blank" rel="noopener noreferrer">Magma code</a></li>.
+<ol>
+<li>Copy all lines in <a href="http://kaiqi-yang1994.github.io/files/DCPonProj/DCPonProj.txt" target="_blank" rel="noopener noreferrer">Computes equivariant birational class in $\mathrm{Burn}_n(G)$ by De Concini-Procesi</a></li>.
+<li>Copy all lines in <a href="http://kaiqi-yang1994.github.io/files/DCPonProj/CompareTwoBurnMapBC.txt" target="_blank" rel="noopener noreferrer">Compare 2 Burnside Symbols in BC</a></li>.
+<li>Run code in <a href="http://kaiqi-yang1994.github.io/files/DCPonProj/Dimension4 D5timesD4.txt" target="_blank" rel="noopener noreferrer">Magma code</a></li>.
+</ol>
