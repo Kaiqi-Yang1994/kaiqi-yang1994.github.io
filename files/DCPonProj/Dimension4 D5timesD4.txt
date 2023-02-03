@@ -1,0 +1,31 @@
+//D5 and D4 acting on 2 lines
+
+FScale:=CyclotomicField(40:Sparse:=true);
+
+F:=FScale;
+
+Z5:=RootOfUnity(5);
+Z4:=RootOfUnity(4);
+
+G1:=MatrixGroup<4,F|
+[0,1,0,0, 1,0,0,0, 0,0,1,0, 0,0,0,1],
+[Z5,0,0,0, 0,Z5^(-1),0,0, 0,0,1,0, 0,0,0,1],
+[1,0,0,0, 0,1,0,0, 0,0,0,1, 0,0,1,0],
+[1,0,0,0, 0,1,0,0, 0,0,Z4,0, 0,0,0,Z4^(-1)]>;
+
+
+G2:=MatrixGroup<4,F|
+[0,1,0,0, 1,0,0,0, 0,0,1,0, 0,0,0,1],
+[Z5^2,0,0,0, 0,Z5^(-2),0,0, 0,0,1,0, 0,0,0,1],
+[1,0,0,0, 0,1,0,0, 0,0,0,1, 0,0,1,0],
+[1,0,0,0, 0,1,0,0, 0,0,Z4,0, 0,0,0,Z4^(-1)]>;
+
+
+
+BurnsideSymbols1,PG2GHom1,G2PGHom1,PermG1,H1,LH1,GrpQuo1,AllGrp1,ChainNode1,ChainClass1,ScalarGrp1,AllSymbolNGLambda1:=ComputeBurnsideSymbol(G1,F,FScale);
+BurnsideSymbols2,PG2GHom2,G2PGHom2,PermG2,H2,LH2,GrpQuo2,AllGrp2,ChainNode2,ChainClass2,ScalarGrp2,AllSymbolNGLambda2:=ComputeBurnsideSymbol(G2,F,FScale);
+Dim:=3;
+
+Isom:=hom<H1->H2|H1.1->H2.1,H1.2->H2.2,H1.3->H2.3,H1.4->H2.4>;
+
+Out:=CompareTwoBurnSymbolsByDecomp(BurnsideSymbols1,BurnsideSymbols2,Isom,H1,H2,Dim);

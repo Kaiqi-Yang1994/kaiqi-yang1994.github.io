@@ -38,26 +38,6 @@ G_1=\langle
 \end{align*}
 $$
 
-
-The Magma code is
-<pre>
-FScale:=CyclotomicField(40:Sparse:=true);
-
-F:=FScale;
-
-Z5:=RootOfUnity(5);
-Z4:=RootOfUnity(4);
-
-G:=MatrixGroup<4,F|
-[0,1,0,0, 1,0,0,0, 0,0,1,0, 0,0,0,1],
-[Z5,0,0,0, 0,Z5^(-1),0,0, 0,0,1,0, 0,0,0,1],
-[1,0,0,0, 0,1,0,0, 0,0,0,1, 0,0,1,0],
-[1,0,0,0, 0,1,0,0, 0,0,Z4,0, 0,0,0,Z4^(-1)]>;
-</pre>
-
-
-The Burnside symbols are in Magma state file.
-
 Another representation $V_2$ is given as follows:
 
 $$
@@ -91,22 +71,7 @@ G_2=\langle
 \end{align*}
 $$
 
-
-The Magma code is
-<pre>
-FScale:=CyclotomicField(40:Sparse:=true);
-
-F:=FScale;
-
-Z5:=RootOfUnity(5);
-Z4:=RootOfUnity(4);
-
-G:=MatrixGroup<4,F|
-[0,1,0,0, 1,0,0,0, 0,0,1,0, 0,0,0,1],
-[Z5^2,0,0,0, 0,Z5^(-2),0,0, 0,0,1,0, 0,0,0,1],
-[1,0,0,0, 0,1,0,0, 0,0,0,1, 0,0,1,0],
-[1,0,0,0, 0,1,0,0, 0,0,Z4,0, 0,0,0,Z4^(-1)]>;
-</pre>
-
-
-The Burnside symbols are in Magma state file.
+To compare these 2 symbols in $BC_3(D_5 \times D_4)$:
+1.Copy all lines in <a href="http://kaiqi-yang1994.github.io/files/DCPonProj/DCPonProj.txt" target="_blank" rel="noopener noreferrer">Computes equivariant birational class in $\mathrm{Burn}_n(G)$ by De Concini-Procesi</a></li>.
+2.Copy all lines in <a href="http://kaiqi-yang1994.github.io/files/DCPonProj/CompareTwoBurnMapBC.txt" target="_blank" rel="noopener noreferrer">Compare 2 Burnside Symbols in BC</a></li>.
+3.Run code in <a href="http://kaiqi-yang1994.github.io/files/DCPonProj/Dimension4 D5timesD4.txt" target="_blank" rel="noopener noreferrer">Magma code</a></li>.
