@@ -10,7 +10,7 @@ In this page, there is a list of all finite groups of $\rm{PGL}(3,\mathbb{C})$ a
 REPRESENTATION THEORY</a>)
 
 $\textbf{Intransitive}$ subgroups: the representation is reducible and has the form $G=C_n \times G'$ where $G' \subset GL_2$, which is
-cyclic, Dihedral, $A_4$, $S_4$ or $A_5$.
+cyclic, dihedral, $A_4$, $S_4$ or $A_5$.
 
 $\textbf{Transitive but imprimitive}$ subgroups: the action is not transitive, but there is a nontrivial normal subgroup of $G$ acting intransitively.
 They are 4 types.
