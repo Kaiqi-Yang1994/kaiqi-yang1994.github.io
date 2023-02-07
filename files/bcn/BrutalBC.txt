@@ -356,25 +356,22 @@ for i in [1..#Generators] do
 		else
 			Sym1:=WeightDiff(gen,IndSet[k][1],IndSet[k][2]);
 			if CheckVanish(gen,IndSet[k][1],IndSet[k][2]) eq false then
-				Endo:=hom<gen[3]->gen[3]|[gen[3].l->Sym1[6][IndSet[k][1]][l]*gen[3].l:l in [1..#gen[7]]]>;
-				Hbar:=Kernel(gen[8]*Endo);
-				Ybar:=gen[4];
-				Betabar:=ModChar(gen,IndSet[k][1],IndSet[k][2]);
+				Betabar:=<>;
+				for t in [1..#gen[6]] do
+					if t ne IndSet[k][1] then
+						Append(~Betabar,gen[6][t]);
+					end if;
+				end for;
 				Sym3:=<>;
-				Grp,Iso:=AbelianGroup(Hbar);
-				Generate:=<Inverse(Iso)(Grp.l): l in [1..Ngens(Grp)]>;
-				Append(~Sym3,GroupName(Hbar));
-				Append(~Sym3,GroupName(Ybar/Hbar));
-				Append(~Sym3,Grp);
-				Append(~Sym3,Ybar);
-				Append(~Sym3,Hbar);
+				Append(~Sym3,gen[1]);
+				Append(~Sym3,gen[2]);
+				Append(~Sym3,gen[3]);
+				Append(~Sym3,gen[4]);
+				Append(~Sym3,gen[5]);
 				Append(~Sym3,Betabar);
-				Ord:=<Order(Sym3[3].l): l in [1..Ngens(Sym3[3])]>;
-				Append(~Sym3,Ord);
-				Append(~Sym3,Iso);
-				Append(~Sym3,Generate);
-				Sym3:=ConjugateGen(Sym3,Symbols,G);
-				Sym3:=ChangeWeightOrder(Sym3,CompareChar);
+				Append(~Sym3,gen[7]);
+				Append(~Sym3,gen[8]);
+				Append(~Sym3,gen[9]);
 				Append(~Theta2,CheckInd(Sym3,IndSet2,Generators));
 			end if;
 			Append(~Out,<i,Theta1,Theta2>);
@@ -533,8 +530,14 @@ if #Generators gt 0 then
 		end if;
 	end for;
 	BC,QuoMap:=quo<FullLattice|sub<FullLattice|RelationBase>>;
-	return BC,FullLattice,QuoMap,Generators,IndSet2,RelationBase;
+	return BC,FullLattice,QuoMap,Generators,IndSet2,RelationBase,B1,B2,CR;
 else
 	return 0,0,0,0,0,0;
 end if;
 end function;
+
+G:=Alt(6);
+BC,FullLattice,QuoMap,Generators,IndSet2,RelationBase,B1,B2,CR:=BrutalBC(G,3);
+
+BC;
+QuoMap(FullLattice.204+FullLattice.177+FullLattice.211);
