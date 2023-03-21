@@ -31,6 +31,7 @@ author_profile: true
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/D5timesD4" target="_blank" rel="noopener noreferrer">Example $D_5 \times D_4$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim1" target="_blank" rel="noopener noreferrer">Finite subgroups of $\rm{PGL}(2,\mathbb{C})$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim2" target="_blank" rel="noopener noreferrer">Finite subgroups of $\rm{PGL}(3,\mathbb{C})$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ProjLinGrpDim3" target="_blank" rel="noopener noreferrer">Finite primitive subgroups of $\rm{PGL}(4,\mathbb{C})$</a></li>
 </ul>
 
 
