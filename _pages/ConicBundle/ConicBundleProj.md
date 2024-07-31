@@ -4,8 +4,6 @@ title: "Potentially stably rational conic bundle"
 author_profile: true
 ---
 
-### Potentially stably rational conic bundle.
-
 ### This page contains Magma code and results to compute $H^1(G,Pic(\bar{X}))$ where $X$ is a conic bundle and $G$ is the Galois group of the splitting field of $X$.
 <br>
 
