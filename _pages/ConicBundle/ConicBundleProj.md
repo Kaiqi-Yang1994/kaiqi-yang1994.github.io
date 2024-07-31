@@ -22,13 +22,13 @@ author_profile: true
 
 ### Results:
 <ul>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/Instructions" target="_blank" rel="noopener noreferrer">Instructions to use Magma code</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ConicD4" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_4)$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ConicD5" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_5)$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ConicD6" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_6)$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ConicD7" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_7)$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ConicD8" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_8)$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/projects/DCPonProj/ConicD9" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_9)$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/Instructions" target="_blank" rel="noopener noreferrer">Instructions to use Magma code</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/ConicD4" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_4)$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/ConicD5" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_5)$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/ConicD6" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_6)$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/ConicD7" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_7)$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/ConicD8" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_8)$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/ConicD9" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_9)$</a></li>
 </ul>
 
 
