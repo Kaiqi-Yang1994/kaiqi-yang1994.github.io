@@ -24,5 +24,10 @@ Computation of combinatorial Burnside group and equivariant symbol group</a>
 Computation of equivariant birational class in equivariant Burnside group</a>
 </p>
 
+
+<p>
+[4]<a href = "https://kaiqi-yang1994.github.io/projects/ConicBundle">
+Potentially stably rational conic bundle</a>
+</p>
 	
 	
