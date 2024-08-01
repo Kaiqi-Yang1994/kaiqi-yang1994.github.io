@@ -6,10 +6,8 @@ author_profile: true
 
 
 
-### This page contains Magma code to compute $H^1(G,Pic(\bar{X}))$ where $X$ is a standard conic bundle and $G$ is the Galois group of the splitting field of $X$.
+### This page contains Magma code to compute $H^1(G,Pic(\bar{X}))$ where $X$ is a standard conic bundle and $G$ is the Galois group of the splitting field of $X$,the splitting group $G$ is a subgroup of Weyl group of root system $D_n$, $W(D_n)$.
 <br>
-
-### For a conic bundle $X$ of degree $n$, the splitting group $G$ is a subgroup of Weyl group of $D_n$, $W(D_n)$.
 
 
 ### Magma code:
