@@ -228,45 +228,6 @@ end for;
 return Matrix;
 end function;
 
-//intersection of 2 orbit
-//E type
-
-Inter2OrbitE:=function(m,n,H)
-
-local Matrix;
-
-Matrix:=RMatrixSpace(IntegerRing(),#H[m],#H[n])!0;
-
-for i in [1..#H[m]] do
-
-	for j in [1..#H[n]] do
-
-		product:=0;
-
-		for t in [1..Degree(Group(Parent(H[1][1])))] do
-
-			if t eq 1 then
-
-				product:=product+H[m][i][t]*H[n][j][t];
-
-			else
-
-				product:=product-H[m][i][t]*H[n][j][t];
-
-			end if;
-
-		end for;
-
-		Matrix[i,j]:=product;
-
-	end for;
-
-end for;
-
-return Matrix;
-
-end function;
-
 
 //intersection of 2 orbit D type
 Inter2OrbitD:=function(m,n,H)
@@ -310,6 +271,7 @@ Inv:=InvSpace(G);
 TInv:=InvSpace(H);
 return Inv eq TInv;
 end function;
+
 
 
 ReadResult:=procedure(G,Exceptional)
