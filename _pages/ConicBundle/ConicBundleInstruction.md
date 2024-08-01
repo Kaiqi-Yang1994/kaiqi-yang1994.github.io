@@ -72,30 +72,5 @@ WantD4;
 
 ### Use the following code to see the orbit decomposition, intersection matrix and stabilizer of each orbit.
 <pre>
-
-G:=ListD4[30]`subgroup;
-
-//Orbit decomposition of exceptional set
-H:={};
-
-for i in [1..#Exceptional] do
-
-	Include(~H,SetToIndexedSet(Orbit(TransGroup(G),Exceptional[i])));
-
-end for;
-
-S:=TransGroup(Stabilizer(TransGroup(G),H[1][1]));
-
-H:=SetToIndexedSet(H);
-
-for i in [1..#H] do
-	i;
-	H[i];
-	"Intersection Matrix: ";
-	IsConic(i,H);
-	"Stabilizer Group Name: ";
-	GroupName(TransGroup(Stabilizer(TransGroup(G),H[i][1])));
-	TransGroup(Stabilizer(TransGroup(G),H[i][1]));
-end for;
-
+ReadResult(ListD4[30]`subgroup,Exceptional);
 </pre>
