@@ -7,9 +7,9 @@ author_profile: true
 ### This page contains subgroup $G$ of $W(D_4)$ with $H^1(G,Pic(\bar{X}))=0$.
 
 
-### Results:
+### Cases:
 <ul>
-<li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/D4(1).txt" target="_blank" rel="noopener noreferrer">$D4(1):S_3$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/D4(1)S3.txt" target="_blank" rel="noopener noreferrer">D4(1):$S_3$</a></li>
 </ul>
 
 
