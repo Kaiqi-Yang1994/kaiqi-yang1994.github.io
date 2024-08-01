@@ -9,7 +9,7 @@ author_profile: true
 
 ### Copy representation of $W(D_4)$ from <a href="http://kaiqi-yang1994.github.io/files/ConicBundle/Representations.txt" target="_blank" rel="noopener noreferrer">this file</a>.
 
-### Copy every thing from <a href="http://kaiqi-yang1994.github.io/files/ConicBundle/ConicBundleCode.txt" target="_blank" rel="noopener noreferrer">this file</a>.
+### Copy every thing from <a href="http://kaiqi-yang1994.github.io/files/ConicBundle/ConicbundleCode.txt" target="_blank" rel="noopener noreferrer">this file</a>.
 
 ### Use the following code:
 <pre>
@@ -68,7 +68,7 @@ WantD4;
 
 ### All indices of the group is stored in WantD4, for other cases, change the variables name accordingly.
 
-### We have $WantD4={30}$, and group ListD4[30]`subgroup is $S_3$.
+### We have $WantD4=\{30\}$, and group ListD4[30]`subgroup is $S_3$.
 
 ### Use the following code to see the orbit decomposition, intersection matrix and stabilizer of each orbit.
 <pre>
