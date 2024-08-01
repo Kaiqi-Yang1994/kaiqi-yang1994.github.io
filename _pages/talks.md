@@ -5,10 +5,11 @@ author_profile: true
 redirect_from:
   - /talks.html
 ---
-  *MPS Conference on Arithmetic Geometry, Group Actions and Rationality Problems,
+  
+  * MPS Conference on Arithmetic Geometry, Group Actions and Rationality Problems,
 
     Simons Foundation, New York City, May 29-31, 2024
-  *Higher Invariants in Equivariant and Geometric Topology,
+  * Higher Invariants in Equivariant and Geometric Topology,
 
     
     University of Miami, Miami, May 24-27, 2023.
