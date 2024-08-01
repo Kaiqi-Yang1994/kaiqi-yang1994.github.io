@@ -20,6 +20,8 @@ author_profile: true
 
 <br>
 
+We view $W(D_n) \subset W(D_9)$ for $i=4,5,6,7,8$ and give them 11-dimension representations.
+
 ### Results:
 <ul>
 <li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/Instructions" target="_blank" rel="noopener noreferrer">Instructions to use Magma code</a></li>
