@@ -314,7 +314,7 @@ end function;
 
 ReadResult:=procedure(G,Exceptional)
 //Orbit decomposition of exceptional set
-H:={};
+H:={@ @};
 
 for i in [1..#Exceptional] do
 
