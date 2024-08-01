@@ -9,7 +9,7 @@ author_profile: true
 
 ### Cases:
 <ul>
-<li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/D4(1)S3.txt" target="_blank" rel="noopener noreferrer">D4(1):$S_3$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/files/ConicBundle/D4(1)S3.txt" target="_blank" rel="noopener noreferrer">D4(1):$S_3$</a></li>
 </ul>
 
 
