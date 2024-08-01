@@ -12,7 +12,7 @@ author_profile: true
 <li><a href="http://kaiqi-yang1994.github.io/files/ConicBundle/D7(1)C5semiC4.txt" target="_blank" rel="noopener noreferrer">D7(1):$C5:C4$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/files/ConicBundle/D7(2)D10.txt" target="_blank" rel="noopener noreferrer">D7(2):$D_{10}$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/files/ConicBundle/D7(3)F5.txt" target="_blank" rel="noopener noreferrer">D7(3):$F_5$</a></li>
-<li><a href="http://kaiqi-yang1994.github.io/files/ConicBundle/D7(4)S32.txt" target="_blank" rel="noopener noreferrer">D7(4):$S3^2$</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/files/ConicBundle/D7(4)S32.txt" target="_blank" rel="noopener noreferrer">D7(4):$S_3^2$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/files/ConicBundle/D7(5)C3semiS3semiC2.txt" target="_blank" rel="noopener noreferrer">D7(5):$(C_2 \rtimes S_3)\rtimes C_2$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/files/ConicBundle/D7(6)C2timesF5.txt" target="_blank" rel="noopener noreferrer">D7(6):$C_5 \times F_5$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/files/ConicBundle/D7(7)C5semiD4.txt" target="_blank" rel="noopener noreferrer">D7(7):$C_5 \rtimes D_4$</a></li>
