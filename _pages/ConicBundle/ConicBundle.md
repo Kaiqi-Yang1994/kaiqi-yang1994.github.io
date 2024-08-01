@@ -13,7 +13,7 @@ author_profile: true
 ### Magma code:
 
 <ul>
-<li><a href="http://kaiqi-yang1994.github.io/files/DCPonProj/ConicBundleMagma.txt" target="_blank" rel="noopener noreferrer">Computes cohomology obstruction $H^1(G,Pic(\bar{X}))$.</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/ConicBundleMagma" target="_blank" rel="noopener noreferrer">Computes cohomology obstruction $H^1(G,Pic(\bar{X}))$.</a></li>
 </ul>
 
 <br>
@@ -22,7 +22,7 @@ We view $W(D_n) \subset W(D_9)$ for $i=4,5,6,7,8$ and give them 11-dimension rep
 
 ### Results:
 <ul>
-<li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/Instructions" target="_blank" rel="noopener noreferrer">Instructions to use Magma code</a></li>
+<li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/Instructions" target="_blank" rel="noopener noreferrer">Instructions and examples</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/ConicD4" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_4)$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/ConicD5" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_5)$</a></li>
 <li><a href="http://kaiqi-yang1994.github.io/projects/ConicBundle/ConicD6" target="_blank" rel="noopener noreferrer">Subgroup of $W(D_6)$</a></li>
