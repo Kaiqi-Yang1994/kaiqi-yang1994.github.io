@@ -7,7 +7,7 @@
 MatrixGroup(11, Integer Ring) of order 2 * 3
 Generators:
 
-	c1c2c3c4(1 2)
+    c1c2c3c4(1 2)
     [ 1  0  0  0  0  0  0  0  0  0  0]
     [ 2  1  1  1  1  1  0  0  0  0  0]
     [-1  0  0 -1  0  0  0  0  0  0  0]
